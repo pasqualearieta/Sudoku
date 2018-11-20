@@ -17,3 +17,7 @@ ul.dropdown-lr {
     color: #eee;
   }
 }
+
+.navbar-fixed-top {
+  position: relative;
+}
