@@ -1,10 +1,4 @@
-
 $(document).ready(function() {
-
-	$("#lg-btn").click(function() {
-		$("#log-f").prop('hidden', true);
-	});
-
 	$("#login_form").on("submit", function() {
 		$.ajax({
 			type : "POST",
@@ -17,12 +11,15 @@ $(document).ready(function() {
 				window.location.href = "./"
 			},
 			error : function(data) {
-
-				$("#log-f").prop('hidden', false);
+				$('.lg-al').fadeIn('slow');
 			}
 		});
 
 		return false;
+	});
+
+	$('#btn-lgn').on("click", function() {
+		$('.lg-al').fadeOut('slow');
 	});
 
 });

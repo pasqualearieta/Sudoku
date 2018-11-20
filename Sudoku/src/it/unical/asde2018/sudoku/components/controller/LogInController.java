@@ -20,22 +20,23 @@ public class LogInController {
 
 	@GetMapping("/")
 	public String home(HttpSession session) {
-		if(session.getAttribute("username")!=null)
+		if (session.getAttribute("username") != null)
 			return "home";
 		else
 			return "home";
-		
+
 	}
 
 	@PostMapping("/login")
-	public void loginAttempt(@RequestParam String username, @RequestParam String password,
-			HttpSession session, Model model, HttpServletResponse response) {
+	public void loginAttempt(@RequestParam String username, @RequestParam String password, HttpSession session,
+			Model model, HttpServletResponse response) {
+
 		if (logInService.login(username, password)) {
 			session.setAttribute("username", username);
 			response.setStatus(HttpServletResponse.SC_ACCEPTED);
 		} else {
-
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);			
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			return;
 		}
 
 	}

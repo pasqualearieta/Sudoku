@@ -52,121 +52,131 @@
 										Logout</a></li>
 							</ul></li>
 					</c:if>
-					<!--REGISTRATION-->
-					<li class="dropdown"><a href="" class="dropdown-toggle"
-						data-toggle="dropdown">Register <span class="caret"></span></a>
-						<ul class="dropdown-menu dropdown-lr animated flipInX" role="menu">
-							<div class="col-lg-12">
-								<div class="text-center">
-									<h3>
-										<b>Register</b>
-									</h3>
-								</div>
-								<form action="register" method="post" role="form"
-									autocomplete="off">
-									<div class="form-group">
-										<input type="text" name="username_register"
-											id="username_register" tabindex="1" class="form-control"
-											placeholder="Username">
+
+
+					<c:if test="${empty username }">
+						<!--REGISTRATION-->
+						<li class="dropdown"><a href="" class="dropdown-toggle"
+							data-toggle="dropdown">Register <span class="caret"></span></a>
+							<ul class="dropdown-menu dropdown-lr animated flipInX"
+								role="menu">
+								<div class="col-lg-12">
+									<div class="text-center">
+										<h3>
+											<b>Register</b>
+										</h3>
 									</div>
-									<div class="alert alert-danger alert-dismissible" role="alert">
-										<button type="button" class="close" data-dismiss="alert"
-											aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-										<strong> <span class="glyphicon glyphicon-remove"></span>
-											Warning!
-										</strong> The Username is already in use!
-									</div>
-									<div class="form-group">
-										<input type="password" name="password_register"
-											id="password_register" tabindex="2" class="form-control"
-											placeholder="Password">
-									</div>
-									<div class="form-group">
-										<input type="password" name="confirm-password_register"
-											id="confirm-password_register" tabindex="2"
-											class="form-control" placeholder="Confirm Password">
-									</div>
-									<div class="alert alert-danger alert-dismissible" role="alert">
-										<button type="button" class="close" data-dismiss="alert"
-											aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-										<strong> <span class="glyphicon glyphicon-remove"
-											aria-hidden="true"></span> Pay Attention!
-										</strong> The Password must be equal!
-									</div>
-									<div class="form-group">
-										<div class="row">
-											<div class="col-xs-6 col-xs-offset-3">
-												<input type="submit" name="register-submit"
-													id="register-submit" tabindex="4"
-													class="form-control btn btn-info" value="Register Now">
+									<form action="register" method="post" role="form"
+										autocomplete="off">
+										<div class="form-group">
+											<input type="text" name="username_register"
+												id="username_register" tabindex="1" class="form-control"
+												placeholder="Username">
+										</div>
+										<div class="alert alert-danger alert-dismissible" role="alert">
+											<button type="button" class="close" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											<strong> <span class="glyphicon glyphicon-remove"></span>
+												Warning!
+											</strong> The Username is already in use!
+										</div>
+										<div class="form-group">
+											<input type="password" name="password_register"
+												id="password_register" tabindex="2" class="form-control"
+												placeholder="Password">
+										</div>
+										<div class="form-group">
+											<input type="password" name="confirm-password_register"
+												id="confirm-password_register" tabindex="2"
+												class="form-control" placeholder="Confirm Password">
+										</div>
+										<div class="alert alert-danger alert-dismissible" role="alert">
+											<button type="button" class="close" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											<strong> <span class="glyphicon glyphicon-remove"
+												aria-hidden="true"></span> Pay Attention!
+											</strong> The Password must be equal!
+										</div>
+										<div class="form-group">
+											<div class="row">
+												<div class="col-xs-6 col-xs-offset-3">
+													<input type="submit" name="register-submit"
+														id="register-submit" tabindex="4"
+														class="form-control btn btn-info" value="Register Now">
+												</div>
 											</div>
 										</div>
-									</div>
-								</form>
-							</div>
-						</ul></li>
-
-					<!--LOGIN-->
-					<li class="dropdown"><a class="dropdown-toggle"
-						data-toggle="dropdown"> <span
-							class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Log
-							In <span class="caret"></span></a>
-						<ul
-							class="dropdown-menu drop-log-in dropdown-lr animated slideInRight"
-							role="menu">
-							<div class="col-lg-12 menu">
-								<div class="text-center">
-									<h3>
-										<b>Log In</b>
-									</h3>
+									</form>
 								</div>
-								<form action="login" method="post" role="form"
-									autocomplete="off" id="login_form">
-									<div class="form-group">
-										<label for="username">Username</label> <input type="text"
-											name="username_log_in" id="username_log_in" tabindex="1"
-											class="form-control" placeholder="Username"
-											autocomplete="off">
+							</ul></li>
+					</c:if>
+
+					<c:if test="${empty username }">
+						<!--LOGIN-->
+						<li class="dropdown"><a class="dropdown-toggle"
+							data-toggle="dropdown"> <span
+								class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+								Log In <span class="caret"></span></a>
+							<ul
+								class="dropdown-menu drop-log-in dropdown-lr animated slideInRight"
+								role="menu">
+								<div class="col-lg-12 menu">
+									<div class="text-center">
+										<h3>
+											<b>Log In</b>
+										</h3>
 									</div>
-									<div class="form-group">
-										<label for="password">Password</label> <input type="password"
-											name="password_log_in" id="password_log_in" tabindex="2"
-											class="form-control" placeholder="Password"
-											autocomplete="off">
-									</div>
+									<form action="login" method="post" role="form"
+										autocomplete="off" id="login_form">
+										<div class="form-group">
+											<label for="username">Username</label> <input type="text"
+												name="username_log_in" id="username_log_in" tabindex="1"
+												class="form-control" placeholder="Username"
+												autocomplete="off">
+										</div>
+										<div class="form-group">
+											<label for="password">Password</label> <input type="password"
+												name="password_log_in" id="password_log_in" tabindex="2"
+												class="form-control" placeholder="Password"
+												autocomplete="off">
+										</div>
 
 
 
-									<div class="alert-div"
-										style="background-color: #ff4d4d; color: white; border-radius: 3px;"
-										id="log-f" hidden="true">
-										<button type="button" id="lg-btn" class="close">
-											<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-										</button>
-										<strong> Error! </strong>
-										<p id="fail-log">"Username or Password not valid!"</p>
-									</div>
+										<div class="lg-al alert alert-danger" role="alert"
+											hidden="true">
+											<button type="button" id="btn-lgn" class="btn close"
+												aria-hidden="true">
+												<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+											</button>
+											<strong> Error! </strong>
+											<p>Username or Password not valid!</p>
+										</div>
 
 
-									<div class="form-group">
-										<div class="row">
-											<div class="col-xs-5 pull-right">
-												<button type="submit" name="login-submit" id="login-submit"
-													tabindex="4" class="form-control btn btn-success"
-													value="Log In">
-													<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
-													Log In
-												</button>
+
+
+										<div class="form-group">
+											<div class="row">
+												<div class="col-xs-5 pull-right">
+													<button type="submit" name="login-submit" id="login-submit"
+														tabindex="4" class="form-control btn btn-success"
+														value="Log In">
+														<span class="glyphicon glyphicon-log-in"
+															aria-hidden="true"></span> Log In
+													</button>
+												</div>
 											</div>
 										</div>
-									</div>
-								</form>
-							</div>
-						</ul></li>
+									</form>
+								</div>
+							</ul></li>
+					</c:if>
+
 				</ul>
 			</div>
 		</div>

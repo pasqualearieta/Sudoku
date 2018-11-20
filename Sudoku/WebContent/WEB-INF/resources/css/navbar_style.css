@@ -1,26 +1,23 @@
 /* Fixed navbar */
 body {
-  padding-top: 10px;
+	padding-top: 10px;
 }
 
 /* General sizing */
 ul.dropdown-lr {
-  width: 300px;
+	width: 300px;
 }
 
 /* mobile fix */
-@media (max-width: 768px) {
-  .dropdown-lr h3 {
-    color: #eee;
-  }
-  .dropdown-lr label {
-    color: #eee;
-  }
+@media ( max-width : 768px) {
+	.dropdown-lr h3 {
+		color: #eee;
+	}
+	.dropdown-lr label {
+		color: #eee;
+	}
 }
 
 .navbar-fixed-top {
-  position: relative;
-}
-.alert-div {
-    background-color: #eee;
+	position: relative;
 }
