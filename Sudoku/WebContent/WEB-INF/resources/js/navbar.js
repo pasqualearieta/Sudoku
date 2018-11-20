@@ -1,23 +1,28 @@
 
-function loginAttempt() {
-	
-	var username = document.getElementByName("username-log-in").value();
-	var password = document.getElementByName("password-log-in").value();	
-	$.ajax({
-		type: 'POST',
-		url : 'login', 
-		contentType: 'application/json; charset=utf-8',
-		data: JSON.stringify(username, password), 
-		success : function(result) {
-			console.log("login action")
-			if (result === "success")
-				$("#login_failed").hide();
-			else
-				$("#login_failed").show();
-		}
-	});
-}
-
 $(document).ready(function() {
-	$("#login-submit").click(loginAttempt());
+
+	$("#lg-btn").click(function() {
+		$("#log-f").prop('hidden', true);
+	});
+
+	$("#login_form").on("submit", function() {
+		$.ajax({
+			type : "POST",
+			url : "login",
+			data : {
+				username : $('#username_log_in').val(),
+				password : $('#password_log_in').val()
+			},
+			success : function(data) {
+				window.location.href = "./"
+			},
+			error : function(data) {
+
+				$("#log-f").prop('hidden', false);
+			}
+		});
+
+		return false;
+	});
+
 });

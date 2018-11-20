@@ -11,7 +11,7 @@
 
 <jsp:include page="include.jsp"></jsp:include>
 <link href="resources/css/navbar_style.css" rel="stylesheet">
-  <script src="resources/js/navbar.js"></script>
+<script src="resources/js/navbar.js"></script>
 
 
 </head>
@@ -115,16 +115,17 @@
 						data-toggle="dropdown"> <span
 							class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Log
 							In <span class="caret"></span></a>
-						<ul class="dropdown-menu dropdown-lr animated slideInRight"
+						<ul
+							class="dropdown-menu drop-log-in dropdown-lr animated slideInRight"
 							role="menu">
-							<div class="col-lg-12">
+							<div class="col-lg-12 menu">
 								<div class="text-center">
 									<h3>
 										<b>Log In</b>
 									</h3>
 								</div>
 								<form action="login" method="post" role="form"
-									autocomplete="off">
+									autocomplete="off" id="login_form">
 									<div class="form-group">
 										<label for="username">Username</label> <input type="text"
 											name="username_log_in" id="username_log_in" tabindex="1"
@@ -139,18 +140,18 @@
 									</div>
 
 
-									<c:if test="${not empty login_failed  }">
-										<div class="alert alert-danger alert-dismissible" id="login_failed" role="alert">
-											<button type="button" class="close" data-dismiss="alert"
-												aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-											<strong> <span class="glyphicon glyphicon-remove"
-												aria-hidden="true"></span> Error!
-											</strong> ${login_failed }
-										</div>
-									</c:if>
-									
+
+									<div class="alert-div"
+										style="background-color: #ff4d4d; color: white; border-radius: 3px;"
+										id="log-f" hidden="true">
+										<button type="button" id="lg-btn" class="close">
+											<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+										</button>
+										<strong> Error! </strong>
+										<p id="fail-log">"Username or Password not valid!"</p>
+									</div>
+
+
 									<div class="form-group">
 										<div class="row">
 											<div class="col-xs-5 pull-right">

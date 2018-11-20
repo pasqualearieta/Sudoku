@@ -1,5 +1,6 @@
 package it.unical.asde2018.sudoku.components.controller;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +28,14 @@ public class LogInController {
 	}
 
 	@PostMapping("/login")
-	public String loginAttempt(@RequestParam String username_log_in, @RequestParam String password_log_in,
-			HttpSession session, Model model) {
-		if (logInService.login(username_log_in, password_log_in)) {
-			session.setAttribute("username", username_log_in);
-			return "redirect:/";
+	public void loginAttempt(@RequestParam String username, @RequestParam String password,
+			HttpSession session, Model model, HttpServletResponse response) {
+		if (logInService.login(username, password)) {
+			session.setAttribute("username", username);
+			response.setStatus(HttpServletResponse.SC_ACCEPTED);
 		} else {
-			model.addAttribute("login_failed", "Username or Password not valid!");
-			return "home";
+
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);			
 		}
 
 	}
