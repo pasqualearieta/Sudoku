@@ -43,6 +43,15 @@ public class User {
 		super();
 	}
 
+	
+	
+	
+	public User(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
+	}
+
 	public String getUsername() {
 		return username;
 	}
