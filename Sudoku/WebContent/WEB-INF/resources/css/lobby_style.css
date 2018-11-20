@@ -1,0 +1,27 @@
+.vertical-divider {
+  text-align: center;
+  border: 1px solid grey;
+}
+
+.header-divider {
+  text-align: center;
+
+}
+
+#create-lobby-panel {
+  background-color: #009933;
+  color: white;
+  border: black;
+}
+
+#available-lobby-panel {
+  background-color: #990000;
+  color: white;
+  border: black;
+}
+
+#panel {border: 1px solid black;}
+
+.check{
+  color: green;
+}

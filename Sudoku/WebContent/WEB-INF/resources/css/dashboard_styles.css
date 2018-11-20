@@ -1,0 +1,91 @@
+
+.main-chart {
+  background: #fff; }
+
+.easypiechart-panel {
+  text-align: center;
+  padding: 1px 0;
+  margin-bottom: 20px; }
+
+.donut {
+  width: 100%; }
+
+.easypiechart {
+  position: relative;
+  text-align: center;
+  width: 120px;
+  height: 120px;
+  margin: 20px auto 10px auto; }
+
+.easypiechart .percent {
+  display: block;
+  position: absolute;
+  font-size: 26px;
+  top: 38px;
+  width: 120px; }
+
+#left-pie {
+  margin-left: 50px;
+}
+
+
+.font_settings {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#winning-panel {
+  background-color: #00802b;
+  color: white;
+  border: black;
+
+}
+
+
+#drawing-panel {
+  background-color: #ff9d00;
+  color: white;
+  border: black;
+}
+
+
+#average-easy-panel {
+  background-color:#00b33c;
+  color: white;
+  border: black;
+}
+
+#average-medium-panel {
+  background-color: #ffb133;
+  color: white;
+  border: black;
+}
+
+#average-hard-panel {
+  background-color: #f04242;
+  color: white;
+  border: black;
+}
+
+
+#losing-panel {
+  background-color: #ec1313;
+  color: white;
+  border: black;
+}
+
+#easypiechart-teal .percent {
+  color: #1ebfae; }
+
+#easypiechart-orange .percent {
+  color: #ffb53e; }
+
+#easypiechart-red .percent {
+  color: #ef4040; }
+
+  /* mobile fix */
+  @media (max-width: 768px) {
+    #left-pie {
+      margin-left: 0px;
+    }
+  }
