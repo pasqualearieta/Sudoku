@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import it.unical.asde2018.sudoku.components.services.LogInService;
+
+import it.unical.asde2018.sudoku.components.services.CredentialService;
 
 @Controller
 public class LogInController {
 
 	@Autowired
-	private LogInService logInService;
+	private CredentialService credentialService;
 
 	@GetMapping("/")
 	public String home(HttpSession session) {
@@ -53,7 +54,7 @@ public class LogInController {
 
 		String result = new String();
 
-		if (logInService.login(username, password)) {
+		if (credentialService.login(username, password)) {
 			session.setAttribute("username", username);
 			result = "LOGIN_OK";
 		} else {

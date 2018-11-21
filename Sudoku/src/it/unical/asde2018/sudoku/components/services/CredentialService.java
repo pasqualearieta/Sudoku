@@ -7,7 +7,7 @@ import it.unical.asde2018.sudoku.components.persistence.UserDAO;
 import it.unical.asde2018.sudoku.model.User;
 
 @Service
-public class LogInService {
+public class CredentialService {
 
 	@Autowired
 	private UserDAO userDAO;
@@ -16,4 +16,12 @@ public class LogInService {
 		return userDAO.exists(new User(username, password));
 	}
 
+	public boolean registerUser(String username, String password) {
+		User newUser = new User(username, password);
+		if (!userDAO.availableUsername(newUser))
+			return false;
+		userDAO.save(newUser);
+		return true;	
+	}
+	
 }
