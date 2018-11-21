@@ -29,15 +29,14 @@
 						class="icon-bar"></span>
 				</button>
 				<!--LOGO SETTINGS-->
-
-				<a class="navbar-brand" id="logo"><img class="img-fluid"
+				<a href="" class="navbar-brand" id="logo"><img class="img-fluid"
 					alt="Responsive image" src="resources/img/logoNinjaTurtles.png"
 					style="width: 320px; margin-left: 5px; margin-bottom: 20px; margin-top: -15px;"></a>
 			</div>
 
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<!--USER PREFERENCES-->
+					<!--USER DASHBOARD-->
 					<c:if test="${not empty username }">
 						<li class="dropdown"><a href="" class="dropdown-toggle"
 							data-toggle="dropdown"><span class="glyphicon glyphicon-user"
@@ -172,12 +171,12 @@
 
 					<c:if test="${empty username }">
 						<!--LOGIN-->
-						<li class="dropdown"><a class="dropdown-toggle"
+						<li class="dropdown"><a href="" class="dropdown-toggle"
 							data-toggle="dropdown"> <span
 								class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
 								Log In <span class="caret"></span></a>
 							<ul
-								class="dropdown-menu drop-log-in dropdown-lr animated slideInRight"
+								class="dropdown-menu drop-log-in dropdown-lr animated slideInRight" class="caret"
 								role="menu">
 								<div class="col-lg-12 menu">
 									<div class="text-center">
