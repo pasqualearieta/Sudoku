@@ -18,7 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Table;
 
-import it.unical.asde2018.sudoku.logic.Difficulty;
+import it.unical.asde2018.sudoku.logic.util.Difficulty;
 
 @Entity
 @Table
