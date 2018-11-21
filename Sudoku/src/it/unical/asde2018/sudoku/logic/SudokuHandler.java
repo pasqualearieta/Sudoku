@@ -11,11 +11,9 @@ public class SudokuHandler {
 	private SudokuGrid sudokuToSolve;
 
 	public SudokuHandler(Difficulty difficulty) {
-
 		setGenerator(new Generator());
 		setDifficulty(difficulty);
 		generatePuzzle();
-
 	}
 
 	private void generatePuzzle() {

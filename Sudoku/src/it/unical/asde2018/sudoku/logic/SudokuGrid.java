@@ -41,7 +41,8 @@ public class SudokuGrid {
 			for (int j = 0; j < sudokuGridNumbers.length; j++)
 				str.append((sudokuGridNumbers[i][j] != 0) ? (sudokuGridNumbers[i][j] + "") : ".");
 
-			str.append("\n");
+			if (i < sudokuGridNumbers.length - 1)
+				str.append("\n");
 		}
 
 		return str.toString();

@@ -1,7 +1,7 @@
 package it.unical.asde2018.sudoku.logic.util;
 
 public enum Difficulty {
-	EASY(32), MEDIUM(44), HARD(54);
+	EASY(32), MEDIUM(42), HARD(52);
 
 	private final int numberToRemove;
 
