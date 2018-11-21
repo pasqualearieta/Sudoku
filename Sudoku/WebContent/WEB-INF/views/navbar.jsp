@@ -29,7 +29,8 @@
 						class="icon-bar"></span>
 				</button>
 				<!--LOGO SETTINGS-->
-				<a class="navbar-brand" href=""><img class="img-fluid"
+
+				<a class="navbar-brand" id="logo"><img class="img-fluid"
 					alt="Responsive image" src="https://image.ibb.co/dkWns0/logo.png"
 					style="width: 320px; margin-left: 5px; margin-bottom: 20px; margin-top: -5px;"></a>
 			</div>
@@ -43,13 +44,24 @@
 								aria-hidden="true"></span> Welcome, ${username } <b
 								class="caret"></b></a>
 							<ul class="dropdown-menu dropdown-md animated slideInDown">
-								<li><a href="" name="preferences"><i class="icon-cog"></i>
-										<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-										Preferences</a></li>
+								<form action="dashboard">
+									<li><button type="submit" name="dashboard_btn">
+											<i class="icon-cog"></i> <span
+												class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+											History
+										</button></li>
+								</form>
 								<li class="divider"></li>
-								<li><a href="" name="logout"><i class="icon-off"></i> <span
-										class="glyphicon glyphicon-off" aria-hidden="true"></span>
-										Logout</a></li>
+								<li>
+
+									<form action="logout">
+										<button type="submit" name="logout_btn">
+											<i class="icon-off"></i> <span
+												class="glyphicon glyphicon-off" aria-hidden="true"></span>
+											Logout
+										</button>
+									</form>
+								</li>
 							</ul></li>
 					</c:if>
 
@@ -154,7 +166,7 @@
 												<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 											</button>
 											<strong> Error! </strong>
-											<p>Username or Password not valid!</p>
+											<p id="lgin_message"></p>
 										</div>
 
 

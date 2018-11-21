@@ -8,11 +8,16 @@ $(document).ready(function() {
 				password : $('#password_log_in').val()
 			},
 			success : function(data) {
-				window.location.href = "./"
+
+				if (data === "LOGIN_OK") {
+					window.location.href = "./"
+				} else {
+
+					$('.lg-al').fadeIn('slow');
+					$("#lgin_message").html(data);
+				}
+
 			},
-			error : function(data) {
-				$('.lg-al').fadeIn('slow');
-			}
 		});
 
 		return false;
@@ -20,6 +25,10 @@ $(document).ready(function() {
 
 	$('#btn-lgn').on("click", function() {
 		$('.lg-al').fadeOut('slow');
+	});
+
+	$('#logo').on("click", function() {
+		window.location.href = "./";
 	});
 
 });
