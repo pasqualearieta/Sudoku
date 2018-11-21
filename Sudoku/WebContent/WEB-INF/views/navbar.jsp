@@ -44,22 +44,38 @@
 								aria-hidden="true"></span> Welcome, ${username } <b
 								class="caret"></b></a>
 							<ul class="dropdown-menu dropdown-md animated slideInDown">
-								<form action="dashboard">
-									<li><button type="submit" name="dashboard_btn">
-											<i class="icon-cog"></i> <span
-												class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-											History
-										</button></li>
-								</form>
+								<c:if test="${empty dashboard }">
+									<form action="dashboard">
+										<div class="text-center">
+											<li><button class="wrap_button" type="submit"
+													name="dashboard_btn">
+													<i class="fa fa-history" aria-hidden="true"></i> History
+												</button></li>
+										</div>
+									</form>
+								</c:if>
+								<c:if test="${not empty dashboard }">
+									<form action="GoToLobby">
+										<div class="text-center">
+											<li><button class="wrap_button" type="submit"
+													name="lobby_btn" id="go_to_lobby">
+													<i class="fa fa-handshake-o" aria-hidden="true"></i>Lobby
+												</button></li>
+										</div>
+									</form>
+								</c:if>
+
 								<li class="divider"></li>
 								<li>
 
 									<form action="logout">
-										<button type="submit" name="logout_btn">
-											<i class="icon-off"></i> <span
-												class="glyphicon glyphicon-off" aria-hidden="true"></span>
-											Logout
-										</button>
+										<div class="text-center">
+											<button class="wrap_button" type="submit" name="logout_btn">
+												<i class="icon-off"></i> <span
+													class="glyphicon glyphicon-off" aria-hidden="true"></span>
+												Logout
+											</button>
+										</div>
 									</form>
 								</li>
 							</ul></li>

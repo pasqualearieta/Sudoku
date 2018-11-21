@@ -19,13 +19,17 @@ public class LogInController {
 
 	@GetMapping("/")
 	public String home(HttpSession session) {
+		session.removeAttribute("dashboard");
 		if (session.getAttribute("username") != null)
 			return "lobby";
 		else
 			return "home";
-		
-		
 
+	}
+	
+	@GetMapping("/GoToLobby")
+	public String goToLobby() {
+		return "redirect:/";
 	}
 
 	@GetMapping("/logout")
@@ -35,9 +39,9 @@ public class LogInController {
 
 	}
 
-
 	@GetMapping("/dashboard")
 	public String viewHistory(HttpSession session) {
+		session.setAttribute("dashboard", "dashboard");
 		return "dashboard";
 
 	}

@@ -21,3 +21,16 @@ ul.dropdown-lr {
 .navbar-fixed-top {
 	position: relative;
 }
+
+.wrap_button {
+	background-color: transparent; 
+	border: none;
+	outline: none;
+}
+
+.wrap_button:hover {
+    background-color: #f2f2f2;
+    color: black;
+    border-radius: 5px;
+}
+}
