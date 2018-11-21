@@ -31,8 +31,8 @@
 				<!--LOGO SETTINGS-->
 
 				<a class="navbar-brand" id="logo"><img class="img-fluid"
-					alt="Responsive image" src="https://image.ibb.co/dkWns0/logo.png"
-					style="width: 320px; margin-left: 5px; margin-bottom: 20px; margin-top: -5px;"></a>
+					alt="Responsive image" src="resources/img/logoNinjaTurtles.png"
+					style="width: 320px; margin-left: 5px; margin-bottom: 20px; margin-top: -15px;"></a>
 			</div>
 
 			<div id="navbar" class="collapse navbar-collapse">
@@ -94,41 +94,54 @@
 											<b>Register</b>
 										</h3>
 									</div>
+
+
+
 									<form action="register" method="post" role="form"
-										autocomplete="off">
+										autocomplete="off" id="registration_form">
 										<div class="form-group">
-											<input type="text" name="username_register"
+											<input type="text"  name="username_register"
 												id="username_register" tabindex="1" class="form-control"
-												placeholder="Username">
+												placeholder="Username" required/>
 										</div>
-										<div class="alert alert-danger alert-dismissible" role="alert">
-											<button type="button" class="close" data-dismiss="alert"
-												aria-label="Close">
-												<span aria-hidden="true">&times;</span>
+
+										<div class="rgu-al alert alert-danger" role="alert"
+											hidden="true">
+											<button type="button" id="btn-rgu" class="btn close"
+												aria-hidden="true">
+												<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 											</button>
-											<strong> <span class="glyphicon glyphicon-remove"></span>
-												Warning!
-											</strong> The Username is already in use!
+											<strong> <span class="glyphicon glyphicon-remove"
+												aria-hidden="true"></span> Warning!
+											</strong>
+											<p>The Username is already in use!</p>
 										</div>
+
 										<div class="form-group">
 											<input type="password" name="password_register"
 												id="password_register" tabindex="2" class="form-control"
-												placeholder="Password">
+												placeholder="Password" required />
 										</div>
 										<div class="form-group">
 											<input type="password" name="confirm-password_register"
 												id="confirm-password_register" tabindex="2"
-												class="form-control" placeholder="Confirm Password">
+												class="form-control" placeholder="Confirm Password" required />
 										</div>
-										<div class="alert alert-danger alert-dismissible" role="alert">
-											<button type="button" class="close" data-dismiss="alert"
-												aria-label="Close">
-												<span aria-hidden="true">&times;</span>
+
+										<div class="rgp-al alert alert-danger" role="alert"
+											hidden="true">
+											<button type="button" id="btn-rgp" class="btn close"
+												aria-hidden="true">
+												<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 											</button>
 											<strong> <span class="glyphicon glyphicon-remove"
 												aria-hidden="true"></span> Pay Attention!
-											</strong> The Password must be equal!
+											</strong>
+											<p>The Password must be equal!</p>
 										</div>
+
+
+
 										<div class="form-group">
 											<div class="row">
 												<div class="col-xs-6 col-xs-offset-3">
@@ -138,7 +151,21 @@
 												</div>
 											</div>
 										</div>
+										
+										
+										<div class="rg-ok alert alert-success" role="alert"
+											hidden="true">
+											<strong> <span class="glyphicon glyphicon-check"
+												aria-hidden="true"></span> Well Done!
+											</strong>
+											<p>You successfully registered!</p>
+										</div>
+										
+										
 									</form>
+
+
+
 								</div>
 							</ul></li>
 					</c:if>

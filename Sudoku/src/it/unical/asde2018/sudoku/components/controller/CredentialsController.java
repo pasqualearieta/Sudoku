@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import it.unical.asde2018.sudoku.components.services.CredentialService;
 
 @Controller
-public class LogInController {
+public class CredentialsController
+{
 
 	@Autowired
 	private CredentialService credentialService;
@@ -27,7 +28,7 @@ public class LogInController {
 			return "home";
 
 	}
-	
+
 	@GetMapping("/GoToLobby")
 	public String goToLobby() {
 		return "redirect:/";
@@ -49,20 +50,37 @@ public class LogInController {
 
 	@PostMapping("/login")
 	@ResponseBody
-	public String loginAttempt(@RequestParam String username, @RequestParam String password, HttpSession session,
-			Model model) {
+	public String loginAttempt(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
 
-		String result = new String();
+		String result = "";
 
-		if (credentialService.login(username, password)) {
+		if (credentialService.login(username, password))
+		{
 			session.setAttribute("username", username);
 			result = "LOGIN_OK";
-		} else {
+		} else
+		{
 			result = "Username or Password not valid!";
 
 		}
 
 		return result;
-
 	}
+
+	@PostMapping("/register")
+	@ResponseBody
+	public String registrationAttempt(@RequestParam String username, @RequestParam String password, @RequestParam String confirm_password,
+			HttpSession session, Model model) {
+
+		if (!confirm_password.equals(password))
+			return "PASSWORD";
+
+		if (credentialService.registerUser(username, password))
+		{
+			session.setAttribute("username", username);
+			return "SUCCESS";
+		} else
+			return "USERNAME";
+	}
+
 }
