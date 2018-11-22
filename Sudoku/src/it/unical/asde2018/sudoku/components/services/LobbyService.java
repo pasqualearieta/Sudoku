@@ -1,6 +1,6 @@
 package it.unical.asde2018.sudoku.components.services;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -13,12 +13,12 @@ import it.unical.asde2018.sudoku.model.User;
 @Service
 public class LobbyService {
 
-	private Map<Integer, Room> matches;
+	private Map<Integer, Room> matches = new LinkedHashMap<>();
 
 	private static int idRoom = 0;
 
 	public LobbyService() {
-		matches = new HashMap<>();
+
 	}
 
 	public void createRoom(User creator, Difficulty difficulty, String name) {
