@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,8 +16,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class User
-{
+public class User {
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", matches=" + matches + "]";
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,27 +33,23 @@ public class User
 	@Column(nullable = false)
 	private String password;
 
-	@ManyToMany(cascade = CascadeType.PERSIST)
-	@JoinTable(name = "historyMatches", joinColumns =
-	{ @JoinColumn(name = "user_id") }, inverseJoinColumns =
-	{ @JoinColumn(name = "match_id") })
+	// TODO Lazy
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "historyMatches", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "match_id") })
 	private Set<Match> matches;
 
-	public User(String username, String password, Set<Match> matches)
-	{
+	public User(String username, String password, Set<Match> matches) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.matches = matches;
 	}
 
-	public User()
-	{
+	public User() {
 		super();
 	}
 
-	public User(String username, String password)
-	{
+	public User(String username, String password) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -97,24 +98,25 @@ public class User
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (matches == null)
-		{
+		if (matches == null) {
 			if (other.matches != null)
 				return false;
 		} else if (!matches.equals(other.matches))
 			return false;
-		if (password == null)
-		{
+		if (password == null) {
 			if (other.password != null)
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (username == null)
-		{
+		if (username == null) {
 			if (other.username != null)
 				return false;
 		} else if (!username.equals(other.username))
 			return false;
 		return true;
+	}
+
+	public Long getId() {
+		return id;
 	}
 }

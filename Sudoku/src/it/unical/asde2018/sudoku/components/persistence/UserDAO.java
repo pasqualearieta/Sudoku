@@ -49,11 +49,20 @@ public class UserDAO {
 
 	public boolean exists(User user) {
 		Session session = sessionFactory.openSession();
-	    Query<User> query = session.createQuery("from User as u where u.username=:usr and u.password=:p", User.class)
-	        .setParameter("usr", user.getUsername()).setParameter("p", user.getPassword());
+		Query<User> query = session.createQuery("from User as u where u.username=:usr and u.password=:p", User.class).setParameter("usr", user.getUsername()).setParameter("p", user.getPassword());
 
-	    boolean result = query.uniqueResult() != null;
-	    session.close();
-	    return result;
+		boolean result = query.uniqueResult() != null;
+		session.close();
+		return result;
+	}
+
+	public User getUser(String username) {
+		Session session = sessionFactory.openSession();
+
+		Query<User> query = session.createQuery("from User as u where u.username=:usr", User.class).setParameter("usr", username);
+
+		User result = query.uniqueResult();
+		session.close();
+		return result;
 	}
 }

@@ -15,7 +15,6 @@ import it.unical.asde2018.sudoku.components.services.CredentialService;
 @Controller
 public class CredentialsController
 {
-
 	@Autowired
 	private CredentialService credentialService;
 

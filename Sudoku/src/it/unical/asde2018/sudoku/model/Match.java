@@ -45,21 +45,21 @@ public class Match {
 	@Column(nullable = false)
 	private Difficulty difficulty;
 
-	@Column(nullable = false)
-	private String sudoku;
+	@Column
+	private String name;
 
 	public Match() {
 		super();
 	}
 
-	public Match(User creator, Difficulty difficulty, String sudoku) {
+	public Match(User creator, Difficulty difficulty, String name) {
 		super();
-		this.players = new HashSet<User>();
-		this.durations = new HashMap<User, Long>();
+		this.players = new HashSet<>();
+		this.durations = new HashMap<>();
 		this.creating_date = new Date();
 		this.starting_date = null;
 		this.difficulty = difficulty;
-		this.sudoku = sudoku;
+		this.name = name;
 
 		this.players.add(creator);
 	}
@@ -104,14 +104,6 @@ public class Match {
 		this.difficulty = difficulty;
 	}
 
-	public String getSudoku() {
-		return sudoku;
-	}
-
-	public void setSudoku(String sudoku) {
-		this.sudoku = sudoku;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -119,9 +111,10 @@ public class Match {
 		result = prime * result + ((creating_date == null) ? 0 : creating_date.hashCode());
 		result = prime * result + ((difficulty == null) ? 0 : difficulty.hashCode());
 		result = prime * result + ((durations == null) ? 0 : durations.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((players == null) ? 0 : players.hashCode());
 		result = prime * result + ((starting_date == null) ? 0 : starting_date.hashCode());
-		result = prime * result + ((sudoku == null) ? 0 : sudoku.hashCode());
 		return result;
 	}
 
@@ -146,6 +139,16 @@ public class Match {
 				return false;
 		} else if (!durations.equals(other.durations))
 			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
 		if (players == null) {
 			if (other.players != null)
 				return false;
@@ -156,12 +159,14 @@ public class Match {
 				return false;
 		} else if (!starting_date.equals(other.starting_date))
 			return false;
-		if (sudoku == null) {
-			if (other.sudoku != null)
-				return false;
-		} else if (!sudoku.equals(other.sudoku))
-			return false;
 		return true;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }
