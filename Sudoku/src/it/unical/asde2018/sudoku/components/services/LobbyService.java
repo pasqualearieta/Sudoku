@@ -1,5 +1,6 @@
 package it.unical.asde2018.sudoku.components.services;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -14,6 +15,11 @@ import it.unical.asde2018.sudoku.model.User;
 public class LobbyService {
 
 	private Map<Integer, Room> matches = new LinkedHashMap<>();
+	private static final int MATCHES_TO_SHOW = 10;
+
+	public static int getMatchesToShow() {
+		return MATCHES_TO_SHOW;
+	}
 
 	private static int idRoom = 0;
 
@@ -24,7 +30,7 @@ public class LobbyService {
 	public void createRoom(User creator, Difficulty difficulty, String name) {
 
 		Match match = new Match(creator, difficulty, name);
-		Room room = new Room(match, creator.getId());
+		Room room = new Room(match, creator);
 
 		matches.put(getIdRoom(), room);
 
@@ -40,4 +46,24 @@ public class LobbyService {
 	public static int getIdRoom() {
 		return ++idRoom;
 	}
+
+	public Map<Integer, Room> getRoomInTheWindow(int indexOfTheLastRoomToShowInTheWindow) {
+		Map<Integer, Room> windowed_room = new LinkedHashMap<Integer, Room>();
+
+		int window_to_access = indexOfTheLastRoomToShowInTheWindow / MATCHES_TO_SHOW;
+		int pos = (window_to_access * MATCHES_TO_SHOW) - MATCHES_TO_SHOW;
+
+		for (int i = 0; i < MATCHES_TO_SHOW; i++) {
+			try {
+				int key = (new ArrayList<>(matches.keySet())).get(pos);
+				Room val = (new ArrayList<>(matches.values())).get(pos);
+				windowed_room.put(key, val);
+				pos++;
+			} catch (Exception e) {
+				break;
+			}
+		}
+		return windowed_room;
+	}
+
 }

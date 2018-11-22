@@ -25,3 +25,10 @@
 .check{
   color: green;
 }
+
+.wrap_button {
+	background-color: transparent; 
+	border: none;
+	outline: none;
+}
+

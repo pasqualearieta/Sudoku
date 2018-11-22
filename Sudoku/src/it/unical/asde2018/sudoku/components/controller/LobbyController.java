@@ -29,4 +29,6 @@ public class LobbyController {
 		lobbyService.createRoom(user, Difficulty.valueOf(difficulty), lobbyName);
 		return "waiting";
 	}
+	
+	
 }

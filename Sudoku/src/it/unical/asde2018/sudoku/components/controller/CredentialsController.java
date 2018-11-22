@@ -11,19 +11,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import it.unical.asde2018.sudoku.components.services.CredentialService;
+import it.unical.asde2018.sudoku.components.services.LobbyService;
 
 @Controller
-public class CredentialsController
-{
+public class CredentialsController {
 	@Autowired
 	private CredentialService credentialService;
+
+	@Autowired
+	private LobbyService lobbyService;
 
 	@GetMapping("/")
 	public String home(HttpSession session) {
 		session.removeAttribute("dashboard");
-		if (session.getAttribute("username") != null)
+		if (session.getAttribute("username") != null) {
+			session.setAttribute("lobby_window", LobbyService.getMatchesToShow());
+			session.setAttribute("available_room", lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
 			return "lobby";
-		else
+
+		} else
 			return "home";
 
 	}
@@ -49,16 +55,15 @@ public class CredentialsController
 
 	@PostMapping("/login")
 	@ResponseBody
-	public String loginAttempt(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
+	public String loginAttempt(@RequestParam String username, @RequestParam String password, HttpSession session,
+			Model model) {
 
 		String result = "";
 
-		if (credentialService.login(username, password))
-		{
+		if (credentialService.login(username, password)) {
 			session.setAttribute("username", username);
 			result = "LOGIN_OK";
-		} else
-		{
+		} else {
 			result = "Username or Password not valid!";
 
 		}
@@ -68,14 +73,13 @@ public class CredentialsController
 
 	@PostMapping("/register")
 	@ResponseBody
-	public String registrationAttempt(@RequestParam String username, @RequestParam String password, @RequestParam String confirm_password,
-			HttpSession session, Model model) {
+	public String registrationAttempt(@RequestParam String username, @RequestParam String password,
+			@RequestParam String confirm_password, HttpSession session, Model model) {
 
 		if (!confirm_password.equals(password))
 			return "PASSWORD";
 
-		if (credentialService.registerUser(username, password))
-		{
+		if (credentialService.registerUser(username, password)) {
 			session.setAttribute("username", username);
 			return "SUCCESS";
 		} else

@@ -1,6 +1,7 @@
 package it.unical.asde2018.sudoku.logic;
 
 import it.unical.asde2018.sudoku.model.Match;
+import it.unical.asde2018.sudoku.model.User;
 
 public class Room {
 
@@ -9,12 +10,12 @@ public class Room {
 	private String sudokuSolved;
 	private String sudokuToSolve;
 
-	private Long idCreator;
+	private User creator;
 
-	public Room(Match match, Long idCreator) {
+	public Room(Match match, User creator) {
 		setMatch(match);
 
-		setIdCreator(idCreator);
+		setCreator(creator);
 
 		// TODO bloccante
 		SudokuHandler sudokuHandler = new SudokuHandler(getMatch().getDifficulty());
@@ -47,12 +48,12 @@ public class Room {
 		this.sudokuToSolve = sudokuToSolve;
 	}
 
-	public Long getIdCreator() {
-		return idCreator;
+	public User getCreator() {
+		return creator;
 	}
 
-	public void setIdCreator(Long idCreator) {
-		this.idCreator = idCreator;
+	public void setCreator(User creator) {
+		this.creator = creator;
 	}
 
 }

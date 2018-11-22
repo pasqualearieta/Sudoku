@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -10,6 +12,7 @@
 
 
 <link href="resources/css/lobby_style.css" rel="stylesheet">
+<script src="resources/js/lobby.js"></script>
 </head>
 
 <body>
@@ -27,36 +30,33 @@
 						<form action="create-lobby" method="post" role="form"
 							autocomplete="off">
 							<div class="form-group">
-								<input type="text" name="username" id="username" tabindex="1"
+								<input type="text" name="lobbyName" id="lobbyName" tabindex="1"
 									class="form-control" placeholder="Lobby Name">
 							</div>
 							<div class="form-group">
 								<div class="row">
+									<div class="col-md-3" id="selected_diff">
+										<p>Difficulty</p>
+									</div>
 									<div class="col-md-7">
 										<div class="btn-group">
-											<button type="button" class="btn btn-default dropright"
-												data-toggle="dropdown">
-												Difficulty <span class="caret"></span>
-											</button>
-											<ul class="dropdown-menu" role="menu">
-												<li><a href="#">Easy</a></li>
-												<li><a href="#">Medium</a></li>
-												<li><a href="#">Hard</a></li>
-											</ul>
+											<select id="diff_drop">
+												<option>EASY</option>
+												<option>MEDIUM</option>
+												<option>HARD</option>
+											</select> <input type="hidden" id="difficulty" name="difficulty"
+												value="EASY">
 										</div>
 									</div>
-									<div class="col-md-3">
-										<p>Selected Diff</p>
-									</div>
+
 								</div>
 							</div>
 							<hr>
 							<div class="form-group">
 								<div class="row">
 									<div class="col-xs-6 col-xs-offset-3">
-										<button type="submit" href="#" name="create-room"
-											id="create-room" class="form-control btn btn-success">Create
-										</button>
+										<button type="submit" name="create-room" id="create-room"
+											class="form-control btn btn-success">Create</button>
 									</div>
 								</div>
 							</div>
@@ -64,63 +64,72 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6 col-md-offset-1">
-				<div class="panel panel-default panel-table" id="panel">
-					<div class="panel-heading" id="available-lobby-panel">
-						<div class="row">
-							<div class="col col-xs-6">
-								<h3 class="panel-title">
-									Available Lobby <i class="fa fa-handshake-o fa-2x"
-										aria-hidden="true"></i>
-								</h3>
+
+
+			<c:if test="${fn:length(available_room) gt 0}">
+				<div class="col-md-6 col-md-offset-1">
+					<div class="panel panel-default panel-table" id="panel">
+						<div class="panel-heading" id="available-lobby-panel">
+							<div class="row">
+								<div class="col col-xs-6">
+									<h3 class="panel-title">
+										Available Lobby <i class="fa fa-handshake-o fa-2x"
+											aria-hidden="true"></i>
+									</h3>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="panel-body">
-						<table class="table table-responsive  ">
-							<thead>
-								<tr>
-									<th class="header-divider"><i class="fa fa-user-o"
-										aria-hidden="true"></i> <em>Player</em></th>
-									<th class="header-divider"><em>Difficulty</em></th>
-									<th class="header-divider"><em>Join</em> <i
-										class="fa fa-check-square-o check" aria-hidden="true"></i></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td align="center" class="vertical-divider">PLAYER NAME</td>
-									<td class="vertical-divider">DIFFICULTY</td>
-									<td align="center" class="vertical-divider"><a href="#"><i
-											class="fa fa-check-square-o fa-2x check" aria-hidden="true"></i></a>
-									</td>
-								</tr>
-								<tr>
-									<td align="center" class="vertical-divider">PLAYER NAME</td>
-									<td class="vertical-divider">DIFFICULTY</td>
-									<td align="center" class="vertical-divider"><a href="#"><i
-											class="fa fa-check-square-o fa-2x check" aria-hidden="true"></i></a>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="panel-footer" id="available-lobby-panel">
-						<div class="row">
-							<div class="col col-xs-4">Page 1 of 5</div>
-							<div class="col col-xs-8">
-								<ul class="pagination hidden-xs pull-right">
-									<li><a href="#">1</a></li>
-								</ul>
-								<ul class="pagination visible-xs pull-right">
-									<li><a href="#">«</a></li>
-									<li><a href="#">»</a></li>
-								</ul>
+						<div class="panel-body">
+							<table class="table table-responsive  ">
+								<thead>
+									<tr>
+										<th class="header-divider"><i class="fa fa-user-o"
+											aria-hidden="true"></i> <em>Player</em></th>
+										<th class="header-divider">Name</th>
+										<th class="header-divider"><em>Difficulty</em></th>
+										<th class="header-divider"><em>Join</em> <i
+											class="fa fa-check-square-o check" aria-hidden="true"></i></th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="type" items="${available_room}">
+										<!--   Key is ${type.key} Value is ${type.value} -->
+										<tr>
+											<td align="center" class="vertical-divider">${type.value.creator.username }
+											</td>
+
+											<td align="center" class="vertical-divider">${type.value.match.name }</td>
+											<td align="center" class="vertical-divider">${type.value.match.difficulty}</td>
+											<td align="center" class="vertical-divider"><button value="${type.key }"
+													class="wrap_button" type="submit">
+													<i class="fa fa-check-square-o fa-2x check"
+														aria-hidden="true"></i>
+													
+												</button></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+
+							</table>
+						</div>
+						<div class="panel-footer" id="available-lobby-panel">
+							<div class="row">
+								<div class="col col-xs-4">Page 1 of 5</div>
+								<div class="col col-xs-8">
+									<ul class="pagination hidden-xs pull-right">
+										<li><a href="#">1</a></li>
+									</ul>
+									<ul class="pagination visible-xs pull-right">
+										<li><a href="#">«</a></li>
+										<li><a href="#">»</a></li>
+									</ul>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+
+			</c:if>
 		</div>
 	</div>
 </body>
