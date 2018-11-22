@@ -9,8 +9,6 @@
 <meta charset="utf-8">
 
 <jsp:include page="navbar.jsp"></jsp:include>
-
-
 <link href="resources/css/lobby_style.css" rel="stylesheet">
 <script src="resources/js/lobby.js"></script>
 </head>
@@ -100,11 +98,11 @@
 
 											<td align="center" class="vertical-divider">${type.value.match.name }</td>
 											<td align="center" class="vertical-divider">${type.value.match.difficulty}</td>
-											<td align="center" class="vertical-divider"><button value="${type.key }"
-													class="wrap_button" type="submit">
+											<td align="center" class="vertical-divider"><button
+													value="${type.key }" class="wrap_button" type="submit">
 													<i class="fa fa-check-square-o fa-2x check"
 														aria-hidden="true"></i>
-													
+
 												</button></td>
 										</tr>
 									</c:forEach>
@@ -114,14 +112,23 @@
 						</div>
 						<div class="panel-footer" id="available-lobby-panel">
 							<div class="row">
-								<div class="col col-xs-4">Page 1 of 5</div>
+								<div class="col col-xs-4">
+									Page 1
+									<c:if test="${total_room_page gt 1 }"> 
+								of ${total_room_page }
+								</c:if>
+								</div>
 								<div class="col col-xs-8">
 									<ul class="pagination hidden-xs pull-right">
-										<li><a href="#">1</a></li>
+										<c:forEach begin="1" end="${total_room_page }"
+											varStatus="loop">
+											<li><button class="btn btn-warning pg-button"
+													type="submit">${loop.index}</button></li>
+										</c:forEach>
 									</ul>
 									<ul class="pagination visible-xs pull-right">
-										<li><a href="#">«</a></li>
-										<li><a href="#">»</a></li>
+										<li><button class="btn btn-warning" type="submit">«</button></li>
+										<li><button class="btn btn-warning" type="submit">»</button></li>
 									</ul>
 								</div>
 							</div>

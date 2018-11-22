@@ -1,5 +1,6 @@
 package it.unical.asde2018.sudoku.components.controller;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,23 @@ public class LobbyController {
 		lobbyService.createRoom(user, Difficulty.valueOf(difficulty), lobbyName);
 		return "waiting";
 	}
-	
-	
+
+	@PostMapping("roomPagination")
+	public void switchRoomPagination(@RequestParam String index, HttpSession session, HttpServletResponse response) {
+		int requested_pagination = Integer.parseInt(index);
+		int finalIndex = requested_pagination * LobbyService.getMatchesToShow();
+
+		session.setAttribute("currentPagination", requested_pagination);
+		int total;
+		if( (lobbyService.getMatchesSize() / LobbyService.getMatchesToShow()) % 2 == 0)
+			total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow();
+		else
+			total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow() + 1;
+		
+		session.setAttribute("total_room_page", total);
+		session.setAttribute("available_room", lobbyService.getRoomInTheWindow(finalIndex));
+
+		response.setStatus(HttpServletResponse.SC_ACCEPTED);
+	}
+
 }

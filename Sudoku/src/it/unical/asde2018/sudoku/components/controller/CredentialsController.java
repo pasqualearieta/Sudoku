@@ -25,8 +25,21 @@ public class CredentialsController {
 	public String home(HttpSession session) {
 		session.removeAttribute("dashboard");
 		if (session.getAttribute("username") != null) {
-			session.setAttribute("lobby_window", LobbyService.getMatchesToShow());
-			session.setAttribute("available_room", lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
+
+			if (lobbyService.getMatchesSize() > 0) {
+				if (session.getAttribute("currentPagination") == null
+						|| (int) session.getAttribute("currentPagination") == 1) {
+					session.setAttribute("currentPagination", 1);
+					int total;
+					if ((lobbyService.getMatchesSize() / LobbyService.getMatchesToShow()) % 2 == 0)
+						total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow();
+					else
+						total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow() + 1;
+					session.setAttribute("total_room_page", total);
+					session.setAttribute("available_room",
+							lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
+				}
+			}
 			return "lobby";
 
 		} else

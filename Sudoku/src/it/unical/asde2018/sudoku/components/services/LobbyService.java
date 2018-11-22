@@ -15,7 +15,7 @@ import it.unical.asde2018.sudoku.model.User;
 public class LobbyService {
 
 	private Map<Integer, Room> matches = new LinkedHashMap<>();
-	private static final int MATCHES_TO_SHOW = 10;
+	private static final int MATCHES_TO_SHOW = 2;
 
 	public static int getMatchesToShow() {
 		return MATCHES_TO_SHOW;
@@ -27,6 +27,9 @@ public class LobbyService {
 
 	}
 
+	public int getMatchesSize() {
+		return matches.size();
+	}
 	public void createRoom(User creator, Difficulty difficulty, String name) {
 
 		Match match = new Match(creator, difficulty, name);
