@@ -24,19 +24,27 @@ public class LobbyService {
 	private static int idRoom = 0;
 
 	public LobbyService() {
+		super();
+	}
 
+	public Map<Integer, Room> getMatches() {
+		return matches;
 	}
 
 	public int getMatchesSize() {
 		return matches.size();
 	}
-	public void createRoom(User creator, Difficulty difficulty, String name) {
+
+	public int createRoom(User creator, Difficulty difficulty, String name) {
 
 		Match match = new Match(creator, difficulty, name);
 		Room room = new Room(match, creator);
 
-		matches.put(getIdRoom(), room);
+		int idCurrentRoom = getIdRoom();
 
+		matches.put(idCurrentRoom, room);
+
+		return idCurrentRoom;
 		// TODO reindirizzare a pagina wait
 	}
 
@@ -51,7 +59,7 @@ public class LobbyService {
 	}
 
 	public Map<Integer, Room> getRoomInTheWindow(int indexOfTheLastRoomToShowInTheWindow) {
-		Map<Integer, Room> windowed_room = new LinkedHashMap<Integer, Room>();
+		Map<Integer, Room> windowed_room = new LinkedHashMap<>();
 
 		int window_to_access = indexOfTheLastRoomToShowInTheWindow / MATCHES_TO_SHOW;
 		int pos = (window_to_access * MATCHES_TO_SHOW) - MATCHES_TO_SHOW;
@@ -67,6 +75,10 @@ public class LobbyService {
 			}
 		}
 		return windowed_room;
+	}
+
+	public int getTotalRoomPage() {
+		return (int) Math.ceil((double) getMatchesSize() / getMatchesToShow());
 	}
 
 }

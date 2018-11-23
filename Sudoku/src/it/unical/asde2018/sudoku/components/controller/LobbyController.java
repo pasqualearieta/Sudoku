@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,12 +24,15 @@ public class LobbyController {
 	private UserDAO userDao;
 
 	@PostMapping("create-lobby")
-	public String createRoom(@RequestParam String lobbyName, @RequestParam String difficulty, HttpSession session) {
+	public String createRoom(@RequestParam String lobbyName, @RequestParam String difficulty, HttpSession session, Model model) {
 
 		String username = (String) session.getAttribute("username");
 		User user = userDao.getUser(username);
-		lobbyService.createRoom(user, Difficulty.valueOf(difficulty), lobbyName);
-		return "waiting";
+		int id_room = lobbyService.createRoom(user, Difficulty.valueOf(difficulty), lobbyName);
+		// if(session.getAttribute("sudoku") == null)
+		model.addAttribute("sudoku", lobbyService.getMatches().get(id_room).getSudokuToSolve());
+		model.addAttribute("idRoom", id_room);
+		return "sudoku_game_board";
 	}
 
 	@PostMapping("roomPagination")
@@ -37,16 +41,19 @@ public class LobbyController {
 		int finalIndex = requested_pagination * LobbyService.getMatchesToShow();
 
 		session.setAttribute("currentPagination", requested_pagination);
-		int total;
-		if( (lobbyService.getMatchesSize() / LobbyService.getMatchesToShow()) % 2 == 0)
-			total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow();
-		else
-			total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow() + 1;
-		
-		session.setAttribute("total_room_page", total);
+		session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
 		session.setAttribute("available_room", lobbyService.getRoomInTheWindow(finalIndex));
 
 		response.setStatus(HttpServletResponse.SC_ACCEPTED);
+	}
+
+	@PostMapping("leaveRoom")
+	public String leaveRoom(@RequestParam String idRoom, Model model) {
+
+		lobbyService.getMatches().remove(Integer.parseInt(idRoom));
+		model.addAttribute("sudoku", null);
+		model.addAttribute("idRoom", null);
+		return "redirect:/";
 	}
 
 }

@@ -113,22 +113,22 @@
 						<div class="panel-footer" id="available-lobby-panel">
 							<div class="row">
 								<div class="col col-xs-4">
-									Page 1
+									Page ${currentPagination}
 									<c:if test="${total_room_page gt 1 }"> 
 								of ${total_room_page }
 								</c:if>
 								</div>
 								<div class="col col-xs-8">
 									<ul class="pagination hidden-xs pull-right">
+										<li><button class="btn btn-warning" type="submit">«</button></li>
+										
 										<c:forEach begin="1" end="${total_room_page }"
 											varStatus="loop">
 											<li><button class="btn btn-warning pg-button"
 													type="submit">${loop.index}</button></li>
 										</c:forEach>
-									</ul>
-									<ul class="pagination visible-xs pull-right">
-										<li><button class="btn btn-warning" type="submit">«</button></li>
-										<li><button class="btn btn-warning" type="submit">»</button></li>
+										
+										<li><button class="btn btn-warning pg-button-arrow-right" value="${currentPagination}" type="submit">»</button></li>
 									</ul>
 								</div>
 							</div>

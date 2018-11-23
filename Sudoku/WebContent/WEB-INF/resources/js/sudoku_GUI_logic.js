@@ -1,12 +1,12 @@
-var easyPuzzleStr = "..6..73..\n.18..9.5.\n5......64\n92..8....\n...763...\n....9..75\n63......8\n.9.3..52.\n..24..6.."
 var data = new Array(9);
 var totalNumber = 81;
 var insertedNumber = 0;
 
 function main()
 {
+	var puzzle = $("#sudokuPuzzle").val();
 	var sudoku = new Sudoku();
-  sudoku.importPuzzle(easyPuzzleStr);
+	sudoku.importPuzzle(puzzle);
 }
 
 $(document).ready(main);

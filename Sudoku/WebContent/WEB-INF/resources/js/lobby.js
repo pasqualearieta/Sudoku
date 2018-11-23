@@ -19,4 +19,23 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
+	$(".pg-button-arrow-right").click(function() {
+		var ind = $('.pg-button-arrow-right').val();
+		
+		alert(ind);
+		
+		$.ajax({
+			type : "POST",
+			url : "roomPagination",
+			data : {
+				//FIXME controllo per non sforare dall'ultima pagina
+				//TODO freccia sinistra
+				index : ++ind
+			},
+			success : function() {
+				location.reload();
+			}
+		});
+	});
 });
