@@ -11,6 +11,7 @@
 <jsp:include page="navbar.jsp"></jsp:include>
 <link href="resources/css/lobby_style.css" rel="stylesheet">
 <script src="resources/js/lobby.js"></script>
+<script src="resources/js/refresh_list.js"></script>
 </head>
 
 <body>
@@ -89,23 +90,7 @@
 											class="fa fa-check-square-o check" aria-hidden="true"></i></th>
 									</tr>
 								</thead>
-								<tbody>
-									<c:forEach var="type" items="${available_room}">
-										<!--   Key is ${type.key} Value is ${type.value} -->
-										<tr>
-											<td align="center" class="vertical-divider">${type.value.creator.username }
-											</td>
-
-											<td align="center" class="vertical-divider">${type.value.match.name }</td>
-											<td align="center" class="vertical-divider">${type.value.match.difficulty}</td>
-											<td align="center" class="vertical-divider"><button
-													value="${type.key }" class="wrap_button"  id="join" type="submit">
-													<i class="fa fa-check-square-o fa-2x check"
-														aria-hidden="true"></i>
-
-												</button></td>
-										</tr>
-									</c:forEach>
+								<tbody id="torep">
 								</tbody>
 
 							</table>
