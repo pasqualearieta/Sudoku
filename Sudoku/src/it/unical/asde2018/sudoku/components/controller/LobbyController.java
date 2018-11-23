@@ -1,13 +1,17 @@
 package it.unical.asde2018.sudoku.components.controller;
 
+import java.util.concurrent.ForkJoinPool;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.async.DeferredResult;
 
 import it.unical.asde2018.sudoku.components.persistence.UserDAO;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
@@ -20,19 +24,38 @@ public class LobbyController {
 	@Autowired
 	private LobbyService lobbyService;
 
+
+
 	@Autowired
 	private UserDAO userDao;
 
 	@PostMapping("create-lobby")
-	public String createRoom(@RequestParam String lobbyName, @RequestParam String difficulty, HttpSession session, Model model) {
+	public String createRoom(@RequestParam String lobbyName, @RequestParam String difficulty, HttpSession session) {
 
-		String username = (String) session.getAttribute("username");
-		User user = userDao.getUser(username);
-		int id_room = lobbyService.createRoom(user, Difficulty.valueOf(difficulty), lobbyName);
-		// if(session.getAttribute("sudoku") == null)
-		model.addAttribute("sudoku", lobbyService.getMatches().get(id_room).getSudokuToSolve());
-		model.addAttribute("idRoom", id_room);
+		if (session.getAttribute("sudoku") == null) {
+			String username = (String) session.getAttribute("username");
+			User user = userDao.getUser(username);
+			int id_room = lobbyService.createRoom(user, Difficulty.valueOf(difficulty), lobbyName);
+			// if(session.getAttribute("sudoku") == null)
+			session.setAttribute("sudoku", lobbyService.getMatches().get(id_room).getSudokuToSolve());
+			session.setAttribute("idRoom", id_room);
+		}
 		return "sudoku_game_board";
+	}
+
+	@PostMapping("joinRoom")
+	public String joinRoom(@RequestParam String room, HttpSession session) {
+
+		if (session.getAttribute("sudoku") == null) {
+			String username = (String) session.getAttribute("username");
+			User user = userDao.getUser(username);
+			lobbyService.joinRoom(user, Integer.parseInt(room));
+
+			session.setAttribute("sudoku", lobbyService.getMatches().get(Integer.parseInt(room)).getSudokuToSolve());
+			session.setAttribute("idRoom", Integer.parseInt(room));
+		}
+		return "sudoku_game_board";
+
 	}
 
 	@PostMapping("roomPagination")
@@ -48,12 +71,13 @@ public class LobbyController {
 	}
 
 	@PostMapping("leaveRoom")
-	public String leaveRoom(@RequestParam String idRoom, Model model) {
+	public String leaveRoom(@RequestParam String idRoom, HttpSession session) {
 
 		lobbyService.getMatches().remove(Integer.parseInt(idRoom));
-		model.addAttribute("sudoku", null);
-		model.addAttribute("idRoom", null);
+		session.removeAttribute("sudoku");
+		session.removeAttribute("idRoom");
 		return "redirect:/";
 	}
 
+	
 }

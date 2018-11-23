@@ -99,7 +99,7 @@
 											<td align="center" class="vertical-divider">${type.value.match.name }</td>
 											<td align="center" class="vertical-divider">${type.value.match.difficulty}</td>
 											<td align="center" class="vertical-divider"><button
-													value="${type.key }" class="wrap_button" type="submit">
+													value="${type.key }" class="wrap_button"  id="join" type="submit">
 													<i class="fa fa-check-square-o fa-2x check"
 														aria-hidden="true"></i>
 

@@ -24,20 +24,25 @@ public class CredentialsController {
 	@GetMapping("/")
 	public String home(HttpSession session) {
 		session.removeAttribute("dashboard");
-		if (session.getAttribute("username") != null) {
+		if (session.getAttribute("sudoku") != null)
+			return "sudoku_game_board";
+		else {
+			if (session.getAttribute("username") != null) {
 
-			if (lobbyService.getMatchesSize() > 0) {
-				if (session.getAttribute("currentPagination") == null || (int) session.getAttribute("currentPagination") == 1) {
-					session.setAttribute("currentPagination", 1);
-					session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
-					session.setAttribute("available_room", lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
+				if (lobbyService.getMatchesSize() > 0) {
+					if (session.getAttribute("currentPagination") == null
+							|| (int) session.getAttribute("currentPagination") == 1) {
+						session.setAttribute("currentPagination", 1);
+						session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
+						session.setAttribute("available_room",
+								lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
+					}
 				}
-			}
-			return "lobby";
+				return "lobby";
 
-		} else
-			return "home";
-
+			} else
+				return "home";
+		}
 	}
 
 	@GetMapping("/GoToLobby")
@@ -61,7 +66,8 @@ public class CredentialsController {
 
 	@PostMapping("/login")
 	@ResponseBody
-	public String loginAttempt(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
+	public String loginAttempt(@RequestParam String username, @RequestParam String password, HttpSession session,
+			Model model) {
 
 		String result = "";
 
@@ -78,7 +84,8 @@ public class CredentialsController {
 
 	@PostMapping("/register")
 	@ResponseBody
-	public String registrationAttempt(@RequestParam String username, @RequestParam String password, @RequestParam String confirm_password, HttpSession session, Model model) {
+	public String registrationAttempt(@RequestParam String username, @RequestParam String password,
+			@RequestParam String confirm_password, HttpSession session, Model model) {
 
 		if (!confirm_password.equals(password))
 			return "PASSWORD";

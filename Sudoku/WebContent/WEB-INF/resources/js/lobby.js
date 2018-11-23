@@ -20,6 +20,22 @@ $(document).ready(function() {
 		});
 	});
 	
+	
+	$("#join").click(function() {	
+		$.ajax({
+			type : "POST",
+			url : "joinRoom",
+			data : {
+				//FIXME controllo per non sforare dall'ultima pagina
+				//TODO freccia sinistra
+				room : $(this).val()
+			},
+			success : function() {
+				 window.location.href = "./";
+			}
+		});
+	});
+	
 	$(".pg-button-arrow-right").click(function() {
 		var ind = $('.pg-button-arrow-right').val();
 		
