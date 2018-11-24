@@ -19,10 +19,32 @@ import it.unical.asde2018.sudoku.components.services.LobbyService;
 public class MatchController {
 
 	@Autowired
-	LobbyService lobbyService;
+	private LobbyService lobbyService;
 
 	@Autowired
-	EventsService eventsService;
+	private EventsService eventsService;
+
+	// @GetMapping("/generateSudoku")
+	// public DeferredResult<String> generateSudoku(HttpSession session) {
+	//
+	// DeferredResult<String> result = new DeferredResult<>();
+	//
+	// if (session.getAttribute("sudoku") == null) {
+	// int room = (int) session.getAttribute("idRoom");
+	//
+	// if (!lobbyService.getMatches().get(room).isSudokuInCreation()) {
+	// lobbyService.getMatches().get(room).setSudokuInCreation(true);
+	//
+	// lobbyService.getMatches().get(room).generateSudoku();
+	// }
+	//
+	// result.setResult(lobbyService.getMatches().get(room).getSudokuToSolve());
+	// session.setAttribute("sudoku", lobbyService.getMatches().get(room).getSudokuToSolve());
+	// }
+	//
+	// return result;
+	//
+	// }
 
 	@GetMapping("/checkBoardFull")
 	@ResponseBody
@@ -42,20 +64,17 @@ public class MatchController {
 
 	@GetMapping("/requestEvent")
 	@ResponseBody
-	public DeferredResult<String> addEvent(@RequestParam String number_inserted, HttpSession session, HttpServletResponse response)
-			throws NumberFormatException, InterruptedException {
-		
+	public DeferredResult<String> addEvent(@RequestParam String number_inserted, HttpSession session, HttpServletResponse response) throws NumberFormatException, InterruptedException {
+
 		DeferredResult<String> output = new DeferredResult<>();
 		ForkJoinPool.commonPool().submit(() -> {
 			try {
-				output.setResult(new String(eventsService.nextEvent((int) session.getAttribute("idRoom"), (String) session.getAttribute("username"),
-						Integer.parseInt(number_inserted)) + ""));
+				output.setResult(new String(eventsService.nextEvent((int) session.getAttribute("idRoom"), (String) session.getAttribute("username"), Integer.parseInt(number_inserted)) + ""));
 			} catch (InterruptedException e) {
 				output.setResult("Nothing");
 			}
 		});
 
-		
 		return output;
 	}
 }
