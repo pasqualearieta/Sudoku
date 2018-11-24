@@ -11,7 +11,6 @@
 <jsp:include page="navbar.jsp"></jsp:include>
 <link href="resources/css/lobby_style.css" rel="stylesheet">
 <script src="resources/js/lobby.js"></script>
-<script src="resources/js/refresh_list.js"></script>
 </head>
 
 <body>
