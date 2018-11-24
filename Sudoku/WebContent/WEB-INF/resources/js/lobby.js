@@ -22,6 +22,7 @@ $(document).ready(function() {
 	
 	
 	$("#join").click(function() {	
+		alert($(this).val());
 		$.ajax({
 			type : "POST",
 			url : "joinRoom",

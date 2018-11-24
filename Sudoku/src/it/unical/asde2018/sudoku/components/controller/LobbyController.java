@@ -1,17 +1,12 @@
 package it.unical.asde2018.sudoku.components.controller;
 
-import java.util.concurrent.ForkJoinPool;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.async.DeferredResult;
 
 import it.unical.asde2018.sudoku.components.persistence.UserDAO;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
@@ -23,8 +18,6 @@ public class LobbyController {
 
 	@Autowired
 	private LobbyService lobbyService;
-
-
 
 	@Autowired
 	private UserDAO userDao;
@@ -76,8 +69,8 @@ public class LobbyController {
 		lobbyService.getMatches().remove(Integer.parseInt(idRoom));
 		session.removeAttribute("sudoku");
 		session.removeAttribute("idRoom");
+
 		return "redirect:/";
 	}
 
-	
 }

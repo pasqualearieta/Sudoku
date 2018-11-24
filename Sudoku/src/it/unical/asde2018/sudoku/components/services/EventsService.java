@@ -15,13 +15,13 @@ public class EventsService {
 	private Map<Integer, BlockingQueue<Pair<String, Integer>>> events = new HashMap<>();
 
 	public Integer nextEvent(int room, String user, int number_inserted) throws InterruptedException {
-		
+
 		if (!events.containsKey(room)) {
 			events.put(room, new LinkedBlockingQueue<Pair<String, Integer>>());
 		}
 
-		events.get(room).add(new Pair<String, Integer>(user, number_inserted));
-		
+		events.get(room).add(new Pair<>(user, number_inserted));
+
 		if (!events.get(room).peek().getKey().equals(user))
 			return events.get(room).take().getValue();
 		else
@@ -29,5 +29,4 @@ public class EventsService {
 
 	}
 
-	
 }

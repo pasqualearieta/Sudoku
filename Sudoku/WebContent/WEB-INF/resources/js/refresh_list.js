@@ -1,6 +1,5 @@
 function getEventsFromServer() {
-	$
-			.ajax({
+	$.ajax({
 				url : "refresh",
 				data : {
 					type : 'json'
@@ -15,7 +14,7 @@ function getEventsFromServer() {
 									$("#torep")
 											.append('<tr> <td align="center" class="vertical-divider">' + rooms[key].creator.username + '</td>'
 															+ '<td align="center" class="vertical-divider">' + rooms[key].match.name +'</td>'
-															+ '<td align="center" class="vertical-divider">' + rooms[key].match.name +'</td>'
+															+ '<td align="center" class="vertical-divider">' + rooms[key].match.difficulty +'</td>'
 															+ '<td align="center" class="vertical-divider"><button value="' +key +'" class="wrap_button"  id="join" type="submit">'
 															+ '<i class="fa fa-check-square-o fa-2x check" aria-hidden="true"></i></button></td></tr>');
 								}
