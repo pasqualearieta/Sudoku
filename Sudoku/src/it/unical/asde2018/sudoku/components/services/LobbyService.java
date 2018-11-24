@@ -1,6 +1,7 @@
 package it.unical.asde2018.sudoku.components.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -49,6 +50,7 @@ public class LobbyService {
 	}
 
 	public void joinRoom(User player, int idRoomToJoin) {
+		matches.get(idRoomToJoin).getMatch().setStarting_date(new Date());
 		matches.get(idRoomToJoin).getMatch().getPlayers().add(player);
 
 		// TODO reindirizzare a pagina gioco
