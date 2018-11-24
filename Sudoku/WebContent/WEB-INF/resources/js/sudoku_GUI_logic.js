@@ -1,6 +1,7 @@
 var data = new Array(9);
 var totalNumber = 81;
 var insertedNumber = 0;
+var opponent_result = 0;
 
 function checkBoardFull() {
 	$.ajax({
@@ -29,18 +30,32 @@ function status() {
 			number_inserted : insertedNumber
 		},
 		success : function(result) {
-
 			$(".ldBar-label").hide();
-			$("#status").html(result + "%");
-			var b1 = document.querySelector(".ldBar");
-			var b = new ldBar(b1);
-			console.log(b);
-			b.set(result);
+
+			if (result != 0) {
+				var previous_result = opponent_result;
+				var current_result = result;
+
+				if (current_result != previous_result) {
+
+					opponent_result = current_result;
+					var percentage = Math.round(current_result);
+
+					var b1 = document.querySelector(".ldBar");
+					var b = new ldBar(b1);
+
+					setTimeout(function() {
+						$("#status").html(percentage + "%");
+						b.set(0);
+						b.set(percentage);
+					}, 1000);
+				}
+
+			}
 
 			setTimeout(function() {
 				status();
-			}, 8000)
-
+			}, 3000)
 		},
 
 	});
@@ -61,7 +76,7 @@ $(document).ready(function() {
 function Sudoku() {
 	var $domobj = $("#sudoku");
 	$domobj
-			.addClass("col-lg-8 col-lg-offset-4 col-md-8 col-md-offset-4 col-xs-10 col-xs-offset-2");
+			.addClass("col-lg-8 col-lg-offset-4 col-md-8 col-md-offset-4 col-xs-12");
 	var $table = $("<table>").addClass("sudokuTable");
 	var _self = this;
 	var selectedCell = new Vec2d();
@@ -456,7 +471,7 @@ this.checkAllNumberInserted = function() {
 	insertedNumber = 0;
 	for (var i = 0; i < data.length; i++)
 		for (var j = 0; j < data[i].length; j++)
-			if (data[i][j].value !== '')
+			if (data[i][j].value !== '' && data[i][j].locked === false)
 				insertedNumber++;
 
 	console.log("inserted Number: " + insertedNumber);

@@ -50,7 +50,6 @@ public class LobbyService {
 	}
 
 	public void joinRoom(User player, int idRoomToJoin) {
-		matches.get(idRoomToJoin).getMatch().setStarting_date(new Date());
 		matches.get(idRoomToJoin).getMatch().getPlayers().add(player);
 
 		// TODO reindirizzare a pagina gioco

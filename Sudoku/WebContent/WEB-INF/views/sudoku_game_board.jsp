@@ -85,12 +85,18 @@
 		</div>
 		<hr>
 		<div class="row">
-			<div id="sudoku"></div>
+			<div id="sudoku" class="sudokuContainer"></div>
 		</div>
 		<hr>
+
+		<div>
+			<h3>Opponent Status</h3>
+		</div>
+
+
 		<div class="row">
 			<div class="col-md-2 col-md-offset-3">
-				<h2 id="status"></h2>
+				<h2 id="status">0%</h2>
 			</div>
 			<div class="row" id="bar">
 				<div class="ldBar" style="width: 50%; height: 10%; margin: auto"
