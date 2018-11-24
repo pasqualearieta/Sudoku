@@ -17,7 +17,6 @@ public class LobbySerializer {
 
 	public LobbySerializer(Map<Integer, Room> serializedObject) {
 		this.serializedObject = serializedObject;
-		System.out.println("p");
 	}
 
 	public String getJSon() {
