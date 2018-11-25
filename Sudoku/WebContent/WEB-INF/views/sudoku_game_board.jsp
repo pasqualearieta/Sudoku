@@ -72,10 +72,10 @@
 							autocomplete="off">
 							<div class="row">
 								<div class="col-md-offset-3 col-md-2 col-xs-3 col-xs-offset-3">
-									<button type="submit" class="btn btn-danger" name="exit_game">Yes</button>
+									<button type="button" id="quitGame" class="btn btn-danger">Yes</button>
 								</div>
 								<div class="col-md-offset-2 col-md-2 col-xs-3 col-xs-offset-1">
-									<button type="submit" class="btn btn-success" name="stay">No</button>
+									<button id="stayInTheBoard" class="btn btn-success">No</button>
 								</div>
 							</div>
 						</form>
@@ -106,6 +106,31 @@
 		</div>
 
 	</div>
+
+
+
+	<!-- Modal -->
+	<div id="resultModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Game Result</h4>
+				</div>
+				<div class="modal-body">
+					<h3 id="resultStatus"></h3>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="exit" class="btn btn-primary">Exit</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.modal -->
+
+
+
 </body>
 
 </html>

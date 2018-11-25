@@ -42,7 +42,7 @@ public class CredentialsController {
 					}
 				}
 				return "lobby";
-
+				
 			} else
 				return "home";
 		}

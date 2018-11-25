@@ -78,12 +78,20 @@ public class User {
 	public void setMatches(Set<Match> matches) {
 		this.matches = matches;
 	}
+	
+	public void insertMatch(Match match)
+	{
+		getMatches().add(match);
+	}
+
+	
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((matches == null) ? 0 : matches.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
@@ -98,10 +106,10 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (matches == null) {
-			if (other.matches != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!matches.equals(other.matches))
+		} else if (!id.equals(other.id))
 			return false;
 		if (password == null) {
 			if (other.password != null)

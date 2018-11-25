@@ -31,8 +31,8 @@ public class MatchController {
 
 	@GetMapping("/checkEndGame")
 	@ResponseBody
-	public DeferredResult<String> checkEndGame(@RequestParam String puzzle, HttpSession session) {
-		DeferredResult<String> output = new DeferredResult<String>();
+	public String checkEndGame(@RequestParam String puzzle, HttpSession session) {
+		String output = new String();
 
 		int room = (int) session.getAttribute("idRoom");
 		String username = (String) session.getAttribute("username");
@@ -41,12 +41,15 @@ public class MatchController {
 		if (lobbyService.checkCorrectSudoku(room, puzzle)) {
 			lobbyService.insertDurationOfGame(room, user);
 
+			if (username.equals(lobbyService.matchWinner(room)))
+				output = "You Win!!!";
+			else
+				output = "You Lose!!!";
+
 			if (lobbyService.getMatches().get(room).getMatch().getDurations().size() > 1)
 				lobbyService.saveMatch(room);
-			
-			output.setResult(lobbyService.getMatches().get(room).getMatch().getDurations().get(user).toString());
 		} else
-			output.setResult("ERRATO");
+			output = ("WRONG");
 
 		return output;
 	}
@@ -68,6 +71,27 @@ public class MatchController {
 		return output;
 	}
 
+	@GetMapping("/exitMatch")
+	public void exitMatch(HttpSession session, HttpServletResponse response) {
+
+		session.removeAttribute("sudoku");
+		session.removeAttribute("idRoom");
+		response.setStatus(HttpServletResponse.SC_ACCEPTED);
+	}
+
+//	@GetMapping("/exitBefore")
+//	public void exitBefore(HttpSession session, HttpServletResponse response) {
+//
+//		// Check for anticipated exit from the game
+//		int room = (int) session.getAttribute("idRom");
+//		if (lobbyService.getMatches().containsKey(room))
+//			lobbyService.removeMatch(room);
+//
+//		session.removeAttribute("sudoku");
+//		session.removeAttribute("idRoom");
+//		response.setStatus(HttpServletResponse.SC_ACCEPTED);
+//	}
+
 	@GetMapping("/requestEvent")
 	@ResponseBody
 	public DeferredResult<String> addEvent(@RequestParam String number_inserted, HttpSession session,
@@ -78,10 +102,16 @@ public class MatchController {
 		int room = (int) session.getAttribute("idRoom");
 		String username = (String) session.getAttribute("username");
 		Integer opponentNumber = eventsService.nextEvent(room, username, Integer.parseInt(number_inserted));
-		int diffNumber = lobbyService.getRoomDifficulty(room).getNumberToRemove();
+		int diffNumber = 0;
+		try {
+			diffNumber = lobbyService.getRoomDifficulty(room).getNumberToRemove();
+			
+		} catch (Exception e) {
+			diffNumber = 0;
+		}
 
 		// DifficultyNumberToRemove : 100 = (InsertedNumber - (LockedNumber)) : x
-		output.setResult(opponentNumber != 0 ? (opponentNumber * 100) / diffNumber + " " : opponentNumber + "");
+		output.setResult(opponentNumber > 0 ? (opponentNumber * 100) / diffNumber + " " : opponentNumber + "");
 
 		return output;
 	}

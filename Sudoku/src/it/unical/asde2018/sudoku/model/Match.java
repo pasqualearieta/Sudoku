@@ -42,6 +42,24 @@ public class Match {
 	@Column
 	private Date starting_date;
 
+	@Override
+	public String toString() {
+		StringBuilder s = new StringBuilder();
+
+		s.append("Match [id=" + id + ", creating_date=" + creating_date + ", starting_date=" + starting_date
+				+ ", difficulty=" + difficulty + ", name=" + name);
+
+		for (Long l : durations.values())
+			s.append(" Duration: " + l + " ");
+
+		for (User a : players)
+			s.append(" User: " + a.getUsername() + " ");
+
+		s.append("]");
+
+		return s.toString();
+	}
+
 	@Column(nullable = false)
 	private Difficulty difficulty;
 
@@ -110,10 +128,8 @@ public class Match {
 		int result = 1;
 		result = prime * result + ((creating_date == null) ? 0 : creating_date.hashCode());
 		result = prime * result + ((difficulty == null) ? 0 : difficulty.hashCode());
-		result = prime * result + ((durations == null) ? 0 : durations.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((players == null) ? 0 : players.hashCode());
 		result = prime * result + ((starting_date == null) ? 0 : starting_date.hashCode());
 		return result;
 	}
@@ -134,11 +150,6 @@ public class Match {
 			return false;
 		if (difficulty != other.difficulty)
 			return false;
-		if (durations == null) {
-			if (other.durations != null)
-				return false;
-		} else if (!durations.equals(other.durations))
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -148,11 +159,6 @@ public class Match {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
-			return false;
-		if (players == null) {
-			if (other.players != null)
-				return false;
-		} else if (!players.equals(other.players))
 			return false;
 		if (starting_date == null) {
 			if (other.starting_date != null)

@@ -39,9 +39,26 @@ public class UserDAO {
 
 	}
 
+	public void update(User user) {
+		Session session = sessionFactory.openSession();
+		Transaction transaction = null;
+
+		try {
+			transaction = session.beginTransaction();
+			session.update(user);
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+		}
+
+		session.close();
+
+	}
+
 	public boolean availableUsername(User user) {
 		Session session = sessionFactory.openSession();
-		Query<User> query = session.createQuery("from User as u where u.username=:usr", User.class).setParameter("usr", user.getUsername());
+		Query<User> query = session.createQuery("from User as u where u.username=:usr", User.class).setParameter("usr",
+				user.getUsername());
 		boolean result = query.uniqueResult() != null;
 		session.close();
 		return !result;
@@ -49,7 +66,8 @@ public class UserDAO {
 
 	public boolean exists(User user) {
 		Session session = sessionFactory.openSession();
-		Query<User> query = session.createQuery("from User as u where u.username=:usr and u.password=:p", User.class).setParameter("usr", user.getUsername()).setParameter("p", user.getPassword());
+		Query<User> query = session.createQuery("from User as u where u.username=:usr and u.password=:p", User.class)
+				.setParameter("usr", user.getUsername()).setParameter("p", user.getPassword());
 
 		boolean result = query.uniqueResult() != null;
 		session.close();
@@ -59,7 +77,8 @@ public class UserDAO {
 	public User getUser(String username) {
 		Session session = sessionFactory.openSession();
 
-		Query<User> query = session.createQuery("from User as u where u.username=:usr", User.class).setParameter("usr", username);
+		Query<User> query = session.createQuery("from User as u where u.username=:usr", User.class).setParameter("usr",
+				username);
 
 		User result = query.uniqueResult();
 		session.close();

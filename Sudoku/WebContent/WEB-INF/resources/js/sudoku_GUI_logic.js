@@ -3,6 +3,40 @@ var totalNumber = 81;
 var insertedNumber = 0;
 var opponent_result = 0;
 var totalNumberInTheGrid = 0;
+var ended = false;
+var quit = false;
+
+$(document).ready(function() {
+	$("#resultModal").modal('hide');
+	checkBoardFull();
+	status();
+	main();
+
+	$("#exit").on('click', function() {
+		$("#resultModal").modal('hide');
+
+		$.ajax({
+			url : "exitMatch",
+			success : function(result) {
+				window.location.href = "./";
+			},
+
+		});
+
+	});
+	
+	
+	$("#quitGame").on('click', function() {
+		alert("voglio uscire");
+	});
+});
+
+function main() {
+	var puzzle = $("#sudokuPuzzle").val();
+	var sudoku = new Sudoku();
+	sudoku.importPuzzle(puzzle);
+	checkEndGame();
+}
 
 function checkBoardFull() {
 	$.ajax({
@@ -24,6 +58,7 @@ function checkBoardFull() {
 }
 
 function status() {
+
 	$.ajax({
 		url : "requestEvent",
 		data : {
@@ -59,45 +94,38 @@ function status() {
 		},
 
 	});
+
 }
 
 function checkEndGame() {
 
 	var puzzle = this.getPuzzleArrayStr();
 
-	if (totalNumberInTheGrid == 81) {
-
+	if (totalNumberInTheGrid == 81 && ended == false) {
 		$.ajax({
 			url : "checkEndGame",
 			data : {
 				puzzle : puzzle
 			},
 			success : function(result) {
-				alert(result);
+				if (result != "WRONG") {
+					ended = true;
+					$("#resultModal").modal('show');
+					$("#resultStatus").html(result);
+				} else {
+
+				}
 			},
 
 		});
-
+	}
+	if (ended == false) {
+		setTimeout(function() {
+			checkEndGame();
+		}, 1000)
 	}
 
-	setTimeout(function() {
-		checkEndGame();
-	}, 1000)
-
 }
-
-function main() {
-	var puzzle = $("#sudokuPuzzle").val();
-	var sudoku = new Sudoku();
-	sudoku.importPuzzle(puzzle);
-	checkEndGame();
-}
-
-$(document).ready(function() {
-	checkBoardFull();
-	status();
-	main();
-});
 
 function Sudoku() {
 	var $domobj = $("#sudoku");
@@ -401,8 +429,6 @@ function Sudoku() {
 	this.setSelected(0, 0);
 }
 
-// data[y][x] = new Cell(new Vec2d(x, y), numberCell, this); //create vertical
-// column
 function Cell(pos, current_cell, parent, locked, value) {
 	this.value = typeof value !== 'undefined' ? value : '';
 	this.locked = typeof locked !== 'undefined' ? locked : false;

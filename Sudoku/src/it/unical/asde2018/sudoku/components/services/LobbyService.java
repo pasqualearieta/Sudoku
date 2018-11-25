@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.unical.asde2018.sudoku.components.persistence.MatchDAO;
+import it.unical.asde2018.sudoku.components.persistence.UserDAO;
 import it.unical.asde2018.sudoku.logic.Room;
 import it.unical.asde2018.sudoku.logic.util.Difficulty;
 import it.unical.asde2018.sudoku.model.Match;
@@ -19,6 +21,9 @@ public class LobbyService {
 
 	@Autowired
 	private MatchDAO matchDAO;
+
+	@Autowired
+	private UserDAO userDAO;
 
 	private Map<Integer, Room> matches = new LinkedHashMap<>();
 	private static final int MATCHES_TO_SHOW = 2;
@@ -64,6 +69,24 @@ public class LobbyService {
 		return ++idRoom;
 	}
 
+	public String matchWinner(int room) {
+		String winner = null;
+		Long minValue = Long.MAX_VALUE;
+
+		for (Entry<User, Long> entry : getMatches().get(room).getMatch().getDurations().entrySet()) {
+			Long value = entry.getValue();
+			if (value < minValue) {
+				winner = entry.getKey().getUsername();
+				minValue = value;
+			}
+		}
+
+		System.err.println(minValue + " DURATAAAAAAAAAAAAA " + winner + " WINNER" + " SIZE: "
+				+ getMatches().get(room).getMatch().getDurations().size());
+
+		return winner;
+	}
+
 	public boolean checkCorrectSudoku(int room, String sudoku) {
 		return (getMatches().get(room).getSudokuSolved().equals(sudoku)) ? true : false;
 	}
@@ -82,8 +105,21 @@ public class LobbyService {
 
 	public void saveMatch(int room) {
 		matchDAO.save(getMatches().get(room).getMatch());
+
+		for (User user : getMatches().get(room).getMatch().getPlayers()) {
+			user.getMatches().add(getMatches().get(room).getMatch());
+			userDAO.update(user);
+
+//			for (Match m : user.getMatches())
+//				System.out.println(m.toString());
+		}
+
+		removeMatch(room);
 	}
-	
+
+	public void removeMatch(int room) {
+		getMatches().remove(room);
+	}
 
 	public Map<Integer, Room> getRoomInTheWindow(int indexOfTheLastRoomToShowInTheWindow) {
 		Map<Integer, Room> windowed_room = new LinkedHashMap<>();
