@@ -2,22 +2,6 @@ var data = new Array(9);
 var totalNumber = 81;
 var insertedNumber = 0;
 
-//function generateSudoku() {
-//
-//	$.ajax({
-//		url : "generateSudoku",
-//		
-//		success : function(result) {
-//			$('#sudokuPuzzle').val(result);
-//			
-//			var puzzle = $("#sudokuPuzzle").val();
-//			var sudoku = new Sudoku();
-//			sudoku.importPuzzle(puzzle);
-//		}
-//	});
-//
-//}
-
 function checkBoardFull() {
 	$.ajax({
 		url : "checkBoardFull",

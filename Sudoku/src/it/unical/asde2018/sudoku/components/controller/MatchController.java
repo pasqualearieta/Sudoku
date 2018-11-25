@@ -24,28 +24,6 @@ public class MatchController {
 	@Autowired
 	private EventsService eventsService;
 
-	// @GetMapping("/generateSudoku")
-	// public DeferredResult<String> generateSudoku(HttpSession session) {
-	//
-	// DeferredResult<String> result = new DeferredResult<>();
-	//
-	// if (session.getAttribute("sudoku") == null) {
-	// int room = (int) session.getAttribute("idRoom");
-	//
-	// if (!lobbyService.getMatches().get(room).isSudokuInCreation()) {
-	// lobbyService.getMatches().get(room).setSudokuInCreation(true);
-	//
-	// lobbyService.getMatches().get(room).generateSudoku();
-	// }
-	//
-	// result.setResult(lobbyService.getMatches().get(room).getSudokuToSolve());
-	// session.setAttribute("sudoku", lobbyService.getMatches().get(room).getSudokuToSolve());
-	// }
-	//
-	// return result;
-	//
-	// }
-
 	@GetMapping("/checkBoardFull")
 	@ResponseBody
 	public DeferredResult<String> getEvents(HttpSession session) {

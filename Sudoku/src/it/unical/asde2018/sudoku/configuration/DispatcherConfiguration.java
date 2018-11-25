@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -18,19 +19,19 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @EnableWebMvc
 @Configuration
+@EnableScheduling
 @ComponentScan("it.unical.asde2018.sudoku.components")
-public class DispatcherConfiguration implements WebMvcConfigurer
-{
+public class DispatcherConfiguration implements WebMvcConfigurer {
 	@Bean
 	public InternalResourceViewResolver resolver() {
 		return new InternalResourceViewResolver("WEB-INF/views/", ".jsp");
 	}
-	
+
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("resources/**").addResourceLocations("/WEB-INF/resources/");
 	}
-	
+
 	@Bean
 	public SessionFactory sessionFactory() {
 

@@ -16,17 +16,6 @@ public class Room {
 		setMatch(match);
 
 		setCreator(creator);
-
-		generateSudoku();
-
-	}
-
-	public void generateSudoku() {
-		// TODO bloccante
-		SudokuHandler sudokuHandler = new SudokuHandler(getMatch().getDifficulty());
-
-		setSudokuSolved(sudokuHandler.getSudokuSolved());
-		setSudokuToSolve(sudokuHandler.getSudokuToSolve());
 	}
 
 	public Match getMatch() {

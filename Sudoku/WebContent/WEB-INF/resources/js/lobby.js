@@ -58,7 +58,7 @@ function getEventsFromServer() {
 									$("#torep")
 											.append('<tr> <td align="center" class="vertical-divider">' + rooms[key].creator.username + '</td>'
 															+ '<td align="center" class="vertical-divider">' + rooms[key].match.name +'</td>'
-															+ '<td align="center" class="vertical-divider">' + rooms[key].match.difficulty +'</td>'
+															+ '<td align="center" class="vertical-divider difficulty">' + rooms[key].match.difficulty +'</td>'
 															+ '<td align="center" class="vertical-divider"><button value="' +key +'" class="wrap_button join" type="submit">'
 															+ '<i class="fa fa-check-square-o fa-2x check" aria-hidden="true"></i></button></td></tr>');
 								}
@@ -77,14 +77,16 @@ function getEventsFromServer() {
 		
 
 	$(".join").click(function() {
-		alert($(this).val());
+//		alert($(this).closest('tr').find('td.difficulty').text());
+		
 		$.ajax({
 			type : "POST",
 			url : "joinRoom",
 			data : {
 				//FIXME controllo per non sforare dall'ultima pagina
 				//TODO freccia sinistra
-				room : $(this).val()
+				room : $(this).val(),
+//				difficulty : $(this).closest('tr').find('td.difficulty').text()
 			},
 			success : function() {
 				 window.location.href = "./";
