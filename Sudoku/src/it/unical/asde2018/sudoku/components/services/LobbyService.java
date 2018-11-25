@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.unical.asde2018.sudoku.components.persistence.MatchDAO;
 import it.unical.asde2018.sudoku.logic.Room;
 import it.unical.asde2018.sudoku.logic.util.Difficulty;
 import it.unical.asde2018.sudoku.model.Match;
@@ -14,6 +16,9 @@ import it.unical.asde2018.sudoku.model.User;
 
 @Service
 public class LobbyService {
+
+	@Autowired
+	private MatchDAO matchDAO;
 
 	private Map<Integer, Room> matches = new LinkedHashMap<>();
 	private static final int MATCHES_TO_SHOW = 2;
@@ -58,6 +63,27 @@ public class LobbyService {
 	public static int getIdRoom() {
 		return ++idRoom;
 	}
+
+	public boolean checkCorrectSudoku(int room, String sudoku) {
+		return (getMatches().get(room).getSudokuSolved().equals(sudoku)) ? true : false;
+	}
+
+	public void insertDurationOfGame(int room, User user) {
+		getMatches().get(room).getMatch().getDurations().put(user, new Date().getTime());
+	}
+
+	public int getNumOfPlayersInTheRoom(int room) {
+		return getMatches().get(room).getMatch().getPlayers().size();
+	}
+
+	public Difficulty getRoomDifficulty(int room) {
+		return getMatches().get(room).getMatch().getDifficulty();
+	}
+
+	public void saveMatch(int room) {
+		matchDAO.save(getMatches().get(room).getMatch());
+	}
+	
 
 	public Map<Integer, Room> getRoomInTheWindow(int indexOfTheLastRoomToShowInTheWindow) {
 		Map<Integer, Room> windowed_room = new LinkedHashMap<>();

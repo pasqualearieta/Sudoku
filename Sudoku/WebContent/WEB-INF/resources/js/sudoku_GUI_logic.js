@@ -2,6 +2,7 @@ var data = new Array(9);
 var totalNumber = 81;
 var insertedNumber = 0;
 var opponent_result = 0;
+var totalNumberInTheGrid = 0;
 
 function checkBoardFull() {
 	$.ajax({
@@ -23,7 +24,6 @@ function checkBoardFull() {
 }
 
 function status() {
-
 	$.ajax({
 		url : "requestEvent",
 		data : {
@@ -61,10 +61,36 @@ function status() {
 	});
 }
 
+function checkEndGame() {
+
+	var puzzle = this.getPuzzleArrayStr();
+
+	if (totalNumberInTheGrid == 81) {
+
+		$.ajax({
+			url : "checkEndGame",
+			data : {
+				puzzle : puzzle
+			},
+			success : function(result) {
+				alert(result);
+			},
+
+		});
+
+	}
+
+	setTimeout(function() {
+		checkEndGame();
+	}, 1000)
+
+}
+
 function main() {
 	var puzzle = $("#sudokuPuzzle").val();
 	var sudoku = new Sudoku();
 	sudoku.importPuzzle(puzzle);
+	checkEndGame();
 }
 
 $(document).ready(function() {
@@ -469,12 +495,14 @@ Vec2d.add = function(v1, v2) {
 this.checkAllNumberInserted = function() {
 
 	insertedNumber = 0;
+	totalNumberInTheGrid = 0;
 	for (var i = 0; i < data.length; i++)
 		for (var j = 0; j < data[i].length; j++)
-			if (data[i][j].value !== '' && data[i][j].locked === false)
-				insertedNumber++;
-
-	console.log("inserted Number: " + insertedNumber);
+			if (data[i][j].value !== '') {
+				totalNumberInTheGrid++;
+				if (data[i][j].locked === false)
+					insertedNumber++;
+			}
 }
 
 this.getPuzzleArrayStr = function() {

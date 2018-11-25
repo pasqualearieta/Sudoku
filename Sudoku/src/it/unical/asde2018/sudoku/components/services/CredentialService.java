@@ -24,4 +24,8 @@ public class CredentialService {
 		return true;	
 	}
 	
+	public User getUser(String username) {
+		return userDAO.getUser(username);
+	}
+	
 }
