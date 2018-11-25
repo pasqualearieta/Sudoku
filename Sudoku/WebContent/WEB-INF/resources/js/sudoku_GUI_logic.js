@@ -24,10 +24,31 @@ $(document).ready(function() {
 		});
 
 	});
+
 	
+	$("#wrongSudoku").on('click', function() {
+		$("#resultModal").modal('hide');
+	});
 	
+	$("#disconnected").on('click', function() {
+		$("#resultModal").modal('hide');
+		$.ajax({
+			url : "exitBefore",
+			success : function(result) {
+				window.location.href = "./";
+			},
+		});
+	});
+
 	$("#quitGame").on('click', function() {
-		alert("voglio uscire");
+		quit = true;
+		$.ajax({
+			url : "leaveMatchBeforeEnd",
+			success : function(result) {
+				window.location.href = "./";
+			},
+
+		});
 	});
 });
 
@@ -58,43 +79,55 @@ function checkBoardFull() {
 }
 
 function status() {
+	if (quit == false) {
+		$.ajax({
+			url : "requestEvent",
+			data : {
+				number_inserted : insertedNumber
+			},
+			success : function(result) {
+				$(".ldBar-label").hide();
 
-	$.ajax({
-		url : "requestEvent",
-		data : {
-			number_inserted : insertedNumber
-		},
-		success : function(result) {
-			$(".ldBar-label").hide();
+				console.log(result);
+				if (result != 0) {
+					var previous_result = opponent_result;
+					var current_result = result;
 
-			if (result != 0) {
-				var previous_result = opponent_result;
-				var current_result = result;
+					if (current_result != previous_result) {
 
-				if (current_result != previous_result) {
+						opponent_result = current_result;
+						var percentage = Math.round(current_result);
 
-					opponent_result = current_result;
-					var percentage = Math.round(current_result);
+						var b1 = document.querySelector(".ldBar");
+						var b = new ldBar(b1);
 
-					var b1 = document.querySelector(".ldBar");
-					var b = new ldBar(b1);
+						setTimeout(function() {
+							$("#status").html(percentage + "%");
+							b.set(0);
+							b.set(percentage);
+						}, 1000);
+					}
 
-					setTimeout(function() {
-						$("#status").html(percentage + "%");
-						b.set(0);
-						b.set(percentage);
-					}, 1000);
 				}
 
-			}
+				if (result == 400) {
+					$("#modalTitle").html("Disconnected User");
+					$("#exit").hide();
+					$("#wrongSudoku").hide();
+					$("#resultModal").modal('show');
+					$("#resultStatus").html("Your Opponent was disconnected");
 
-			setTimeout(function() {
-				status();
-			}, 3000)
-		},
+				}
 
-	});
+				else {
+					setTimeout(function() {
+						status();
+					}, 3000)
+				}
+			},
 
+		});
+	}
 }
 
 function checkEndGame() {
@@ -108,12 +141,16 @@ function checkEndGame() {
 				puzzle : puzzle
 			},
 			success : function(result) {
+				$("#resultModal").modal('show');
+				$("#disconnected").hide();
+				$("#modalTitle").html("Game Result");
 				if (result != "WRONG") {
 					ended = true;
-					$("#resultModal").modal('show');
 					$("#resultStatus").html(result);
+					$("#wrongSudoku").hide();
 				} else {
-
+					$("#resultStatus").html("The Sudoku is Wrong!")
+					$("#exit").hide();
 				}
 			},
 

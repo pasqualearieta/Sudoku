@@ -13,6 +13,7 @@ import javafx.util.Pair;
 public class EventsService {
 
 	private Map<Integer, BlockingQueue<Pair<String, Integer>>> events = new HashMap<>();
+	private Map<Integer, Boolean> specialEvents = new HashMap<>();
 
 	public Integer nextEvent(int room, String user, int number_inserted) throws InterruptedException {
 
@@ -27,6 +28,18 @@ public class EventsService {
 		else
 			return 0;
 
+	}
+
+	public void addSpecialEvent(int room) throws InterruptedException {
+		if (!specialEvents.containsKey(room)) {
+			specialEvents.put(room, true);
+		}
+
+		specialEvents.put(room, true);
+	}
+
+	public boolean getSpecialEvent(int room) {
+		return specialEvents.containsKey(room);
 	}
 
 }

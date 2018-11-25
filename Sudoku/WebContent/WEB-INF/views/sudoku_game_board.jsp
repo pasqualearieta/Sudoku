@@ -41,7 +41,7 @@
 							<div class="form-group">
 								<div class="row">
 									<div class="col-xs-3 col-xs-offset-9">
-										<button type="submit" href="#" name="leave-room"
+										<button type="submit"  name="leave-room"
 											id="create-room" class="form-control btn btn-danger">
 											Leave Match</button>
 									</div>
@@ -60,7 +60,7 @@
 			<div class="col-md-2">
 				<button type="submit" class="btn btn-primary dropdown-toggle"
 					data-toggle="dropdown">Quit Game</button>
-				<div class="dropdown-menu dropdown-lr animated flipInX" role="menu">
+				<div id="gameLeaving" class="dropdown-menu dropdown-lr animated flipInX" role="menu">
 					<div class="col-lg-12">
 						<div class="text-center">
 							<h3>
@@ -75,7 +75,7 @@
 									<button type="button" id="quitGame" class="btn btn-danger">Yes</button>
 								</div>
 								<div class="col-md-offset-2 col-md-2 col-xs-3 col-xs-offset-1">
-									<button id="stayInTheBoard" class="btn btn-success">No</button>
+									<button type="button" id="stayInTheBoard" class="btn btn-success">No</button>
 								</div>
 							</div>
 						</form>
@@ -110,19 +110,19 @@
 
 
 	<!-- Modal -->
-	<div id="resultModal" class="modal fade">
+	<div id="resultModal" class="modal fade" data-backdrop="static">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Game Result</h4>
+					<h4 class="modal-title" id="modalTitle">Game Result</h4>
 				</div>
 				<div class="modal-body">
 					<h3 id="resultStatus"></h3>
 				</div>
 				<div class="modal-footer">
+					<button type="button" id="wrongSudoku" class="btn btn-primary">Exit</button>
 					<button type="button" id="exit" class="btn btn-primary">Exit</button>
+					<button type="button" id="disconnected" class="btn btn-primary">Exit</button>
 				</div>
 			</div>
 		</div>

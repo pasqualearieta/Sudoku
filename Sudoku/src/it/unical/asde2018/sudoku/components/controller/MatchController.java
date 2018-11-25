@@ -46,8 +46,9 @@ public class MatchController {
 			else
 				output = "You Lose!!!";
 
-			if (lobbyService.getMatches().get(room).getMatch().getDurations().size() > 1)
+			if (lobbyService.getMatches().get(room).getMatch().getDurations().size() > 1) 
 				lobbyService.saveMatch(room);
+			
 		} else
 			output = ("WRONG");
 
@@ -79,18 +80,22 @@ public class MatchController {
 		response.setStatus(HttpServletResponse.SC_ACCEPTED);
 	}
 
-//	@GetMapping("/exitBefore")
-//	public void exitBefore(HttpSession session, HttpServletResponse response) {
-//
-//		// Check for anticipated exit from the game
-//		int room = (int) session.getAttribute("idRom");
-//		if (lobbyService.getMatches().containsKey(room))
-//			lobbyService.removeMatch(room);
-//
-//		session.removeAttribute("sudoku");
-//		session.removeAttribute("idRoom");
-//		response.setStatus(HttpServletResponse.SC_ACCEPTED);
-//	}
+	//TODO QUANDO ESCO DA UNA PARTITA VA GESTITA ANCHE LA LISTA DEGLI EVENTI
+	//TODO LIVELLO GRAFICO GESTIRE QUANDO INSERISCE TUTTI I NUMERI ED IL SUDOKU è SBAGLIATO
+	
+	@GetMapping("/exitBefore")
+	public void exitBefore(HttpSession session, HttpServletResponse response) {
+
+		// Check for anticipated exit from the game
+		int room = (int) session.getAttribute("idRoom");
+		if (lobbyService.getMatches().containsKey(room)) 
+			lobbyService.removeMatch(room);
+		
+		
+		session.removeAttribute("sudoku");
+		session.removeAttribute("idRoom");
+		response.setStatus(HttpServletResponse.SC_ACCEPTED);
+	}
 
 	@GetMapping("/requestEvent")
 	@ResponseBody
@@ -98,21 +103,48 @@ public class MatchController {
 			HttpServletResponse response) throws NumberFormatException, InterruptedException {
 
 		DeferredResult<String> output = new DeferredResult<>();
-
-		int room = (int) session.getAttribute("idRoom");
-		String username = (String) session.getAttribute("username");
-		Integer opponentNumber = eventsService.nextEvent(room, username, Integer.parseInt(number_inserted));
+		int room = 0;
+		String username = new String();
+		Integer opponentNumber = new Integer(0);
 		int diffNumber = 0;
+
 		try {
-			diffNumber = lobbyService.getRoomDifficulty(room).getNumberToRemove();
-			
+			room = (int) session.getAttribute("idRoom");
+
+			if (!eventsService.getSpecialEvent(room)) {
+				username = (String) session.getAttribute("username");
+				opponentNumber = eventsService.nextEvent(room, username, Integer.parseInt(number_inserted));
+				System.err.println(opponentNumber);
+
+				diffNumber = lobbyService.getRoomDifficulty(room).getNumberToRemove();
+
+				// DifficultyNumberToRemove : 100 = (InsertedNumber - (LockedNumber)) : x
+				output.setResult(opponentNumber > 0 ? (opponentNumber * 100) / diffNumber + " " : opponentNumber + "");
+
+			} else {
+				// In this case the opponent decide to exit before, so instead to send the
+				// number of the opponent
+				// was sended this number in order to identify that the game can end due to the
+				// leaving of the adversary
+				output.setResult(400 + "");
+			}
 		} catch (Exception e) {
-			diffNumber = 0;
+
 		}
 
-		// DifficultyNumberToRemove : 100 = (InsertedNumber - (LockedNumber)) : x
-		output.setResult(opponentNumber > 0 ? (opponentNumber * 100) / diffNumber + " " : opponentNumber + "");
-
+		System.out.println(output.toString());
 		return output;
+	}
+
+	@GetMapping("/leaveMatchBeforeEnd")
+	@ResponseBody
+	public void leaveMatchBeforeEnd(HttpSession session, HttpServletResponse response)
+			throws NumberFormatException, InterruptedException {
+
+		int room = (int) session.getAttribute("idRoom");
+		eventsService.addSpecialEvent(room);
+		session.removeAttribute("sudoku");
+		session.removeAttribute("idRoom");
+		response.setStatus(HttpServletResponse.SC_ACCEPTED);
 	}
 }
