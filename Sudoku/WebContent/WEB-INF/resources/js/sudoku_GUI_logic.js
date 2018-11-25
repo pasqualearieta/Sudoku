@@ -2,27 +2,7 @@ var data = new Array(9);
 var totalNumber = 81;
 var insertedNumber = 0;
 
-function checkBoardFull() {
-	$.ajax({
-		url : "checkBoardFull",
-		success : function(result) {
-			if (result === "start") {
-				$("#waiting").prop("hidden", true);
-				$("#sudoku_board").prop("hidden", false);
-			}
-
-			else {
-				setTimeout(function() {
-					checkBoardFull();
-				}, 1000)
-			}
-		},
-
-	});
-}
-
 function status() {
-
 	$.ajax({
 		url : "requestEvent",
 		data : {
@@ -53,7 +33,6 @@ function main() {
 }
 
 $(document).ready(function() {
-	checkBoardFull();
 	status();
 	main();
 });

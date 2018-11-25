@@ -41,7 +41,7 @@ public class LobbyController {
 			session.setAttribute("idRoom", id_room);
 		}
 
-		return "sudoku_game_board";
+		return "waiting";
 	}
 
 	@PostMapping("joinRoom")
@@ -57,9 +57,7 @@ public class LobbyController {
 			lobbyService.getMatches().get(Integer.parseInt(room)).getMatch().setStarting_date(new Date());
 
 			session.setAttribute("sudoku", lobbyService.getMatches().get(Integer.parseInt(room)).getSudokuToSolve());
-			session.setAttribute("idRoom", Integer.parseInt(room));
-
-			System.out.println(lobbyService.getMatches().get(Integer.parseInt(room)).getMatch().getStarting_date());
+			// session.setAttribute("idRoom", Integer.parseInt(room));
 		}
 
 		return "sudoku_game_board";

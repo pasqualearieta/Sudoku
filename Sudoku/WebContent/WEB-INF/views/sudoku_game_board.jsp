@@ -12,47 +12,16 @@
 <link href="resources/css/sudoku_style.css" rel="stylesheet">
 <script src="resources/js/sudoku_GUI_logic.js"></script>
 
-<link rel="stylesheet" type="text/css" href="resources/css/loading-bar.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/loading-bar.css" />
 <script type="text/javascript" src="resources/js/loading-bar.js"></script>
 
 
 </head>
 
 <body>
-
 	<input type="hidden" id="sudokuPuzzle" value="${sudoku}">
-	<div class="container-fluid" id="waiting">
-		<div class="row">
-			<div class="col-md-4 col-md-offset-4">
-				<div class="panel panel-default">
-					<div class="panel-heading"></div>
-					<div class="panel-body">
-						<h3>Waiting for other player</h3>
-						<p id="message"></p>
-						<div id="preloader">
-							<div id="loader"></div>
-						</div>
-					</div>
-					<div class="panel-footer">
-						<form action="leaveRoom" method="post">
-
-							<input type="hidden" name="idRoom" value="${idRoom}" />
-							<div class="form-group">
-								<div class="row">
-									<div class="col-xs-3 col-xs-offset-9">
-										<button type="submit" href="#" name="leave-room"
-											id="create-room" class="form-control btn btn-danger">
-											Leave Match</button>
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="container-fluid" id="sudoku_board" hidden="true">
+	<div class="container-fluid" id="sudoku_board">
 		<h3>Remaining Time:</h3>
 		<div class="row">
 			<div class="col-md-8"></div>
