@@ -6,7 +6,7 @@ $(document).ready(function() {
 		var selectedVal = $(this).find(':selected').val();
 		document.getElementById('difficulty').value = selectedVal;
 	});
-
+	
 	$(".pg-button").click(function() {
 		var ind = $(this).text();
 		
@@ -21,9 +21,7 @@ $(document).ready(function() {
 			}
 		});
 	});
-	
-	
-	
+		
 	$(".pg-button-arrow-right").click(function() {
 		var ind = $('.pg-button-arrow-right').val();
 		
@@ -60,8 +58,8 @@ function getEventsFromServer() {
 									$("#torep")
 											.append('<tr> <td align="center" class="vertical-divider">' + rooms[key].creator.username + '</td>'
 															+ '<td align="center" class="vertical-divider">' + rooms[key].match.name +'</td>'
-															+ '<td align="center" class="vertical-divider">' + rooms[key].match.difficulty +'</td>'
-															+ '<td align="center" class="vertical-divider"><button value="' +key +'" class="wrap_button" id="join"  type="submit">'
+															+ '<td align="center" class="vertical-divider difficulty">' + rooms[key].match.difficulty +'</td>'
+															+ '<td align="center" class="vertical-divider"><button value="' +key +'" class="wrap_button join" type="submit">'
 															+ '<i class="fa fa-check-square-o fa-2x check" aria-hidden="true"></i></button></td></tr>');
 								}
 								getEventsFromServer();
@@ -76,18 +74,19 @@ function getEventsFromServer() {
 					}, 5000);
 				}
 			});
-	
-	
-	
+		
 
-	$("#join").click(function() {
+	$(".join").click(function() {
+//		alert($(this).closest('tr').find('td.difficulty').text());
+		
 		$.ajax({
 			type : "POST",
 			url : "joinRoom",
 			data : {
 				//FIXME controllo per non sforare dall'ultima pagina
 				//TODO freccia sinistra
-				room : $(this).val()
+				room : $(this).val(),
+//				difficulty : $(this).closest('tr').find('td.difficulty').text()
 			},
 			success : function() {
 				 window.location.href = "./";

@@ -1,5 +1,7 @@
 package it.unical.asde2018.sudoku.components.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -10,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import it.unical.asde2018.sudoku.components.persistence.UserDAO;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
+import it.unical.asde2018.sudoku.components.services.SudokuGeneratorService;
 import it.unical.asde2018.sudoku.logic.util.Difficulty;
+import it.unical.asde2018.sudoku.logic.util.SudokuPuzzles;
 import it.unical.asde2018.sudoku.model.User;
 
 @Controller
@@ -18,7 +22,8 @@ public class LobbyController {
 
 	@Autowired
 	private LobbyService lobbyService;
-
+	@Autowired
+	private SudokuGeneratorService sudokuGeneratorService;
 	@Autowired
 	private UserDAO userDao;
 
@@ -29,11 +34,16 @@ public class LobbyController {
 			String username = (String) session.getAttribute("username");
 			User user = userDao.getUser(username);
 			int id_room = lobbyService.createRoom(user, Difficulty.valueOf(difficulty), lobbyName);
-			// if(session.getAttribute("sudoku") == null)
+
+			SudokuPuzzles puzzles = sudokuGeneratorService.getSudokuByDifficulty(Difficulty.valueOf(difficulty));
+			lobbyService.getMatches().get(id_room).setSudokuToSolve(puzzles.getSudokuToSolve());
+			lobbyService.getMatches().get(id_room).setSudokuSolved(puzzles.getSudokuSolved());
+
 			session.setAttribute("sudoku", lobbyService.getMatches().get(id_room).getSudokuToSolve());
 			session.setAttribute("idRoom", id_room);
 		}
-		return "sudoku_game_board";
+
+		return "waiting";
 	}
 
 	@PostMapping("joinRoom")
@@ -42,13 +52,17 @@ public class LobbyController {
 		if (session.getAttribute("sudoku") == null) {
 			String username = (String) session.getAttribute("username");
 			User user = userDao.getUser(username);
+
 			lobbyService.joinRoom(user, Integer.parseInt(room));
+
+			// set starting date of a match
+			lobbyService.getMatches().get(Integer.parseInt(room)).getMatch().setStarting_date(new Date());
 
 			session.setAttribute("sudoku", lobbyService.getMatches().get(Integer.parseInt(room)).getSudokuToSolve());
 			session.setAttribute("idRoom", Integer.parseInt(room));
 		}
-		return "sudoku_game_board";
 
+		return "sudoku_game_board";
 	}
 
 	@PostMapping("roomPagination")

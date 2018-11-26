@@ -33,12 +33,10 @@ public class CredentialsController {
 			if (session.getAttribute("username") != null) {
 
 				if (lobbyService.getMatchesSize() > 0) {
-					if (session.getAttribute("currentPagination") == null
-							|| (int) session.getAttribute("currentPagination") == 1) {
+					if (session.getAttribute("currentPagination") == null || (int) session.getAttribute("currentPagination") == 1) {
 						session.setAttribute("currentPagination", 1);
 						session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
-						session.setAttribute("available_room",
-								lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
+						session.setAttribute("available_room", lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
 					}
 				}
 				return "lobby";
@@ -47,34 +45,31 @@ public class CredentialsController {
 				return "home";
 		}
 	}
-	
-	
 
 	@GetMapping("refresh")
 	@ResponseBody
 	@Scheduled(fixedDelay = 2000)
 	public DeferredResult<String> refreshList() {
 		// TODO Paginazione
-//		if (lobbyService.getMatchesSize() > 0)
-//		{
-//			if (session.getAttribute("currentPagination") == null || (int) session.getAttribute("currentPagination") == 1)
-//			{
-//				session.setAttribute("currentPagination", 1);
-//				int total = 1;
-//				if ((lobbyService.getMatchesSize() / LobbyService.getMatchesToShow()) % 2 == 0)
-//					total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow();
-//				else
-//					total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow() + 1;
-//				session.setAttribute("total_room_page", total);
-////					session.setAttribute("available_room", lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
-//			}
-//		}
+		// if (lobbyService.getMatchesSize() > 0)
+		// {
+		// if (session.getAttribute("currentPagination") == null || (int) session.getAttribute("currentPagination") == 1)
+		// {
+		// session.setAttribute("currentPagination", 1);
+		// int total = 1;
+		// if ((lobbyService.getMatchesSize() / LobbyService.getMatchesToShow()) % 2 == 0)
+		// total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow();
+		// else
+		// total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow() + 1;
+		// session.setAttribute("total_room_page", total);
+		//// session.setAttribute("available_room", lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
+		// }
+		// }
 		LobbySerializer ls = new LobbySerializer(lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
-		DeferredResult<String> json = new DeferredResult<String>();
+		DeferredResult<String> json = new DeferredResult<>();
 		json.setResult(ls.getJSon());
 		return json;
 	}
-	
 
 	@GetMapping("/GoToLobby")
 	public String goToLobby() {
@@ -97,8 +92,7 @@ public class CredentialsController {
 
 	@PostMapping("/login")
 	@ResponseBody
-	public String loginAttempt(@RequestParam String username, @RequestParam String password, HttpSession session,
-			Model model) {
+	public String loginAttempt(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
 
 		String result = "";
 
@@ -115,8 +109,7 @@ public class CredentialsController {
 
 	@PostMapping("/register")
 	@ResponseBody
-	public String registrationAttempt(@RequestParam String username, @RequestParam String password,
-			@RequestParam String confirm_password, HttpSession session, Model model) {
+	public String registrationAttempt(@RequestParam String username, @RequestParam String password, @RequestParam String confirm_password, HttpSession session, Model model) {
 
 		if (!confirm_password.equals(password))
 			return "PASSWORD";

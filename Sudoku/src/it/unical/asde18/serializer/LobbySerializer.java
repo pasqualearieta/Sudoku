@@ -10,25 +10,21 @@ import com.fasterxml.jackson.databind.ser.std.MapSerializer;
 
 import it.unical.asde2018.sudoku.logic.Room;
 
-public class LobbySerializer
-{
+public class LobbySerializer {
 	@JsonSerialize(keyUsing = MapSerializer.class)
 	private Map<Integer, Room> serializedObject = new HashMap<>();
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	public LobbySerializer(Map<Integer, Room> serializedObject)
-	{
+	public LobbySerializer(Map<Integer, Room> serializedObject) {
 		this.serializedObject = serializedObject;
 	}
 
 	public String getJSon() {
 		String json = "";
-		try
-		{
+		try {
 			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(serializedObject);
-		} catch (JsonProcessingException e)
-		{
+		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 		return json;

@@ -19,7 +19,6 @@ $(document).ready(function() {
 	$("#resultModal").modal('hide');
 	
 	//flow function
-	checkBoardFull();
 	status();
 	main();
 
@@ -35,7 +34,6 @@ $(document).ready(function() {
 		});
 
 	});
-
 
 	$("#disconnected").on('click', function() {
 		$("#resultModal").modal('hide');
@@ -70,26 +68,6 @@ function main() {
 	var sudoku = new Sudoku();
 	sudoku.importPuzzle(puzzle);
 	checkEndGame();
-}
-
-function checkBoardFull() {
-	$.ajax({
-		type: "POST",
-		url : "checkBoardFull",
-		success : function(result) {
-			if (result === "start") {
-				$("#waiting").prop("hidden", true);
-				$("#sudoku_board").prop("hidden", false);
-			}
-
-			else {
-				setTimeout(function() {
-					checkBoardFull();
-				}, 1000)
-			}
-		},
-
-	});
 }
 
 function status() {

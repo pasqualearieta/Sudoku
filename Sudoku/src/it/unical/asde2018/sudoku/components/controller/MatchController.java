@@ -21,13 +21,13 @@ import it.unical.asde2018.sudoku.model.User;
 public class MatchController {
 
 	@Autowired
-	LobbyService lobbyService;
+	private LobbyService lobbyService;
 
 	@Autowired
 	CredentialService credentialService;
 
 	@Autowired
-	EventsService eventsService;
+	private EventsService eventsService;
 
 	@PostMapping("/checkEndGame")
 	@ResponseBody
@@ -106,8 +106,7 @@ public class MatchController {
 
 	@PostMapping("/requestEvent")
 	@ResponseBody
-	public String addEvent(@RequestParam String number_inserted, HttpSession session, HttpServletResponse response)
-			throws NumberFormatException, InterruptedException {
+	public String addEvent(@RequestParam String number_inserted, HttpSession session, HttpServletResponse response) throws NumberFormatException, InterruptedException {
 
 		String output = new String();
 		int room = 0;
@@ -121,7 +120,7 @@ public class MatchController {
 			if (!eventsService.getSpecialEvent(room)) {
 				username = (String) session.getAttribute("username");
 				opponentNumber = eventsService.nextEvent(room, username, Integer.parseInt(number_inserted));
-			
+
 				diffNumber = lobbyService.getRoomDifficulty(room).getNumberToRemove();
 
 				// DifficultyNumberToRemove : 100 = (InsertedNumber - (LockedNumber)) : x
@@ -143,8 +142,7 @@ public class MatchController {
 
 	@PostMapping("/leaveMatchBeforeEnd")
 	@ResponseBody
-	public void leaveMatchBeforeEnd(HttpSession session, HttpServletResponse response)
-			throws NumberFormatException, InterruptedException {
+	public void leaveMatchBeforeEnd(HttpSession session, HttpServletResponse response) throws NumberFormatException, InterruptedException {
 
 		int room = (int) session.getAttribute("idRoom");
 		eventsService.addSpecialEvent(room);
