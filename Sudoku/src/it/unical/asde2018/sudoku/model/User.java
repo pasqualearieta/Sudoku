@@ -14,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table
 public class User {
@@ -36,6 +38,7 @@ public class User {
 	// TODO Lazy
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "historyMatches", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "match_id") })
+	@JsonManagedReference
 	private Set<Match> matches;
 
 	public User(String username, String password, Set<Match> matches) {

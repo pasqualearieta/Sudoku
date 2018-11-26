@@ -46,20 +46,24 @@
 								<c:if test="${empty dashboard }">
 									<form action="dashboard">
 										<div class="text-center">
-											<li><button class="wrap_button" type="submit"
+											<li>
+												<button class="wrap_button" type="submit"
 													name="dashboard_btn">
 													<i class="fa fa-history" aria-hidden="true"></i> History
-												</button></li>
+												</button>
+											</li>
 										</div>
 									</form>
 								</c:if>
 								<c:if test="${not empty dashboard }">
 									<form action="GoToLobby">
 										<div class="text-center">
-											<li><button class="wrap_button" type="submit"
-													name="lobby_btn" id="go_to_lobby">
+											<li>
+												<button class="wrap_button" type="submit" name="lobby_btn"
+													id="go_to_lobby">
 													<i class="fa fa-handshake-o" aria-hidden="true"></i>Lobby
-												</button></li>
+												</button>
+											</li>
 										</div>
 									</form>
 								</c:if>
@@ -99,9 +103,9 @@
 									<form action="register" method="post" role="form"
 										autocomplete="off" id="registration_form">
 										<div class="form-group">
-											<input type="text"  name="username_register"
+											<input type="text" name="username_register"
 												id="username_register" tabindex="1" class="form-control"
-												placeholder="Username" required/>
+												placeholder="Username" required />
 										</div>
 
 										<div class="rgu-al alert alert-danger" role="alert"
@@ -150,8 +154,8 @@
 												</div>
 											</div>
 										</div>
-										
-										
+
+
 										<div class="rg-ok alert alert-success" role="alert"
 											hidden="true">
 											<strong> <span class="glyphicon glyphicon-check"
@@ -159,8 +163,8 @@
 											</strong>
 											<p>You successfully registered!</p>
 										</div>
-										
-										
+
+
 									</form>
 
 
@@ -176,8 +180,8 @@
 								class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
 								Log In <span class="caret"></span></a>
 							<ul
-								class="dropdown-menu drop-log-in dropdown-lr animated slideInRight" class="caret"
-								role="menu">
+								class="dropdown-menu drop-log-in dropdown-lr animated slideInRight"
+								class="caret" role="menu">
 								<div class="col-lg-12 menu">
 									<div class="text-center">
 										<h3>

@@ -1,5 +1,6 @@
 package it.unical.asde18.serializer;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,7 +13,7 @@ import it.unical.asde2018.sudoku.logic.Room;
 public class LobbySerializer
 {
 	@JsonSerialize(keyUsing = MapSerializer.class)
-	private Map<Integer, Room> serializedObject;
+	private Map<Integer, Room> serializedObject = new HashMap<>();
 
 	private ObjectMapper mapper = new ObjectMapper();
 

@@ -19,6 +19,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import it.unical.asde2018.sudoku.logic.util.Difficulty;
 
 @Entity
@@ -29,7 +31,8 @@ public class Match {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@ManyToMany(mappedBy = "matches")
+	@ManyToMany(mappedBy = "matches", fetch = FetchType.EAGER)
+	@JsonBackReference
 	private Set<User> players;
 
 	@ElementCollection(fetch = FetchType.EAGER)
