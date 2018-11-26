@@ -3,6 +3,7 @@ package it.unical.asde2018.sudoku.components.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +41,7 @@ public class CredentialsController {
 					}
 				}
 				return "lobby";
-				
+
 			} else
 				return "home";
 		}
@@ -92,6 +93,7 @@ public class CredentialsController {
 
 	@PostMapping("/login")
 	@ResponseBody
+	@Async
 	public String loginAttempt(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
 
 		String result = "";
@@ -109,6 +111,7 @@ public class CredentialsController {
 
 	@PostMapping("/register")
 	@ResponseBody
+	@Async
 	public String registrationAttempt(@RequestParam String username, @RequestParam String password, @RequestParam String confirm_password, HttpSession session, Model model) {
 
 		if (!confirm_password.equals(password))

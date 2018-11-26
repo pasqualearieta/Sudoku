@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,6 +48,7 @@ public class LobbyController {
 	}
 
 	@PostMapping("joinRoom")
+	@Async
 	public String joinRoom(@RequestParam String room, HttpSession session) {
 
 		if (session.getAttribute("sudoku") == null) {

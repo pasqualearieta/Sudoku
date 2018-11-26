@@ -1,11 +1,10 @@
 package it.unical.asde2018.sudoku.components.controller;
 
-import java.util.concurrent.ForkJoinPool;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +30,7 @@ public class MatchController {
 
 	@PostMapping("/checkEndGame")
 	@ResponseBody
+	@Async
 	public String checkEndGame(@RequestParam String puzzle, HttpSession session) {
 		String output = new String();
 
@@ -61,22 +61,22 @@ public class MatchController {
 
 	@PostMapping("/checkBoardFull")
 	@ResponseBody
+	@Async
 	public DeferredResult<String> getEvents(HttpSession session) {
 
 		DeferredResult<String> output = new DeferredResult<>();
 
-		ForkJoinPool.commonPool().submit(() -> {
-			int room = (int) session.getAttribute("idRoom");
-			if (lobbyService.getNumOfPlayersInTheRoom(room) > 1)
-				output.setResult("start");
-			else
-				output.setResult("loop");
-		});
+		int room = (int) session.getAttribute("idRoom");
+		if (lobbyService.getNumOfPlayersInTheRoom(room) > 1)
+			output.setResult("start");
+		else
+			output.setResult("loop");
 
 		return output;
 	}
 
 	@PostMapping("/exitMatch")
+	@Async
 	public void exitMatch(HttpSession session, HttpServletResponse response) {
 
 		session.removeAttribute("sudoku");
@@ -89,6 +89,7 @@ public class MatchController {
 	// SBAGLIATO
 
 	@PostMapping("/exitBefore")
+	@Async
 	public void exitBefore(HttpSession session, HttpServletResponse response) {
 
 		// Check for anticipated exit from the game
@@ -106,6 +107,7 @@ public class MatchController {
 
 	@PostMapping("/requestEvent")
 	@ResponseBody
+	@Async
 	public String addEvent(@RequestParam String number_inserted, HttpSession session, HttpServletResponse response) throws NumberFormatException, InterruptedException {
 
 		String output = new String();
@@ -142,6 +144,7 @@ public class MatchController {
 
 	@PostMapping("/leaveMatchBeforeEnd")
 	@ResponseBody
+	@Async
 	public void leaveMatchBeforeEnd(HttpSession session, HttpServletResponse response) throws NumberFormatException, InterruptedException {
 
 		int room = (int) session.getAttribute("idRoom");
