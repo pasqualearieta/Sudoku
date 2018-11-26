@@ -14,6 +14,7 @@ public class EventsService {
 
 	private Map<Integer, BlockingQueue<Pair<String, Integer>>> events = new HashMap<>();
 	private Map<Integer, Boolean> specialEvents = new HashMap<>();
+	private Map<String, Integer> lastInserted = new HashMap<>();
 
 	public Integer nextEvent(int room, String user, int number_inserted) throws InterruptedException {
 
@@ -21,13 +22,17 @@ public class EventsService {
 			events.put(room, new LinkedBlockingQueue<Pair<String, Integer>>());
 		}
 
-		events.get(room).add(new Pair<>(user, number_inserted));
-
+		if (!lastInserted.containsKey(user)) {
+			lastInserted.put(user, Integer.valueOf(number_inserted));
+			events.get(room).add(new Pair<>(user, number_inserted));
+		} else if (lastInserted.get(user).intValue() != number_inserted) {
+			lastInserted.put(user, Integer.valueOf(number_inserted));
+			events.get(room).add(new Pair<>(user, number_inserted));
+		}
 		if (!events.get(room).peek().getKey().equals(user))
 			return events.get(room).take().getValue();
 		else
-			return 0;
-
+			return -1;
 	}
 
 	public void addSpecialEvent(int room) throws InterruptedException {
@@ -40,6 +45,15 @@ public class EventsService {
 
 	public boolean getSpecialEvent(int room) {
 		return specialEvents.containsKey(room);
+	}
+	
+	public void removeData(int room) {
+		events.remove(room);
+		specialEvents.remove(room);
+	}
+	
+	public void removeUserData(String user) {
+		lastInserted.remove(user);
 	}
 
 }

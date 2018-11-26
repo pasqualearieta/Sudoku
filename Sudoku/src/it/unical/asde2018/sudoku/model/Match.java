@@ -10,6 +10,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,7 +32,7 @@ public class Match {
 	@ManyToMany(mappedBy = "matches")
 	private Set<User> players;
 
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "match_durations", joinColumns = @JoinColumn(name = "match_id"))
 	@MapKeyJoinColumn(name = "user_id")
 	private Map<User, Long> durations;

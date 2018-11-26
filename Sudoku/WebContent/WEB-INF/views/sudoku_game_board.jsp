@@ -120,7 +120,6 @@
 					<h3 id="resultStatus"></h3>
 				</div>
 				<div class="modal-footer">
-					<button type="button" id="wrongSudoku" class="btn btn-primary">Exit</button>
 					<button type="button" id="exit" class="btn btn-primary">Exit</button>
 					<button type="button" id="disconnected" class="btn btn-primary">Exit</button>
 				</div>

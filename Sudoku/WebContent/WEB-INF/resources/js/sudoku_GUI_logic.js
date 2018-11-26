@@ -1,13 +1,24 @@
 var data = new Array(9);
 var totalNumber = 81;
+var totalNumberInTheGrid = 0;
 var insertedNumber = 0;
 var opponent_result = 0;
-var totalNumberInTheGrid = 0;
 var ended = false;
 var quit = false;
+var barSelector;
+var bar;
+var percentage = 0;
 
 $(document).ready(function() {
+	
+	//init component
+	barSelector = document.querySelector(".ldBar");
+	bar = new ldBar(barSelector);
+	updateBar();
+	
 	$("#resultModal").modal('hide');
+	
+	//flow function
 	checkBoardFull();
 	status();
 	main();
@@ -16,33 +27,35 @@ $(document).ready(function() {
 		$("#resultModal").modal('hide');
 
 		$.ajax({
+			type: "POST",
 			url : "exitMatch",
 			success : function(result) {
 				window.location.href = "./";
 			},
-
 		});
 
 	});
 
-	
-	$("#wrongSudoku").on('click', function() {
-		$("#resultModal").modal('hide');
-	});
-	
+
 	$("#disconnected").on('click', function() {
 		$("#resultModal").modal('hide');
+		
 		$.ajax({
+			type: "POST",
 			url : "exitBefore",
 			success : function(result) {
 				window.location.href = "./";
 			},
 		});
+		
 	});
 
 	$("#quitGame").on('click', function() {
+		
 		quit = true;
+		
 		$.ajax({
+			type: "POST",
 			url : "leaveMatchBeforeEnd",
 			success : function(result) {
 				window.location.href = "./";
@@ -61,6 +74,7 @@ function main() {
 
 function checkBoardFull() {
 	$.ajax({
+		type: "POST",
 		url : "checkBoardFull",
 		success : function(result) {
 			if (result === "start") {
@@ -79,44 +93,32 @@ function checkBoardFull() {
 }
 
 function status() {
-	if (quit == false) {
+
+	if (quit == false && ended == false) {
 		$.ajax({
+			type: "POST",
 			url : "requestEvent",
 			data : {
 				number_inserted : insertedNumber
 			},
 			success : function(result) {
-				$(".ldBar-label").hide();
-
-				console.log(result);
-				if (result != 0) {
+				if (result != -1 && result != 400 && result != undefined && result != "") {
+					
 					var previous_result = opponent_result;
 					var current_result = result;
 
 					if (current_result != previous_result) {
-
 						opponent_result = current_result;
-						var percentage = Math.round(current_result);
+						percentage = Math.round(current_result);
 
-						var b1 = document.querySelector(".ldBar");
-						var b = new ldBar(b1);
-
-						setTimeout(function() {
-							$("#status").html(percentage + "%");
-							b.set(0);
-							b.set(percentage);
+						setTimeout(() => {
+							updateBar();
 						}, 1000);
 					}
-
 				}
 
 				if (result == 400) {
-					$("#modalTitle").html("Disconnected User");
-					$("#exit").hide();
-					$("#wrongSudoku").hide();
-					$("#resultModal").modal('show');
-					$("#resultStatus").html("Your Opponent was disconnected");
-
+					updateModal("Disconnected User", "Your Opponent was disconnected", "disconnected");
 				}
 
 				else {
@@ -136,21 +138,17 @@ function checkEndGame() {
 
 	if (totalNumberInTheGrid == 81 && ended == false) {
 		$.ajax({
+			type: "POST",
 			url : "checkEndGame",
 			data : {
 				puzzle : puzzle
 			},
 			success : function(result) {
-				$("#resultModal").modal('show');
-				$("#disconnected").hide();
-				$("#modalTitle").html("Game Result");
 				if (result != "WRONG") {
 					ended = true;
-					$("#resultStatus").html(result);
-					$("#wrongSudoku").hide();
+					updateModal("Game Result", result, "exit");
 				} else {
-					$("#resultStatus").html("The Sudoku is Wrong!")
-					$("#exit").hide();
+					console.log("wrong");
 				}
 			},
 
@@ -584,3 +582,23 @@ this.getPuzzleArrayStr = function() {
 	}
 	return txt;
 };
+
+
+function updateBar(){
+    $(".ldBar-label").hide();
+	$("#status").html(percentage + "%");
+	bar.set(percentage);
+ }
+ 
+ function updateModal(title, message, button){
+	 	$("#modalTitle").html(title);
+		$("#exit").hide();
+		$("#disconnected").hide();
+		$("#"+button).show();
+		$("#resultModal").modal('show');
+		$("#resultStatus").html(message);
+ }
+
+
+
+
