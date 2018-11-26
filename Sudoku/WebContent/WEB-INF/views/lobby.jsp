@@ -64,7 +64,6 @@
 			</div>
 
 
-			<c:if test="${fn:length(available_room) gt 0}">
 				<div class="col-md-6 col-md-offset-1">
 					<div class="panel panel-default panel-table" id="panel">
 						<div class="panel-heading" id="available-lobby-panel">
@@ -120,7 +119,6 @@
 					</div>
 				</div>
 
-			</c:if>
 		</div>
 	</div>
 </body>

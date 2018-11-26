@@ -7,6 +7,8 @@ public class Room {
 
 	private Match match;
 
+	private boolean visible = true;
+	
 	private String sudokuSolved;
 	private String sudokuToSolve;
 
@@ -20,6 +22,15 @@ public class Room {
 
 	public Match getMatch() {
 		return match;
+	}
+	
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 	public void setMatch(Match match) {

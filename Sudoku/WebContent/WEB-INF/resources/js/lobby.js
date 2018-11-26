@@ -64,7 +64,7 @@ function getEventsFromServer() {
 								}
 								getEventsFromServer();
 
-							}, 2000);
+							}, 500);
 
 				},
 				error : function() {

@@ -1,5 +1,8 @@
 package it.unical.asde2018.sudoku.components.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +19,11 @@ import org.springframework.web.context.request.async.DeferredResult;
 import it.unical.asde18.serializer.LobbySerializer;
 import it.unical.asde2018.sudoku.components.services.CredentialService;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
+import it.unical.asde2018.sudoku.logic.Room;
 
 @Controller
-public class CredentialsController {
+public class CredentialsController
+{
 	@Autowired
 	private CredentialService credentialService;
 
@@ -30,15 +35,24 @@ public class CredentialsController {
 		session.removeAttribute("dashboard");
 		if (session.getAttribute("sudoku") != null)
 			return "sudoku_game_board";
-		else {
-			if (session.getAttribute("username") != null) {
+		else
+		{
+			if (session.getAttribute("username") != null)
+			{
 
-				if (lobbyService.getMatchesSize() > 0) {
-					if (session.getAttribute("currentPagination") == null || (int) session.getAttribute("currentPagination") == 1) {
+				if (lobbyService.getMatchesSize() > 0)
+				{
+					if (session.getAttribute("currentPagination") == null || (int) session.getAttribute("currentPagination") == 1)
+					{
 						session.setAttribute("currentPagination", 1);
 						session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
 						session.setAttribute("available_room", lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
 					}
+				}
+				else
+				{
+					session.setAttribute("currentPagination", 1);
+					session.setAttribute("total_room_page",1);
 				}
 				return "lobby";
 
@@ -49,24 +63,28 @@ public class CredentialsController {
 
 	@GetMapping("refresh")
 	@ResponseBody
-	@Scheduled(fixedDelay = 2000)
-	public DeferredResult<String> refreshList() {
-		// TODO Paginazione
-		// if (lobbyService.getMatchesSize() > 0)
-		// {
-		// if (session.getAttribute("currentPagination") == null || (int) session.getAttribute("currentPagination") == 1)
-		// {
-		// session.setAttribute("currentPagination", 1);
-		// int total = 1;
-		// if ((lobbyService.getMatchesSize() / LobbyService.getMatchesToShow()) % 2 == 0)
-		// total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow();
-		// else
-		// total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow() + 1;
-		// session.setAttribute("total_room_page", total);
-		//// session.setAttribute("available_room", lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
-		// }
-		// }
-		LobbySerializer ls = new LobbySerializer(lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
+	@Async
+	public DeferredResult<String> refreshList(HttpSession session) {
+
+		Map<Integer, Room> map = new HashMap<>();
+
+		if (lobbyService.getMatchesSize() > 0)
+		{
+			if (session.getAttribute("currentPagination") == null || (int) session.getAttribute("currentPagination") == 1)
+			{
+				session.setAttribute("currentPagination", 1);
+				int total = 1;
+				if ((lobbyService.getMatchesSize() / LobbyService.getMatchesToShow()) % 2 == 0)
+					total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow();
+				else
+					total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow() + 1;
+				session.setAttribute("total_room_page", total);
+				map = lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow());
+				session.setAttribute("available_room", map);
+	
+			}
+		}
+		LobbySerializer ls = new LobbySerializer(map);
 		DeferredResult<String> json = new DeferredResult<>();
 		json.setResult(ls.getJSon());
 		return json;
@@ -98,10 +116,12 @@ public class CredentialsController {
 
 		String result = "";
 
-		if (credentialService.login(username, password)) {
+		if (credentialService.login(username, password))
+		{
 			session.setAttribute("username", username);
 			result = "LOGIN_OK";
-		} else {
+		} else
+		{
 			result = "Username or Password not valid!";
 
 		}
@@ -112,12 +132,14 @@ public class CredentialsController {
 	@PostMapping("/register")
 	@ResponseBody
 	@Async
-	public String registrationAttempt(@RequestParam String username, @RequestParam String password, @RequestParam String confirm_password, HttpSession session, Model model) {
+	public String registrationAttempt(@RequestParam String username, @RequestParam String password, @RequestParam String confirm_password,
+			HttpSession session, Model model) {
 
 		if (!confirm_password.equals(password))
 			return "PASSWORD";
 
-		if (credentialService.registerUser(username, password)) {
+		if (credentialService.registerUser(username, password))
+		{
 			session.setAttribute("username", username);
 			return "SUCCESS";
 		} else
