@@ -4,6 +4,7 @@ $(document)
 
 					getEventsFromServer();
 
+					
 					$("#diff_drop")
 							.change(
 									function() {
