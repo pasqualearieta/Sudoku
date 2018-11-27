@@ -98,12 +98,6 @@ public class CredentialsController
 
 	}
 
-	@GetMapping("/dashboard")
-	public String viewHistory(HttpSession session) {
-		session.setAttribute("dashboard", "dashboard");
-		return "dashboard";
-
-	}
 
 	@PostMapping("/login")
 	@ResponseBody

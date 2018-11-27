@@ -1,5 +1,6 @@
 package it.unical.asde2018.sudoku.model;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -39,9 +40,9 @@ public class User {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "historyMatches", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "match_id") })
 	@JsonManagedReference
-	private Set<Match> matches;
+	private List<Match> matches;
 
-	public User(String username, String password, Set<Match> matches) {
+	public User(String username, String password, List<Match> matches) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -74,11 +75,11 @@ public class User {
 		this.password = password;
 	}
 
-	public Set<Match> getMatches() {
+	public List<Match> getMatches() {
 		return matches;
 	}
 
-	public void setMatches(Set<Match> matches) {
+	public void setMatches(List<Match> matches) {
 		this.matches = matches;
 	}
 	

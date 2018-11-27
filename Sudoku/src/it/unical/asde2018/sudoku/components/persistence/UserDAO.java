@@ -1,6 +1,6 @@
 package it.unical.asde2018.sudoku.components.persistence;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 
@@ -87,7 +87,7 @@ public class UserDAO{
 		User result = query.uniqueResult();
 		
 		//lazy initialization
-		result.setMatches(new HashSet<>());
+		result.setMatches(new ArrayList<>());
 		result.getMatches().size(); //lazy
 		
 		session.close();

@@ -1,3 +1,14 @@
+.parent {
+    margin-bottom: 15px;
+    padding: 10px;
+    color: #0A416B;
+    clear:both;
+}
+.left, .center, .right{
+    float:left;
+    width:32%; 
+    padding:5px;
+}
 
 .main-chart {
   background: #fff; }
@@ -74,14 +85,33 @@
   border: black;
 }
 
-#easypiechart-teal .percent {
+#easypiechart-ew .percent {
+  color: #1ebfae; }
+  
+#easypiechart-mw .percent {
+  color: #1ebfae; }
+  
+#easypiechart-hw .percent {
   color: #1ebfae; }
 
-#easypiechart-orange .percent {
+#easypiechart-ed .percent {
+  color: #ffb53e; }
+  
+#easypiechart-md .percent {
+  color: #ffb53e; }
+  
+#easypiechart-hd .percent {
   color: #ffb53e; }
 
-#easypiechart-red .percent {
+#easypiechart-el .percent {
   color: #ef4040; }
+  
+#easypiechart-ml .percent {
+  color: #ef4040; }
+  
+#easypiechart-hl .percent {
+  color: #ef4040; }
+  
 
   /* mobile fix */
   @media (max-width: 768px) {
