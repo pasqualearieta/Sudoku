@@ -5,8 +5,9 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.javatuples.Pair;
 import org.springframework.stereotype.Service;
+
+import javafx.util.Pair;
 
 @Service
 public class EventsService {
@@ -28,8 +29,8 @@ public class EventsService {
 			lastInserted.put(user, Integer.valueOf(number_inserted));
 			events.get(room).add(new Pair<>(user, number_inserted));
 		}
-		if (!events.get(room).peek().getValue0().equals(user))
-			return events.get(room).take().getValue1();
+		if (!events.get(room).peek().getKey().equals(user))
+			return events.get(room).take().getValue();
 		else
 			return -1;
 	}
