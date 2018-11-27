@@ -22,6 +22,8 @@ public class UserDAO{
 	@PostConstruct
 	private void init() {
 		save(new User("andrea", "andrea"));
+		save(new User("a", "a"));
+		save(new User("b", "b"));
 	}
 	
 	public void update(User object) {

@@ -101,14 +101,14 @@
 								of ${total_room_page }
 								</c:if>
 								</div>
-								<div class="col col-xs-8">
+								<div class="col col-xs-8" id = "ciclo">
 									<ul class="pagination hidden-xs pull-right">
 										<li><button class="btn btn-warning" type="submit">«</button></li>
 										
 										<c:forEach begin="1" end="${total_room_page }"
 											varStatus="loop">
 											<li><button class="btn btn-warning pg-button"
-													type="submit">${loop.index}</button></li>
+													type="submit" value="${currentPagination}">${loop.index}</button></li>
 										</c:forEach>
 										
 										<li><button class="btn btn-warning pg-button-arrow-right" value="${currentPagination}" type="submit">»</button></li>
@@ -121,5 +121,6 @@
 
 		</div>
 	</div>
+	<div id = "page_current" hidden = true>1</div>
 </body>
 </html>

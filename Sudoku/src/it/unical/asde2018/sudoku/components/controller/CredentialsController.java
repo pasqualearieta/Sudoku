@@ -1,13 +1,11 @@
 package it.unical.asde2018.sudoku.components.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,10 +41,7 @@ public class CredentialsController
 				if (lobbyService.getMatchesSize() > 0)
 				{
 					if (session.getAttribute("currentPagination") == null || (int) session.getAttribute("currentPagination") == 1)
-					{
 						session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
-						session.setAttribute("available_room", lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
-					}
 				}
 				else
 					session.setAttribute("total_room_page",1);
@@ -60,27 +55,15 @@ public class CredentialsController
 	@GetMapping("refresh")
 	@ResponseBody
 	@Async
-	public DeferredResult<String> refreshList(HttpSession session) {
+	public DeferredResult<String> refreshList(@RequestParam String index, HttpSession session) {
 
-		Map<Integer, Room> map = new HashMap<>();
-
-		if (lobbyService.getMatchesSize() > 0)
-		{
-			if (session.getAttribute("currentPagination") == null || (int) session.getAttribute("currentPagination") == 1)
-			{
-				session.setAttribute("currentPagination", 1);
-				int total = 1;
-				if ((lobbyService.getMatchesSize() / LobbyService.getMatchesToShow()) % 2 == 0)
-					total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow();
-				else
-					total = lobbyService.getMatchesSize() / LobbyService.getMatchesToShow() + 1;
-				session.setAttribute("total_room_page", total);
-				map = lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow());
-				session.setAttribute("available_room", map);
-	
-			}
-		}
-		LobbySerializer ls = new LobbySerializer(map);
+		int requested_pagination = Integer.parseInt(index);
+		int finalIndex = requested_pagination * LobbyService.getMatchesToShow();
+		session.setAttribute("currentPagination", requested_pagination);
+		System.out.println(lobbyService.getTotalRoomPage());
+		session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
+		Map<Integer, Room> roomInTheWindow = lobbyService.getRoomInTheWindow(finalIndex);
+		LobbySerializer ls = new LobbySerializer(roomInTheWindow);
 		DeferredResult<String> json = new DeferredResult<>();
 		json.setResult(ls.getJSon());
 		return json;
