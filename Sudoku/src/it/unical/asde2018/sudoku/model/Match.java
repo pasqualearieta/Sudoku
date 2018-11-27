@@ -31,11 +31,11 @@ public class Match {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@ManyToMany(mappedBy = "matches", fetch = FetchType.EAGER)
+	@ManyToMany(mappedBy = "matches", fetch = FetchType.LAZY)
 	@JsonBackReference
 	private Set<User> players;
 
-	@ElementCollection(fetch = FetchType.EAGER)
+	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "match_durations", joinColumns = @JoinColumn(name = "match_id"))
 	@MapKeyJoinColumn(name = "user_id")
 	private Map<User, Long> durations;

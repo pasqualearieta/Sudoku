@@ -1,5 +1,7 @@
 package it.unical.asde2018.sudoku.components.persistence;
 
+import java.util.HashSet;
+
 import javax.annotation.PostConstruct;
 
 import org.hibernate.Session;
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import it.unical.asde2018.sudoku.model.User;
 
 @Repository
-public class UserDAO {
+public class UserDAO{
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -21,33 +23,35 @@ public class UserDAO {
 	private void init() {
 		save(new User("andrea", "andrea"));
 	}
-
-	public void save(User user) {
-
+	
+	public void update(User object) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
-
-		try {
+		try
+		{
 			transaction = session.beginTransaction();
-			session.save(user);
+			session.update(object);
 			transaction.commit();
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			transaction.rollback();
 		}
 
 		session.close();
-
 	}
+	
+	public void save(User object) {
 
-	public void update(User user) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 
-		try {
+		try
+		{
 			transaction = session.beginTransaction();
-			session.update(user);
+			session.save(object);
 			transaction.commit();
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			transaction.rollback();
 		}
 
@@ -81,6 +85,11 @@ public class UserDAO {
 				username);
 
 		User result = query.uniqueResult();
+		
+		//lazy initialization
+		result.setMatches(new HashSet<>());
+		result.getMatches().size(); //lazy
+		
 		session.close();
 		return result;
 	}

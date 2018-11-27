@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ser.std.MapSerializer;
 import it.unical.asde2018.sudoku.logic.Room;
 
 public class LobbySerializer {
+	
 	@JsonSerialize(keyUsing = MapSerializer.class)
 	private Map<Integer, Room> serializedObject = new HashMap<>();
 

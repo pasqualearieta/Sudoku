@@ -8,27 +8,31 @@ import org.springframework.stereotype.Repository;
 
 import it.unical.asde2018.sudoku.model.Match;
 
+
 @Repository
-public class MatchDAO {
+public class MatchDAO{
 
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public void save(Match match) {
+
+	public void save(Match object) {
 
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 
-		try {
+		try
+		{
 			transaction = session.beginTransaction();
-			session.save(match);
+			session.save(object);
 			transaction.commit();
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			transaction.rollback();
 		}
 
 		session.close();
 
 	}
-
+	
 }

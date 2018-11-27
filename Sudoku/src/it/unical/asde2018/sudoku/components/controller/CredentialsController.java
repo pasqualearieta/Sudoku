@@ -39,21 +39,17 @@ public class CredentialsController
 		{
 			if (session.getAttribute("username") != null)
 			{
-
+				session.setAttribute("currentPagination", 1);
 				if (lobbyService.getMatchesSize() > 0)
 				{
 					if (session.getAttribute("currentPagination") == null || (int) session.getAttribute("currentPagination") == 1)
 					{
-						session.setAttribute("currentPagination", 1);
 						session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
 						session.setAttribute("available_room", lobbyService.getRoomInTheWindow(LobbyService.getMatchesToShow()));
 					}
 				}
 				else
-				{
-					session.setAttribute("currentPagination", 1);
 					session.setAttribute("total_room_page",1);
-				}
 				return "lobby";
 
 			} else
@@ -121,10 +117,8 @@ public class CredentialsController
 			session.setAttribute("username", username);
 			result = "LOGIN_OK";
 		} else
-		{
 			result = "Username or Password not valid!";
 
-		}
 
 		return result;
 	}

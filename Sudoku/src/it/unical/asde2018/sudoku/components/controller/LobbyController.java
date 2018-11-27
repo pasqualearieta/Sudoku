@@ -54,9 +54,9 @@ public class LobbyController {
 		if (session.getAttribute("sudoku") == null) {
 			String username = (String) session.getAttribute("username");
 			User user = userDao.getUser(username);
-
+			
 			lobbyService.joinRoom(user, Integer.parseInt(room));
-
+			
 			// set starting date of a match
 			lobbyService.getMatches().get(Integer.parseInt(room)).getMatch().setStarting_date(new Date());
 
