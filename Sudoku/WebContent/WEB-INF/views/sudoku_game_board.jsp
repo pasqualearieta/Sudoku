@@ -28,7 +28,8 @@
 			<div class="col-md-2">
 				<button type="submit" class="btn btn-primary dropdown-toggle"
 					data-toggle="dropdown">Quit Game</button>
-				<div id="gameLeaving" class="dropdown-menu dropdown-lr animated flipInX" role="menu">
+				<div id="gameLeaving"
+					class="dropdown-menu dropdown-lr animated flipInX" role="menu">
 					<div class="col-lg-12">
 						<div class="text-center">
 							<h3>
@@ -43,7 +44,8 @@
 									<button type="button" id="quitGame" class="btn btn-danger">Yes</button>
 								</div>
 								<div class="col-md-offset-2 col-md-2 col-xs-3 col-xs-offset-1">
-									<button type="button" id="stayInTheBoard" class="btn btn-success">No</button>
+									<button type="button" id="stayInTheBoard"
+										class="btn btn-success">No</button>
 								</div>
 							</div>
 						</form>
@@ -57,15 +59,19 @@
 		</div>
 		<hr>
 
-		<div>
-			<h3>Opponent Status</h3>
-		</div>
 
+		<div class="row" id="opponentStatus">
+			<div class="row">
+				<div class="col-md-offset-1">
+					<h3>Opponent Status</h3>
+				</div>
 
-		<div class="row">
+			</div>
+
 			<div class="col-md-2 col-md-offset-3">
 				<h2 id="status">0%</h2>
 			</div>
+
 			<div class="row" id="bar">
 				<div class="ldBar" style="width: 50%; height: 10%; margin: auto"
 					data-preset="line"

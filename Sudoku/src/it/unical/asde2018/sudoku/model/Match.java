@@ -32,7 +32,6 @@ public class Match {
 	private Long id;
 
 	@ManyToMany(mappedBy = "matches", fetch = FetchType.LAZY)
-	@JsonBackReference
 	private Set<User> players;
 
 	@ElementCollection(fetch = FetchType.LAZY)
@@ -178,5 +177,9 @@ public class Match {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public int getPlayersSize() {
+		return players.size();
 	}
 }

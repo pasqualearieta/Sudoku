@@ -38,7 +38,6 @@ public class User {
 	// TODO Lazy
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "historyMatches", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "match_id") })
-	@JsonManagedReference
 	private Set<Match> matches;
 
 	public User(String username, String password, Set<Match> matches) {

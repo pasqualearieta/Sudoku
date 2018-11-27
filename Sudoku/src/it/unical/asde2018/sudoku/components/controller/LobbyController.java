@@ -59,7 +59,6 @@ public class LobbyController {
 			
 			// set starting date of a match
 			lobbyService.getMatches().get(Integer.parseInt(room)).getMatch().setStarting_date(new Date());
-
 			session.setAttribute("sudoku", lobbyService.getMatches().get(Integer.parseInt(room)).getSudokuToSolve());
 			session.setAttribute("idRoom", Integer.parseInt(room));
 		}

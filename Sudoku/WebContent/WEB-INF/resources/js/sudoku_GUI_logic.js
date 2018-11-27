@@ -11,41 +11,24 @@ var percentage = 0;
 
 $(document).ready(function() {
 	
-	//init component
+	// init component
 	barSelector = document.querySelector(".ldBar");
 	bar = new ldBar(barSelector);
 	updateBar();
 	
 	$("#resultModal").modal('hide');
 	
-	//flow function
+	// flow function
 	status();
 	main();
 
 	$("#exit").on('click', function() {
 		$("#resultModal").modal('hide');
-
-		$.ajax({
-			type: "POST",
-			url : "exitMatch",
-			success : function(result) {
-				window.location.href = "./";
-			},
-		});
-
+		window.location.href = "./review";
 	});
 
 	$("#disconnected").on('click', function() {
-		$("#resultModal").modal('hide');
-		
-		$.ajax({
-			type: "POST",
-			url : "exitBefore",
-			success : function(result) {
-				window.location.href = "./";
-			},
-		});
-		
+		$("#resultModal").modal('hide');	
 	});
 
 	$("#quitGame").on('click', function() {
@@ -71,7 +54,8 @@ function main() {
 }
 
 function status() {
-
+	
+	console.log("chiamo status")
 	if (quit == false && ended == false) {
 		$.ajax({
 			type: "POST",
@@ -96,6 +80,7 @@ function status() {
 				}
 
 				if (result == 400) {
+					$("#opponentStatus").hide();
 					updateModal("Disconnected User", "Your Opponent was disconnected", "disconnected");
 				}
 

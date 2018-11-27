@@ -1,13 +1,12 @@
 package it.unical.asde2018.sudoku.components.services;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +18,7 @@ import it.unical.asde2018.sudoku.model.Match;
 import it.unical.asde2018.sudoku.model.User;
 
 @Service
-public class LobbyService
-{
+public class LobbyService {
 
 	@Autowired
 	private MatchDAO matchDAO;
@@ -37,8 +35,7 @@ public class LobbyService
 
 	private static int idRoom = 0;
 
-	public LobbyService()
-	{
+	public LobbyService() {
 		super();
 	}
 
@@ -65,7 +62,7 @@ public class LobbyService
 
 	public void joinRoom(User player, int idRoomToJoin) {
 		matches.get(idRoomToJoin).getMatch().getPlayers().add(player);
-		//NOW NOBODY CAN SEE THIS AGAIN
+		// NOW NOBODY CAN SEE THIS AGAIN
 		matches.get(idRoomToJoin).setVisible(false);
 
 		// TODO reindirizzare a pagina gioco
@@ -76,31 +73,19 @@ public class LobbyService
 	}
 
 	public String matchWinner(int room) {
-		String winner = null;
-		Long minValue = Long.MAX_VALUE;
 
-		for (Entry<User, Long> entry : getMatches().get(room).getMatch().getDurations().entrySet())
-		{
-			Long value = entry.getValue();
-			if (value < minValue)
-			{
-				winner = entry.getKey().getUsername();
-				minValue = value;
-			}
-		}
+		return (getMatches().get(room).getMatch().getDurations().entrySet().stream().filter(p -> p.getValue() != 0)
+				.min(Comparator.comparingLong(Map.Entry::getValue)).get().getKey()).getUsername();
 
-		System.err.println(
-				minValue + " DURATAAAAAAAAAAAAA " + winner + " WINNER" + " SIZE: " + getMatches().get(room).getMatch().getDurations().size());
-
-		return winner;
 	}
 
 	public boolean checkCorrectSudoku(int room, String sudoku) {
 		return (getMatches().get(room).getSudokuSolved().equals(sudoku)) ? true : false;
 	}
 
-	public void insertDurationOfGame(int room, User user) {
-		getMatches().get(room).getMatch().getDurations().put(user, new Date().getTime());
+	public void insertDurationOfGame(int room, String username, Date date) {
+
+		getMatches().get(room).getMatch().getDurations().put(userDAO.getUser(username), date.getTime());
 	}
 
 	public int getNumOfPlayersInTheRoom(int room) {
@@ -114,8 +99,7 @@ public class LobbyService
 	public void saveMatch(int room) {
 		matchDAO.save(getMatches().get(room).getMatch());
 
-		for (User user : getMatches().get(room).getMatch().getPlayers())
-		{
+		for (User user : getMatches().get(room).getMatch().getPlayers()) {
 			user.getMatches().add(getMatches().get(room).getMatch());
 			userDAO.update(user);
 
@@ -136,17 +120,14 @@ public class LobbyService
 		int window_to_access = indexOfTheLastRoomToShowInTheWindow / MATCHES_TO_SHOW;
 		int pos = (window_to_access * MATCHES_TO_SHOW) - MATCHES_TO_SHOW;
 
-		for (int i = 0; i < MATCHES_TO_SHOW; i++)
-		{
-			try
-			{
+		for (int i = 0; i < MATCHES_TO_SHOW; i++) {
+			try {
 				int key = (new ArrayList<>(matches.keySet())).get(pos);
 				Room val = (new ArrayList<>(matches.values())).get(pos);
 				if (val.isVisible())
 					windowed_room.put(key, val);
 				pos++;
-			} catch (Exception e)
-			{
+			} catch (Exception e) {
 				break;
 			}
 		}
@@ -155,6 +136,11 @@ public class LobbyService
 
 	public int getTotalRoomPage() {
 		return (int) Math.ceil((double) getMatchesSize() / getMatchesToShow());
+	}
+
+	public Long getNumberOfDisconnectedPlayer(int room) {
+		return getMatches().get(room).getMatch().getDurations().entrySet().stream().filter(p -> p.getValue() == 0)
+				.collect(Collectors.counting());
 	}
 
 }

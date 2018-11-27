@@ -1,17 +1,23 @@
 package it.unical.asde2018.sudoku.components.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 
-import it.unical.asde2018.sudoku.components.services.CredentialService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import it.unical.asde18.serializer.LobbySerializer;
 import it.unical.asde2018.sudoku.components.services.EventsService;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
 import it.unical.asde2018.sudoku.model.User;
@@ -23,10 +29,46 @@ public class MatchController {
 	private LobbyService lobbyService;
 
 	@Autowired
-	CredentialService credentialService;
-
-	@Autowired
 	private EventsService eventsService;
+
+	@GetMapping("/review")
+	public String goToReview() {
+		return "review";
+	}
+	
+	@PostMapping("/getWinner")
+	@ResponseBody
+	@Async
+	public DeferredResult<String> getWinner(HttpSession session) {
+
+		DeferredResult<String> output = new DeferredResult<>();
+		int room = (int) session.getAttribute("idRoom");
+
+		output.setResult(lobbyService.matchWinner(room));
+		return output;
+	}
+
+	@PostMapping("/getMatchInfo")
+	@ResponseBody
+	@Async
+	public DeferredResult<String> getMatchInfo(HttpSession session) {
+
+		DeferredResult<String> output = new DeferredResult<>();
+		ObjectMapper mapper = new ObjectMapper();
+		
+		int room = (int) session.getAttribute("idRoom");
+		
+		
+		
+		try {
+			output.setResult(mapper.writerWithDefaultPrettyPrinter()
+					.writeValueAsString(lobbyService.getMatches().get(room).getMatch()));
+		} catch (JsonProcessingException e) {
+			output.setResult("");
+		}
+
+		return output;
+	}
 
 	@PostMapping("/checkEndGame")
 	@ResponseBody
@@ -36,21 +78,22 @@ public class MatchController {
 
 		int room = (int) session.getAttribute("idRoom");
 		String username = (String) session.getAttribute("username");
-		User user = credentialService.getUser(username);
 
 		if (lobbyService.checkCorrectSudoku(room, puzzle)) {
-			lobbyService.insertDurationOfGame(room, user);
-
+			lobbyService.insertDurationOfGame(room, username, new Date());
+			/*
 			if (username.equals(lobbyService.matchWinner(room)))
 				output = "You Win!!!";
 			else
 				output = "You Lose!!!";
 
-			if (lobbyService.getMatches().get(room).getMatch().getDurations().size() > 1) {
-				lobbyService.saveMatch(room);
-				eventsService.removeData(room);
-			}
+			 * if (lobbyService.getMatches().get(room).getMatch().getDurations().size() > 1)
+			 * { eventsService.removeData(room); lobbyService.saveMatch(room); }
+			 */
 
+			output = "Game Ended!!";
+			session.removeAttribute("sudoku");
+			// session.removeAttribute("idRoom");
 			eventsService.removeUserData(username);
 
 		} else
@@ -75,40 +118,16 @@ public class MatchController {
 		return output;
 	}
 
-	@PostMapping("/exitMatch")
-	@Async
-	public void exitMatch(HttpSession session, HttpServletResponse response) {
-
-		session.removeAttribute("sudoku");
-		session.removeAttribute("idRoom");
-		eventsService.removeUserData((String) session.getAttribute("username"));
-		response.setStatus(HttpServletResponse.SC_ACCEPTED);
-	}
+	
 
 	// TODO LIVELLO GRAFICO GESTIRE QUANDO INSERISCE TUTTI I NUMERI ED IL SUDOKU è
 	// SBAGLIATO
 
-	@PostMapping("/exitBefore")
-	@Async
-	public void exitBefore(HttpSession session, HttpServletResponse response) {
-
-		// Check for anticipated exit from the game
-		int room = (int) session.getAttribute("idRoom");
-		if (lobbyService.getMatches().containsKey(room)) {
-			lobbyService.removeMatch(room);
-			eventsService.removeData(room);
-			eventsService.removeUserData((String) session.getAttribute("user"));
-		}
-
-		session.removeAttribute("sudoku");
-		session.removeAttribute("idRoom");
-		response.setStatus(HttpServletResponse.SC_ACCEPTED);
-	}
-
 	@PostMapping("/requestEvent")
 	@ResponseBody
 	@Async
-	public String addEvent(@RequestParam String number_inserted, HttpSession session, HttpServletResponse response) throws NumberFormatException, InterruptedException {
+	public String addEvent(@RequestParam String number_inserted, HttpSession session, HttpServletResponse response)
+			throws NumberFormatException, InterruptedException {
 
 		String output = new String();
 		int room = 0;
@@ -118,9 +137,9 @@ public class MatchController {
 
 		try {
 			room = (int) session.getAttribute("idRoom");
+			username = (String) session.getAttribute("username");
 
 			if (!eventsService.getSpecialEvent(room)) {
-				username = (String) session.getAttribute("username");
 				opponentNumber = eventsService.nextEvent(room, username, Integer.parseInt(number_inserted));
 
 				diffNumber = lobbyService.getRoomDifficulty(room).getNumberToRemove();
@@ -133,6 +152,10 @@ public class MatchController {
 				// number of the opponent
 				// was sended this number in order to identify that the game can end due to the
 				// leaving of the adversary
+
+				eventsService.removeData(room);
+				eventsService.removeUserData(username);
+
 				output = (400 + "");
 			}
 		} catch (Exception e) {
@@ -145,10 +168,21 @@ public class MatchController {
 	@PostMapping("/leaveMatchBeforeEnd")
 	@ResponseBody
 	@Async
-	public void leaveMatchBeforeEnd(HttpSession session, HttpServletResponse response) throws NumberFormatException, InterruptedException {
+	public void leaveMatchBeforeEnd(HttpSession session, HttpServletResponse response)
+			throws NumberFormatException, InterruptedException {
 
 		int room = (int) session.getAttribute("idRoom");
-		eventsService.addSpecialEvent(room);
+		String username = (String) session.getAttribute("username");
+
+		if (lobbyService.getNumberOfDisconnectedPlayer(room) == 0) {
+			lobbyService.insertDurationOfGame(room, username, new Date(0));
+			eventsService.addSpecialEvent(room);
+		} else {
+			lobbyService.removeMatch(room);
+			eventsService.removeData(room);
+			eventsService.removeUserData(username);
+		}
+
 		eventsService.removeUserData((String) session.getAttribute("username"));
 		session.removeAttribute("sudoku");
 		session.removeAttribute("idRoom");
