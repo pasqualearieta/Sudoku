@@ -19,10 +19,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import it.unical.asde18.serializer.MatchSerializer;
 import it.unical.asde2018.sudoku.logic.util.Difficulty;
 
+@JsonSerialize(using=MatchSerializer.class)
 @Entity
 @Table
 public class Match {
@@ -31,6 +34,11 @@ public class Match {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@Column(nullable = false)
+	private Difficulty difficulty;
+	
+	@Column
+	private String name;
 	@ManyToMany(mappedBy = "matches", fetch = FetchType.LAZY)
 	private Set<User> players;
 
@@ -63,11 +71,6 @@ public class Match {
 		return s.toString();
 	}
 
-	@Column(nullable = false)
-	private Difficulty difficulty;
-
-	@Column
-	private String name;
 
 	public Match() {
 		super();

@@ -17,7 +17,7 @@ body {
 	font-weight: bold;
 }
 
-.pagado {
+.ended {
 	color: green;
 }
 
@@ -81,10 +81,10 @@ body {
 	font-size: 14px;
 }
 
-.pendiente {
+.gaming {
 	color: orange;
 }
 
-.cancelado {
+.disconnected {
 	color: red;
 }

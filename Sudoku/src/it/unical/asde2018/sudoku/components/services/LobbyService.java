@@ -97,17 +97,17 @@ public class LobbyService {
 	}
 
 	public void saveMatch(int room) {
+		
+		System.err.println("Sto salvando il match");
 		matchDAO.save(getMatches().get(room).getMatch());
 
 		for (User user : getMatches().get(room).getMatch().getPlayers()) {
 			user.getMatches().add(getMatches().get(room).getMatch());
 			userDAO.update(user);
 
-//			for (Match m : user.getMatches())
-//				System.out.println(m.toString());
 		}
 
-		removeMatch(room);
+		
 	}
 
 	public void removeMatch(int room) {

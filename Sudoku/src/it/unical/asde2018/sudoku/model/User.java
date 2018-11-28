@@ -14,7 +14,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 @Entity
 @Table
@@ -25,6 +27,7 @@ public class User {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", matches=" + matches + "]";
 	}
 
+	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -32,12 +35,14 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String username;
 
+	@JsonIgnore
 	@Column(nullable = false)
 	private String password;
 
-	// TODO Lazy
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	@JoinTable(name = "historyMatches", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "match_id") })
+	@JoinTable(name = "historyMatches", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "match_id") })
 	private Set<Match> matches;
 
 	public User(String username, String password, Set<Match> matches) {
@@ -80,14 +85,10 @@ public class User {
 	public void setMatches(Set<Match> matches) {
 		this.matches = matches;
 	}
-	
-	public void insertMatch(Match match)
-	{
+
+	public void insertMatch(Match match) {
 		getMatches().add(match);
 	}
-
-	
-
 
 	@Override
 	public int hashCode() {

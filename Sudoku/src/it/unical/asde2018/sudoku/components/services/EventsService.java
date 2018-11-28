@@ -13,8 +13,10 @@ import javafx.util.Pair;
 public class EventsService {
 
 	private Map<Integer, BlockingQueue<Pair<String, Integer>>> events = new HashMap<>();
-	private Map<Integer, Boolean> specialEvents = new HashMap<>();
 	private Map<String, Integer> lastInserted = new HashMap<>();
+
+	private Map<Integer, Boolean> specialEvents = new HashMap<>();
+	private Map<Integer, BlockingQueue<Boolean>> playerExited = new HashMap<>();
 
 	public Integer nextEvent(int room, String user, int number_inserted) throws InterruptedException {
 
@@ -46,12 +48,32 @@ public class EventsService {
 	public boolean getSpecialEvent(int room) {
 		return specialEvents.containsKey(room);
 	}
-	
+
 	public void removeData(int room) {
 		events.remove(room);
 		specialEvents.remove(room);
 	}
-	
+
+	public void insertExited(int room) throws InterruptedException {
+		if (!playerExited.containsKey(room)) {
+			playerExited.put(room, new LinkedBlockingQueue<Boolean>());
+		}
+
+		playerExited.get(room).put(true);
+	}
+
+	public int getExitedSize(int room) {
+
+		if (!playerExited.containsKey(room)) {
+			return 0;
+		}
+		return playerExited.get(room).size();
+	}
+
+	public void removeExited(int room) {
+		playerExited.remove(room);
+	}
+
 	public void removeUserData(String user) {
 		lastInserted.remove(user);
 	}

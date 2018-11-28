@@ -17,10 +17,8 @@ import org.springframework.web.context.request.async.DeferredResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.unical.asde18.serializer.LobbySerializer;
 import it.unical.asde2018.sudoku.components.services.EventsService;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
-import it.unical.asde2018.sudoku.model.User;
 
 @Controller
 public class MatchController {
@@ -35,7 +33,28 @@ public class MatchController {
 	public String goToReview() {
 		return "review";
 	}
-	
+
+	@PostMapping("/exitGame")
+	@ResponseBody
+	@Async
+	public void exitGame(HttpSession session) {
+		int room = (int) session.getAttribute("idRoom");
+		try {
+			eventsService.insertExited(room);
+		} catch (InterruptedException e) {
+			session.removeAttribute("idRoom");
+			e.printStackTrace();
+		}
+
+		if (eventsService.getExitedSize(room) == lobbyService.getMatches().get(room).getMatch().getPlayersSize()) {
+			eventsService.removeExited(room);
+			lobbyService.removeMatch(room);
+			System.err.println("sto rimuovendo il match dalle lobby");
+		}
+		session.removeAttribute("idRoom");
+
+	}
+
 	@PostMapping("/getWinner")
 	@ResponseBody
 	@Async
@@ -43,8 +62,9 @@ public class MatchController {
 
 		DeferredResult<String> output = new DeferredResult<>();
 		int room = (int) session.getAttribute("idRoom");
-
-		output.setResult(lobbyService.matchWinner(room));
+		String username = (String) session.getAttribute("username");
+		String winner = lobbyService.matchWinner(room);
+		output.setResult((username.equals(winner)) ? "winner" : "loser");
 		return output;
 	}
 
@@ -55,11 +75,9 @@ public class MatchController {
 
 		DeferredResult<String> output = new DeferredResult<>();
 		ObjectMapper mapper = new ObjectMapper();
-		
+
 		int room = (int) session.getAttribute("idRoom");
-		
-		
-		
+
 		try {
 			output.setResult(mapper.writerWithDefaultPrettyPrinter()
 					.writeValueAsString(lobbyService.getMatches().get(room).getMatch()));
@@ -81,15 +99,12 @@ public class MatchController {
 
 		if (lobbyService.checkCorrectSudoku(room, puzzle)) {
 			lobbyService.insertDurationOfGame(room, username, new Date());
-			/*
-			if (username.equals(lobbyService.matchWinner(room)))
-				output = "You Win!!!";
-			else
-				output = "You Lose!!!";
 
-			 * if (lobbyService.getMatches().get(room).getMatch().getDurations().size() > 1)
-			 * { eventsService.removeData(room); lobbyService.saveMatch(room); }
-			 */
+			if (lobbyService.getMatches().get(room).getMatch().getDurations().size() == lobbyService.getMatches()
+					.get(room).getMatch().getPlayersSize()) {
+				eventsService.removeData(room);
+				lobbyService.saveMatch(room);
+			}
 
 			output = "Game Ended!!";
 			session.removeAttribute("sudoku");
@@ -118,11 +133,8 @@ public class MatchController {
 		return output;
 	}
 
-	
-
 	// TODO LIVELLO GRAFICO GESTIRE QUANDO INSERISCE TUTTI I NUMERI ED IL SUDOKU è
 	// SBAGLIATO
-
 	@PostMapping("/requestEvent")
 	@ResponseBody
 	@Async
