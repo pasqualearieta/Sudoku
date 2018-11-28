@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 
-import it.unical.asde18.serializer.LobbySerializer;
+import it.unical.asde2018.serializer.LobbySerializer;
 import it.unical.asde2018.sudoku.components.services.CredentialService;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
 import it.unical.asde2018.sudoku.logic.Room;
