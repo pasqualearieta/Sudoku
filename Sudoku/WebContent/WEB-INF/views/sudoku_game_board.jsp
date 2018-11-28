@@ -21,8 +21,22 @@
 
 <body>
 	<input type="hidden" id="sudokuPuzzle" value="${sudoku}">
+	<input type="hidden" id="startingTime">
 	<div class="container-fluid" id="sudoku_board">
-		<h3>Remaining Time:</h3>
+		<div class="row">
+			<div class="col-md-3">
+				<h3 id="elapsed">
+					<i class="fa fa-clock-o fa-2x" aria-hidden="true"></i> Elapsed
+					Time:
+				</h3>
+			</div>
+			<div class="col-md-3">
+				<h3 id="time" style="margin: 38px;"></h3>
+			</div>
+		</div>
+
+
+
 		<div class="row">
 			<div class="col-md-8"></div>
 			<div class="col-md-2">
@@ -53,6 +67,25 @@
 				</div>
 			</div>
 		</div>
+
+		<hr>
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+				<div id="wrongSudoku" class="rgu-al alert alert-danger" role="alert"
+					hidden="true">
+					<button type="button" id="btn-rgu" class="btn close"
+						aria-hidden="true">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					</button>
+					<strong> <span class="glyphicon glyphicon-remove"
+						aria-hidden="true"></span> ERROR!
+					</strong>
+					<p>Pay Attention, the <strong>Sudoku</strong> is wrong!</p>
+				</div>
+			</div>
+
+		</div>
+
 		<hr>
 		<div class="row">
 			<div id="sudoku" class="sudokuContainer"></div>
@@ -80,8 +113,6 @@
 		</div>
 
 	</div>
-
-
 
 	<!-- Modal -->
 	<div id="resultModal" class="modal fade" data-backdrop="static">

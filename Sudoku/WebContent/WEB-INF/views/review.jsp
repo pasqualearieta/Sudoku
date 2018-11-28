@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Game review</title>
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
@@ -27,13 +27,19 @@
 
 </head>
 <body>
-	<h1>Game Review</h1>
 	<div class="container">
+		<div class="row">
+			<div class="col-md-4 col-md-offset-2">
+				<h1>
+					<strong>Game Review</strong>
+				</h1>
+			</div>
+		</div>
+
 		<div class="row">
 			<section class="content">
 				<div class="col-md-8 col-md-offset-2">
 					<hr>
-
 					<div id="lose">
 						<h1>
 							<c:forEach var="i" begin="1" end="3">
@@ -64,8 +70,6 @@
 						</h1>
 					</div>
 
-
-
 					<hr>
 					<div class="panel panel-default">
 						<div class="panel-body">
@@ -82,7 +86,6 @@
 								</div>
 							</div>
 
-
 							<div class="table-container">
 								<table id="reviewTable" class="table table-filter">
 									<col width="40">
@@ -90,12 +93,13 @@
 									<col width="80">
 									<col width="80">
 									<thead>
-										<th colspan=2>Player <i class="fa fa-user-o"
-											aria-hidden="true"></i></th>
+										<tr>
+											<th colspan=2>Player <i class="fa fa-user-o"
+												aria-hidden="true"></i></th>
 
-										<th>Time <i class="fa fa-clock-o" aria-hidden="true"></i></th>
-										<th>Status</th>
-
+											<th>Time <i class="fa fa-clock-o" aria-hidden="true"></i></th>
+											<th>Status</th>
+										</tr>
 									</thead>
 									<tbody id="reviewbody">
 									</tbody>
@@ -103,17 +107,11 @@
 							</div>
 						</div>
 					</div>
-
-
-
 				</div>
 			</section>
-
 		</div>
-
-
 		<div class="row">
-			<div class="col-md-2 col-md-offset-4">
+			<div class="col-md-2 col-md-offset-2">
 				<button type="button" id="exit" class="btn btn-primary">Exit</button>
 			</div>
 		</div>

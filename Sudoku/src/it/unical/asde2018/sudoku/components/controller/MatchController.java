@@ -46,7 +46,8 @@ public class MatchController {
 			e.printStackTrace();
 		}
 
-		if (eventsService.getExitedSize(room) == lobbyService.getMatches().get(room).getMatch().getPlayersSize()) {
+		if (eventsService.getExitedSize(room) == lobbyService.getMatches().get(room).getMatch().getPlayersSize()
+				- lobbyService.getNumberOfDisconnectedPlayer(room)) {
 			eventsService.removeExited(room);
 			lobbyService.removeMatch(room);
 			System.err.println("sto rimuovendo il match dalle lobby");
@@ -100,8 +101,9 @@ public class MatchController {
 		if (lobbyService.checkCorrectSudoku(room, puzzle)) {
 			lobbyService.insertDurationOfGame(room, username, new Date());
 
-			if (lobbyService.getMatches().get(room).getMatch().getDurations().size() == lobbyService.getMatches()
-					.get(room).getMatch().getPlayersSize()) {
+			if (lobbyService.getMatches().get(room).getMatch().getDurations()
+					.size() == lobbyService.getMatches().get(room).getMatch().getPlayersSize()
+							- lobbyService.getNumberOfDisconnectedPlayer(room)) {
 				eventsService.removeData(room);
 				lobbyService.saveMatch(room);
 			}
@@ -189,6 +191,14 @@ public class MatchController {
 		if (lobbyService.getNumberOfDisconnectedPlayer(room) == 0) {
 			lobbyService.insertDurationOfGame(room, username, new Date(0));
 			eventsService.addSpecialEvent(room);
+
+			// Se hanno finito tutti ed esco salvo il match sulla base di dati
+			if (lobbyService.getMatches().get(room).getMatch().getDurations().size() == lobbyService.getMatches()
+					.get(room).getMatch().getPlayersSize()) {
+				eventsService.removeData(room);
+				lobbyService.saveMatch(room);
+			}
+
 		} else {
 			lobbyService.removeMatch(room);
 			eventsService.removeData(room);

@@ -15,8 +15,10 @@ $(document).ready(function() {
 	barSelector = document.querySelector(".ldBar");
 	bar = new ldBar(barSelector);
 	updateBar();
-	
+	var d = new Date();
+	$("#startingTime").val(d.getTime());
 	$("#resultModal").modal('hide');
+	
 	
 	// flow function
 	status();
@@ -108,9 +110,11 @@ function checkEndGame() {
 			},
 			success : function(result) {
 				if (result != "WRONG") {
+					
 					ended = true;
 					updateModal("Game Result", result, "exit");
 				} else {
+					$("#wrongSudoku").fadeIn();
 					console.log("wrong");
 				}
 			},
@@ -118,10 +122,14 @@ function checkEndGame() {
 		});
 	}
 	if (ended == false) {
-		setTimeout(function() {
+		setTimeout(function() {	
+			var d = new Date();
+			$("#time").html(timeConversion(d.getTime() - $("#startingTime").val()));
 			checkEndGame();
 		}, 1000)
 	}
+	if(totalNumberInTheGrid < 81)
+		$("#wrongSudoku").fadeOut();
 
 }
 
@@ -561,6 +569,29 @@ function updateBar(){
 		$("#resultModal").modal('show');
 		$("#resultStatus").html(message);
  }
+ 
+
+ function timeConversion(millisec) {
+
+ 	var seconds = (millisec / 1000).toFixed(1);
+
+ 	var minutes = (millisec / (1000 * 60)).toFixed(1);
+
+ 	var hours = (millisec / (1000 * 60 * 60)).toFixed(1);
+
+ 	var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);
+
+ 	if (seconds < 60) {
+ 		return seconds + " Sec";
+ 	} else if (minutes < 60) {
+ 		return minutes + " Min";
+ 	} else if (hours < 24) {
+ 		return hours + " Hrs";
+ 	} else {
+ 		return days + " Days"
+ 	}
+ }
+
 
 
 

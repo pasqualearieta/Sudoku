@@ -85,7 +85,8 @@ public class LobbyService {
 
 	public void insertDurationOfGame(int room, String username, Date date) {
 
-		getMatches().get(room).getMatch().getDurations().put(userDAO.getUser(username), date.getTime());
+		getMatches().get(room).getMatch().getDurations().put(userDAO.getUser(username),
+				date.getTime() - getMatches().get(room).getMatch().getStarting_date().getTime());
 	}
 
 	public int getNumOfPlayersInTheRoom(int room) {
@@ -97,7 +98,7 @@ public class LobbyService {
 	}
 
 	public void saveMatch(int room) {
-		
+
 		System.err.println("Sto salvando il match");
 		matchDAO.save(getMatches().get(room).getMatch());
 
@@ -107,7 +108,6 @@ public class LobbyService {
 
 		}
 
-		
 	}
 
 	public void removeMatch(int room) {
