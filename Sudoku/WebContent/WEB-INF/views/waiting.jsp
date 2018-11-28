@@ -26,19 +26,20 @@
 						</div>
 					</div>
 					<div class="panel-footer">
-						<form action="leaveRoom" method="post">
-
-							<input type="hidden" name="idRoom" value="${idRoom}" />
-							<div class="form-group">
-								<div class="row">
-									<div class="col-xs-3 col-xs-offset-9">
-										<button type="submit" href="#" name="leave-room"
-											id="create-room" class="form-control btn btn-danger">
-											Leave Match</button>
-									</div>
+						<input type="hidden" name="idRoom" id="idRoom" value="${idRoom}" />
+						<div class="form-group">
+							<div class="row">
+								<div class="col-xs-4">
+									<button type="submit" name="start-room" id="start-room"
+										class="form-control btn btn-success">Start Match</button>
+								</div>
+								<div class="col-xs-4"></div>
+								<div class="col-xs-4">
+									<button type="button" name="leave-room" id="leave-room"
+										class="form-control btn btn-danger leave-room">Leave Match</button>
 								</div>
 							</div>
-						</form>
+						</div>
 					</div>
 				</div>
 			</div>

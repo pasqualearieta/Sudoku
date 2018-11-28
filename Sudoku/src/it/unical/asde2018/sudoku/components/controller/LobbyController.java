@@ -16,6 +16,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import it.unical.asde18.serializer.LobbySerializer;
 import it.unical.asde2018.sudoku.components.persistence.UserDAO;
+import it.unical.asde2018.sudoku.components.services.GameStartService;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
 import it.unical.asde2018.sudoku.components.services.SudokuGeneratorService;
 import it.unical.asde2018.sudoku.logic.Room;
@@ -26,6 +27,8 @@ import it.unical.asde2018.sudoku.model.User;
 @Controller
 public class LobbyController {
 
+	@Autowired
+	private GameStartService gameStartService;
 	@Autowired
 	private LobbyService lobbyService;
 	@Autowired
@@ -55,13 +58,12 @@ public class LobbyController {
 	@PostMapping("joinRoom")
 	@Async
 	public String joinRoom(@RequestParam String room, HttpSession session) {
-
 		if (session.getAttribute("sudoku") == null) {
 			String username = (String) session.getAttribute("username");
 			User user = userDao.getUser(username);
-			
+
 			lobbyService.joinRoom(user, Integer.parseInt(room));
-			
+
 			// set starting date of a match
 			lobbyService.getMatches().get(Integer.parseInt(room)).getMatch().setStarting_date(new Date());
 
@@ -69,7 +71,7 @@ public class LobbyController {
 			session.setAttribute("idRoom", Integer.parseInt(room));
 		}
 
-		return "sudoku_game_board";
+		return "waiting";
 	}
 
 	@PostMapping("roomPagination")
@@ -89,11 +91,24 @@ public class LobbyController {
 	@PostMapping("leaveRoom")
 	public String leaveRoom(@RequestParam String idRoom, HttpSession session) {
 
-		lobbyService.getMatches().remove(Integer.parseInt(idRoom));
+		String username = (String) session.getAttribute("username");
+		int room = (int) session.getAttribute("idRoom");
+
+		if (lobbyService.getMatches().get(room).getCreator().getUsername().equals(username)) {
+			gameStartService.putDeleteEvent(room);
+		}
+
+		if (lobbyService.getMatches().get(room).getMatch().getPlayers().size() == 1 && lobbyService.getMatches().get(room).getCreator().getUsername().equals(username)) {
+			lobbyService.getMatches().get(room).getMatch().getPlayers().remove(userDao.getUser(username));
+			lobbyService.getMatches().remove(room);
+		} else {
+			lobbyService.getMatches().get(room).getMatch().getPlayers().remove(userDao.getUser(username));
+			lobbyService.getMatches().get(room).setVisible(true);
+
+		}
 		session.removeAttribute("sudoku");
 		session.removeAttribute("idRoom");
 
 		return "redirect:/";
 	}
-
 }

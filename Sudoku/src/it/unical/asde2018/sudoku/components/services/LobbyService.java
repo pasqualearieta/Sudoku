@@ -17,8 +17,7 @@ import it.unical.asde2018.sudoku.model.Match;
 import it.unical.asde2018.sudoku.model.User;
 
 @Service
-public class LobbyService
-{
+public class LobbyService {
 
 	@Autowired
 	private MatchDAO matchDAO;
@@ -35,8 +34,7 @@ public class LobbyService
 
 	private static int idRoom = 0;
 
-	public LobbyService()
-	{
+	public LobbyService() {
 		super();
 	}
 
@@ -63,8 +61,8 @@ public class LobbyService
 
 	public void joinRoom(User player, int idRoomToJoin) {
 		matches.get(idRoomToJoin).getMatch().getPlayers().add(player);
-		//NOW NOBODY CAN SEE THIS AGAIN
-		matches.get(idRoomToJoin).setVisible(false);
+		// NOW NOBODY CAN SEE THIS AGAIN
+		// matches.get(idRoomToJoin).setVisible(false);
 
 		// TODO reindirizzare a pagina gioco
 	}
@@ -77,18 +75,15 @@ public class LobbyService
 		String winner = null;
 		Long minValue = Long.MAX_VALUE;
 
-		for (Entry<User, Long> entry : getMatches().get(room).getMatch().getDurations().entrySet())
-		{
+		for (Entry<User, Long> entry : getMatches().get(room).getMatch().getDurations().entrySet()) {
 			Long value = entry.getValue();
-			if (value < minValue)
-			{
+			if (value < minValue) {
 				winner = entry.getKey().getUsername();
 				minValue = value;
 			}
 		}
 
-		System.err.println(
-				minValue + " DURATAAAAAAAAAAAAA " + winner + " WINNER" + " SIZE: " + getMatches().get(room).getMatch().getDurations().size());
+		System.err.println(minValue + " DURATAAAAAAAAAAAAA " + winner + " WINNER" + " SIZE: " + getMatches().get(room).getMatch().getDurations().size());
 
 		return winner;
 	}
@@ -112,13 +107,12 @@ public class LobbyService
 	public void saveMatch(int room) {
 		matchDAO.save(getMatches().get(room).getMatch());
 
-		for (User user : getMatches().get(room).getMatch().getPlayers())
-		{
+		for (User user : getMatches().get(room).getMatch().getPlayers()) {
 			user.getMatches().add(getMatches().get(room).getMatch());
 			userDAO.update(user);
 
-//			for (Match m : user.getMatches())
-//				System.out.println(m.toString());
+			// for (Match m : user.getMatches())
+			// System.out.println(m.toString());
 		}
 
 		removeMatch(room);
@@ -132,21 +126,18 @@ public class LobbyService
 		Map<Integer, Room> windowed_room = new LinkedHashMap<>();
 
 		int window_to_access = indexOfTheLastRoomToShowInTheWindow / MATCHES_TO_SHOW;
-	
+
 		int pos = (window_to_access * MATCHES_TO_SHOW) - MATCHES_TO_SHOW;
 
-		for (int i = 0; i < MATCHES_TO_SHOW; i++)
-		{
-			try
-			{
+		for (int i = 0; i < MATCHES_TO_SHOW; i++) {
+			try {
 				int key = (new ArrayList<>(matches.keySet())).get(pos);
 				Room val = (new ArrayList<>(matches.values())).get(pos);
-				
+
 				if (val.isVisible())
 					windowed_room.put(key, val);
 				pos++;
-			} catch (Exception e)
-			{
+			} catch (Exception e) {
 				break;
 			}
 		}

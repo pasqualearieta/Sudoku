@@ -6,18 +6,24 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import it.unical.asde2018.sudoku.components.persistence.UserDAO;
 import it.unical.asde2018.sudoku.components.services.CredentialService;
 import it.unical.asde2018.sudoku.components.services.EventsService;
+import it.unical.asde2018.sudoku.components.services.GameStartService;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
 import it.unical.asde2018.sudoku.model.User;
 
 @Controller
 public class MatchController {
+
+	@Autowired
+	private GameStartService gameStartService;
 
 	@Autowired
 	private LobbyService lobbyService;
@@ -27,6 +33,27 @@ public class MatchController {
 
 	@Autowired
 	private EventsService eventsService;
+
+	@Autowired
+	private UserDAO userDao;
+
+	@GetMapping("wait")
+	@Async
+	public String waitBeforePlay(HttpSession session) {
+		System.out.println("MatchController.waitBeforePlay()");
+
+		return "waiting";
+	}
+
+	@PostMapping("startRoom")
+	@Async
+	public String startMatch(HttpSession session) {
+
+		int room = (int) session.getAttribute("idRoom");
+		gameStartService.putStartEvent(room);
+
+		return "redirect:/";
+	}
 
 	@PostMapping("/checkEndGame")
 	@ResponseBody
@@ -67,10 +94,33 @@ public class MatchController {
 		DeferredResult<String> output = new DeferredResult<>();
 
 		int room = (int) session.getAttribute("idRoom");
-		if (lobbyService.getNumOfPlayersInTheRoom(room) > 1)
-			output.setResult("start");
-		else
+		String username = (String) session.getAttribute("username");
+
+		System.err.println(lobbyService.getNumOfPlayersInTheRoom(room));
+
+		if (lobbyService.getNumOfPlayersInTheRoom(room) == 2) {
+			lobbyService.getMatches().get(room).setVisible(false);
+
+			if (lobbyService.getMatches().get(room).getCreator().getUsername().equals(username)) {
+				output.setResult("start_match");
+			} else {
+				if (gameStartService.getStartEvent(room))
+					output.setResult("go_to_board");
+				else
+					output.setResult("loop");
+			}
+		} else if (!lobbyService.getMatches().get(room).getCreator().getUsername().equals(username) && gameStartService.getDeleteEvent(room)) {
+			lobbyService.getMatches().get(room).getMatch().getPlayers().remove(userDao.getUser(username));
+			if (lobbyService.getMatches().get(room).getMatch().getPlayers().isEmpty())
+				lobbyService.getMatches().remove(room);
+
+			session.removeAttribute("sudoku");
+			session.removeAttribute("idRoom");
+			output.setResult("chiudi");
+		} else {
+			System.err.println("SETTO LOOP");
 			output.setResult("loop");
+		}
 
 		return output;
 	}
