@@ -11,6 +11,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import it.unical.asde2018.sudoku.model.Match;
 import it.unical.asde2018.sudoku.model.User;
 
 @Repository
@@ -87,10 +88,14 @@ public class UserDAO{
 		User result = query.uniqueResult();
 		
 		//lazy initialization
-		result.setMatches(new ArrayList<>());
+		//result.setMatches(new ArrayList<>());
 		result.getMatches().size(); //lazy
-		
+		/*for(Match m : result.getMatches())
+			System.out.println(m.toString());
+		*/
 		session.close();
 		return result;
 	}
+	
+	
 }

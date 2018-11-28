@@ -273,9 +273,9 @@
         <div class="table-responsive">
           <table id="mytable" class="table table-bordred table-striped" border="1">
             <thead>
+              <th>Day</th>
               <th>Match ID</th>
               <th>Player</th>
-              <th>Day</th>
               <th>Elapsed Time</th>
             </thead>
             <tbody>
@@ -283,7 +283,7 @@
             	<c:forEach items="${match.durations}" var="durationEntry"> 
 				  <tr>
 				    <td>${match.starting_date}</td>
-				    <td>${match.id}</td>
+				    <td>${match.name}</td>
 				    <td>$<c:out value="${durationEntry.key.username}"/></td>
 				    <td>$<c:out value="${durationEntry.value}"/></td>
 				  </tr>

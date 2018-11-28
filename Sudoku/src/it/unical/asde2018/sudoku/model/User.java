@@ -1,5 +1,6 @@
 package it.unical.asde2018.sudoku.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -51,6 +52,7 @@ public class User {
 
 	public User() {
 		super();
+		matches = new ArrayList<>();
 	}
 
 	public User(String username, String password) {
