@@ -28,6 +28,8 @@
 
 	</build>
 	<dependencies>
+	
+	
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-aop -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -97,6 +99,11 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>org.javatuples</groupId>
+			<artifactId>javatuples</artifactId>
+			<version>1.2</version>
+		</dependency>
 	</dependencies>
 
 </project>
