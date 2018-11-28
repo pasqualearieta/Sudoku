@@ -6,8 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -134,6 +132,7 @@ public class LobbyService
 		Map<Integer, Room> windowed_room = new LinkedHashMap<>();
 
 		int window_to_access = indexOfTheLastRoomToShowInTheWindow / MATCHES_TO_SHOW;
+	
 		int pos = (window_to_access * MATCHES_TO_SHOW) - MATCHES_TO_SHOW;
 
 		for (int i = 0; i < MATCHES_TO_SHOW; i++)
@@ -142,6 +141,7 @@ public class LobbyService
 			{
 				int key = (new ArrayList<>(matches.keySet())).get(pos);
 				Room val = (new ArrayList<>(matches.values())).get(pos);
+				
 				if (val.isVisible())
 					windowed_room.put(key, val);
 				pos++;

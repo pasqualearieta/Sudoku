@@ -1,6 +1,7 @@
 package it.unical.asde2018.sudoku.components.controller;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -10,10 +11,14 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.async.DeferredResult;
 
+import it.unical.asde18.serializer.LobbySerializer;
 import it.unical.asde2018.sudoku.components.persistence.UserDAO;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
 import it.unical.asde2018.sudoku.components.services.SudokuGeneratorService;
+import it.unical.asde2018.sudoku.logic.Room;
 import it.unical.asde2018.sudoku.logic.util.Difficulty;
 import it.unical.asde2018.sudoku.logic.util.SudokuPuzzles;
 import it.unical.asde2018.sudoku.model.User;
@@ -68,15 +73,17 @@ public class LobbyController {
 	}
 
 	@PostMapping("roomPagination")
-	public void switchRoomPagination(@RequestParam String index, HttpSession session, HttpServletResponse response) {
+	@ResponseBody
+	public DeferredResult<String> switchRoomPagination(@RequestParam String index, HttpSession session, HttpServletResponse response) {
 		int requested_pagination = Integer.parseInt(index);
 		int finalIndex = requested_pagination * LobbyService.getMatchesToShow();
-
 		session.setAttribute("currentPagination", requested_pagination);
 		session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
-		session.setAttribute("available_room", lobbyService.getRoomInTheWindow(finalIndex));
-
-		response.setStatus(HttpServletResponse.SC_ACCEPTED);
+		Map<Integer, Room> roomInTheWindow = lobbyService.getRoomInTheWindow(finalIndex);
+		LobbySerializer ls = new LobbySerializer(roomInTheWindow);
+		DeferredResult<String> json = new DeferredResult<>();
+		json.setResult(ls.getJSon());
+		return json;
 	}
 
 	@PostMapping("leaveRoom")
