@@ -17,7 +17,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.unical.asde2018.sudoku.components.services.EventsService;
+import it.unical.asde2018.sudoku.components.services.PlayerEventsService;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
 
 @Controller
@@ -27,91 +27,137 @@ public class MatchController {
 	private LobbyService lobbyService;
 
 	@Autowired
-	private EventsService eventsService;
+	private PlayerEventsService eventsService;
 
+	/**
+	 * @return review page
+	 */
 	@GetMapping("/review")
 	public String goToReview() {
 		return "review";
 	}
 
+	/**
+	 * @param session
+	 * @comment This method handle the request of exit from the review page. The
+	 *          last player will remove the dependecy of the room in the server
+	 * @exception All the players except one are in the review panel. The last one
+	 *                leave the room before end the game, the match was saved on the
+	 *                db and removed from the availableRoom.
+	 */
 	@PostMapping("/exitGame")
 	@ResponseBody
 	@Async
-	public void exitGame(HttpSession session) {
-		int room = (int) session.getAttribute("idRoom");
+	public void handleExitFromReviewPage(HttpSession session) {
+		int roomId = (int) session.getAttribute("idRoom");
+
 		try {
-			eventsService.insertExited(room);
-		} catch (InterruptedException e) {
+
+			eventsService.insertPlayerExitedFromReviewPage(roomId);
+
+			int playerThatEndedTheGame = (int) (lobbyService.getNumOfPlayersInTheRoom(roomId)
+					- lobbyService.getNumberOfDisconnectedPlayer(roomId));
+
+			if (eventsService.getSizeOfPlayerExitedFromReviewPage(roomId) == playerThatEndedTheGame) {
+				eventsService.removeDataOfPlayersExitedFromReviewPage(roomId);
+				lobbyService.removeMatch(roomId);
+			}
+
+		} catch (InterruptedException | NullPointerException e) {
 			session.removeAttribute("idRoom");
-			e.printStackTrace();
+
 		}
 
-		if (eventsService.getExitedSize(room) == lobbyService.getMatches().get(room).getMatch().getPlayersSize()
-				- lobbyService.getNumberOfDisconnectedPlayer(room)) {
-			eventsService.removeExited(room);
-			lobbyService.removeMatch(room);
-			System.err.println("sto rimuovendo il match dalle lobby");
-		}
 		session.removeAttribute("idRoom");
-
 	}
 
+	/**
+	 * @param session
+	 * @return This method will return "winner" if the current user was the winner
+	 *         of the match, "loser" otherwise
+	 * @exception Captured when the other players were disconnected before end the
+	 *                     game. In the case the player in the review page manually
+	 *                     refresh the page, it receive a message.
+	 */
 	@PostMapping("/getWinner")
 	@ResponseBody
 	@Async
-	public DeferredResult<String> getWinner(HttpSession session) {
+	public String checkIfTheCurrentUserIsTheWinner(HttpSession session) {
 
-		DeferredResult<String> output = new DeferredResult<>();
-		int room = (int) session.getAttribute("idRoom");
+		String output = new String();
+
+		int roomId = (int) session.getAttribute("idRoom");
 		String username = (String) session.getAttribute("username");
-		String winner = lobbyService.matchWinner(room);
-		output.setResult((username.equals(winner)) ? "winner" : "loser");
+
+		try {
+			String winner = lobbyService.matchWinner(roomId);
+			output = ((username.equals(winner)) ? "winner" : "loser");
+		} catch (Exception e) {
+			output = "allOut";
+
+		}
 		return output;
 	}
 
+	/**
+	 * 
+	 * @param session
+	 * @return The serialization of the match information
+	 * @exception Captured when all the others player were disconnected and match
+	 *                     information are not available in the server anymore
+	 */
 	@PostMapping("/getMatchInfo")
 	@ResponseBody
 	@Async
-	public DeferredResult<String> getMatchInfo(HttpSession session) {
+	public DeferredResult<String> getMatchInformation(HttpSession session) {
 
-		DeferredResult<String> output = new DeferredResult<>();
-		ObjectMapper mapper = new ObjectMapper();
+		DeferredResult<String> matchParsed = new DeferredResult<>();
 
-		int room = (int) session.getAttribute("idRoom");
+		ObjectMapper matchMapper = new ObjectMapper();
+
+		int roomId = (int) session.getAttribute("idRoom");
 
 		try {
-			output.setResult(mapper.writerWithDefaultPrettyPrinter()
-					.writeValueAsString(lobbyService.getMatches().get(room).getMatch()));
-		} catch (JsonProcessingException e) {
-			output.setResult("");
+			matchParsed.setResult(
+					matchMapper.writerWithDefaultPrettyPrinter().writeValueAsString(lobbyService.getMatch(roomId)));
+		} catch (JsonProcessingException | NullPointerException e) {
+			matchParsed.setResult("AllOut");
 		}
 
-		return output;
+		return matchParsed;
 	}
 
+	/**
+	 * This method check if the sudoku submitted from the user was correct. The last
+	 * player enable the match save on the db and remove the reference of the room
+	 * from the server
+	 * 
+	 * @param SudokuPuzzle
+	 * @param session
+	 * @return String
+	 */
 	@PostMapping("/checkEndGame")
 	@ResponseBody
 	@Async
 	public String checkEndGame(@RequestParam String puzzle, HttpSession session) {
 		String output = new String();
 
-		int room = (int) session.getAttribute("idRoom");
+		int roomId = (int) session.getAttribute("idRoom");
 		String username = (String) session.getAttribute("username");
 
-		if (lobbyService.checkCorrectSudoku(room, puzzle)) {
-			lobbyService.insertDurationOfGame(room, username, new Date());
+		if (lobbyService.checkCorrectSudoku(roomId, puzzle)) {
+			lobbyService.insertDurationOfGame(roomId, username, new Date());
 
-			if (lobbyService.getMatches().get(room).getMatch().getDurations()
-					.size() == lobbyService.getMatches().get(room).getMatch().getPlayersSize()
-							- lobbyService.getNumberOfDisconnectedPlayer(room)) {
-				eventsService.removeData(room);
-				lobbyService.saveMatch(room);
+			int playerThatEndedTheGame = (int) (lobbyService.getNumOfPlayersInTheRoom(roomId));
+
+			if (lobbyService.getDurationsOfPlayers(roomId).size() == playerThatEndedTheGame) {
+				eventsService.removeRoomData(roomId);
+				lobbyService.saveMatch(roomId);
 			}
 
 			output = "Game Ended!!";
 			session.removeAttribute("sudoku");
-			// session.removeAttribute("idRoom");
-			eventsService.removeUserData(username);
+			eventsService.removePlayerLastInserted(username);
 
 		} else
 			output = ("WRONG");
@@ -135,50 +181,73 @@ public class MatchController {
 		return output;
 	}
 
-	// TODO LIVELLO GRAFICO GESTIRE QUANDO INSERISCE TUTTI I NUMERI ED IL SUDOKU è
-	// SBAGLIATO
+	/**
+	 * This method firstly add the number inserted of the player in the sudoku only
+	 * if the previous adding is different from the current one.
+	 * 
+	 * @param number  Inserted from the player
+	 * @param session
+	 * @return The status of the opponent player, or return a string indicating that
+	 *         the opponent was disconnected
+	 */
 	@PostMapping("/requestEvent")
 	@ResponseBody
 	@Async
-	public String addEvent(@RequestParam String number_inserted, HttpSession session, HttpServletResponse response)
+	public String addPlayerStatus(@RequestParam String number_inserted, HttpSession session)
 			throws NumberFormatException, InterruptedException {
 
 		String output = new String();
-		int room = 0;
+		int roomId = 0;
 		String username = new String();
-		Integer opponentNumber = new Integer(0);
-		int diffNumber = 0;
+		Integer opponentInsertedNumber = new Integer(0);
+		int difficultyNumber = 0;
 
 		try {
-			room = (int) session.getAttribute("idRoom");
+			roomId = (int) session.getAttribute("idRoom");
 			username = (String) session.getAttribute("username");
 
-			if (!eventsService.getSpecialEvent(room)) {
-				opponentNumber = eventsService.nextEvent(room, username, Integer.parseInt(number_inserted));
+			if (!eventsService.getDisconnectedPlayerEvent(roomId)) {
+				opponentInsertedNumber = eventsService.playerEvent(roomId, username, Integer.parseInt(number_inserted));
 
-				diffNumber = lobbyService.getRoomDifficulty(room).getNumberToRemove();
+				difficultyNumber = lobbyService.getMatchDifficulty(roomId).getNumberToRemove();
 
-				// DifficultyNumberToRemove : 100 = (InsertedNumber - (LockedNumber)) : x
-				output = (opponentNumber > 0 ? (opponentNumber * 100) / diffNumber + " " : opponentNumber + "");
+				/**
+				 * @MathOperation DifficultyNumberToRemove : 100 = InsertedNumber : x
+				 */
+				output = (opponentInsertedNumber > 0 ? (opponentInsertedNumber * 100) / difficultyNumber + " "
+						: opponentInsertedNumber + "");
 
 			} else {
-				// In this case the opponent decide to exit before, so instead to send the
-				// number of the opponent
-				// was sended this number in order to identify that the game can end due to the
-				// leaving of the adversary
 
-				eventsService.removeData(room);
-				eventsService.removeUserData(username);
+				/**
+				 * In this case the opponent decide to exit before, instead to send the opponent
+				 * number was sended this number in order to identify this event
+				 * 
+				 */
+
+				eventsService.removeRoomData(roomId);
+				eventsService.removePlayerLastInserted(username);
 
 				output = (400 + "");
 			}
 		} catch (Exception e) {
-
+			output = "";
 		}
 
 		return output;
 	}
 
+	/**
+	 * 
+	 * This method handle the exit of the game from a player before he complete the
+	 * sudoku. In the case that all the players decide to exit, the last one remove
+	 * all the reference from the server and the game is deleted. Otherwise it add
+	 * the disconnected event and return to the lobby page
+	 * 
+	 * @param session
+	 * @param response
+	 * 
+	 */
 	@PostMapping("/leaveMatchBeforeEnd")
 	@ResponseBody
 	@Async
@@ -188,24 +257,42 @@ public class MatchController {
 		int room = (int) session.getAttribute("idRoom");
 		String username = (String) session.getAttribute("username");
 
-		if (lobbyService.getNumberOfDisconnectedPlayer(room) == 0) {
-			lobbyService.insertDurationOfGame(room, username, new Date(0));
-			eventsService.addSpecialEvent(room);
+		if (lobbyService.getNumberOfDisconnectedPlayer(room) < lobbyService.getNumOfPlayersInTheRoom(room) - 1) {
 
-			// Se hanno finito tutti ed esco salvo il match sulla base di dati
-			if (lobbyService.getMatches().get(room).getMatch().getDurations().size() == lobbyService.getMatches()
-					.get(room).getMatch().getPlayersSize()) {
-				eventsService.removeData(room);
+			/**
+			 * Duration equal to 0 indicate that a user was disconnected
+			 */
+			lobbyService.insertDurationOfGame(room, username, new Date(0));
+			eventsService.addDisconnectedEvent(room);
+
+			/**
+			 * @SpecialCase In this case all the other players ended the game(Not
+			 *              Disconnected). The last one decide to disconnect so the match
+			 *              was saved on the DB and all the reference from the server were
+			 *              deleted.
+			 * 
+			 *              It cause a Capture of the exception in the method
+			 * @see handleExitFromReviewPage(HttpSession)
+			 * @see checkIfTheCurrentUserIsTheWinner(HttpSession)
+			 * @see getMatchInformation(HttpSession)
+			 * 
+			 *      (This only if the user refresh the review page)
+			 * 
+			 */
+			if (lobbyService.getDurationsOfPlayers(room).size() == lobbyService.getNumOfPlayersInTheRoom(room)
+					&& lobbyService.getNumberOfDisconnectedPlayer(room) < lobbyService.getNumOfPlayersInTheRoom(room)) {
+
+				eventsService.removeRoomData(room);
 				lobbyService.saveMatch(room);
+				lobbyService.removeMatch(room);
 			}
 
 		} else {
 			lobbyService.removeMatch(room);
-			eventsService.removeData(room);
-			eventsService.removeUserData(username);
+			eventsService.removeRoomData(room);
 		}
 
-		eventsService.removeUserData((String) session.getAttribute("username"));
+		eventsService.removePlayerLastInserted(username);
 		session.removeAttribute("sudoku");
 		session.removeAttribute("idRoom");
 		response.setStatus(HttpServletResponse.SC_ACCEPTED);

@@ -7,20 +7,7 @@
 <meta charset="ISO-8859-1">
 <title>Game review</title>
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-<!-- jQuery library -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link href="http://cdn.phpoll.com/css/animate.css" rel="stylesheet">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<jsp:include page="include.jsp"></jsp:include>
 <link rel="stylesheet" type="text/css" href="resources/css/review.css" />
 <script type="text/javascript" src="resources/js/review.js"></script>
 
@@ -36,11 +23,34 @@
 			</div>
 		</div>
 
+
+		<hr>
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+				<div id="allOut" class="rgu-al alert alert-danger" role="alert"
+					hidden="true">
+					<button type="button" id="btn-rgu" class="btn close"
+						aria-hidden="true">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					</button>
+					<strong> <span class="glyphicon glyphicon-remove"
+						aria-hidden="true"></span> ERROR!
+					</strong>
+					<p>
+						Pay Attention, all the <strong>User</strong> was disconnected!
+					</p>
+				</div>
+			</div>
+		</div>
+
+
+
+
 		<div class="row">
 			<section class="content">
 				<div class="col-md-8 col-md-offset-2">
 					<hr>
-					<div id="lose">
+					<div id="lose" hidden="true">
 						<h1>
 							<c:forEach var="i" begin="1" end="3">
 								<i style="color: red;" class="fa fa-frown-o fa-${i }x"
@@ -55,16 +65,16 @@
 						</h1>
 					</div>
 
-					<div id="win">
+					<div id="win" hidden="true">
 						<h1>
 							<c:forEach var="i" begin="1" end="3">
-								<i style="color: orange;" class="fa fa-smile-o fa-${i }x"
+								<i style="color: green;" class="fa fa-smile-o fa-${i }x"
 									aria-hidden="true"></i>
 							</c:forEach>
 
 							<strong> You Win </strong>
 							<c:forEach var="i" begin="1" end="3" step="1">
-								<i style="color: orange;" class="fa fa-smile-o fa-${4-i }x"
+								<i style="color: green;" class="fa fa-smile-o fa-${4-i }x"
 									aria-hidden="true"></i>
 							</c:forEach>
 						</h1>

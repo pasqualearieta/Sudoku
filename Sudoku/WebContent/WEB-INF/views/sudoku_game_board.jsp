@@ -115,7 +115,7 @@
 	</div>
 
 	<!-- Modal -->
-	<div id="resultModal" class="modal fade" data-backdrop="static">
+	<div id="resultModal" class="modal fade" data-backdrop="static" hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">

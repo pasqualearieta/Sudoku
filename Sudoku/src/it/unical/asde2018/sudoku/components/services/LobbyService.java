@@ -47,6 +47,14 @@ public class LobbyService {
 		return matches.size();
 	}
 
+	public Match getMatch(int roomId) {
+		return getMatches().get(roomId).getMatch();
+	}
+
+	public Map<User, Long> getDurationsOfPlayers(int roomId) {
+		return getMatches().get(roomId).getMatch().getDurations();
+	}
+
 	public int createRoom(User creator, Difficulty difficulty, String name) {
 
 		Match match = new Match(creator, difficulty, name);
@@ -85,15 +93,17 @@ public class LobbyService {
 
 	public void insertDurationOfGame(int room, String username, Date date) {
 
-		getMatches().get(room).getMatch().getDurations().put(userDAO.getUser(username),
-				date.getTime() - getMatches().get(room).getMatch().getStarting_date().getTime());
+		Long time_to_inset = (date.getTime() > 0)
+				? date.getTime() - getMatches().get(room).getMatch().getStarting_date().getTime()
+				: 0;
+		getMatches().get(room).getMatch().getDurations().put(userDAO.getUser(username), time_to_inset);
 	}
 
 	public int getNumOfPlayersInTheRoom(int room) {
 		return getMatches().get(room).getMatch().getPlayers().size();
 	}
 
-	public Difficulty getRoomDifficulty(int room) {
+	public Difficulty getMatchDifficulty(int room) {
 		return getMatches().get(room).getMatch().getDifficulty();
 	}
 
@@ -111,6 +121,7 @@ public class LobbyService {
 	}
 
 	public void removeMatch(int room) {
+		System.err.println("rimuovo il match");
 		getMatches().remove(room);
 	}
 

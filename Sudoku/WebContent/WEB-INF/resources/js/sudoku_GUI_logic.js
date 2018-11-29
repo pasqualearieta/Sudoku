@@ -17,9 +17,6 @@ $(document).ready(function() {
 	updateBar();
 	var d = new Date();
 	$("#startingTime").val(d.getTime());
-	$("#resultModal").modal('hide');
-	
-	
 	// flow function
 	status();
 	main();
@@ -34,9 +31,7 @@ $(document).ready(function() {
 	});
 
 	$("#quitGame").on('click', function() {
-		
 		quit = true;
-		
 		$.ajax({
 			type: "POST",
 			url : "leaveMatchBeforeEnd",
@@ -56,8 +51,6 @@ function main() {
 }
 
 function status() {
-	
-	console.log("chiamo status")
 	if (quit == false && ended == false) {
 		$.ajax({
 			type: "POST",
@@ -110,13 +103,11 @@ function checkEndGame() {
 			},
 			success : function(result) {
 				if (result != "WRONG") {
-					
 					ended = true;
 					updateModal("Game Result", result, "exit");
 				} else {
 					$("#wrongSudoku").fadeIn();
-					console.log("wrong");
-				}
+			}
 			},
 
 		});

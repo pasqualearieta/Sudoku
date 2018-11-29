@@ -1,7 +1,5 @@
 $(document).ready(function() {
 
-	$("#lose").hide();
-	$("#win").hide();
 	getWinner();
 	getMatchInfo();
 
@@ -11,9 +9,7 @@ $(document).ready(function() {
 			url : "exitGame",
 			success : function(result) {
 				window.location.href = "./";
-
 			},
-
 		});
 	});
 
@@ -35,51 +31,58 @@ function getMatchInfo() {
 				type : "POST",
 				url : "getMatchInfo",
 				success : function(result) {
-					var parsed = JSON.parse(result);
 
-					for (i = 0; i < parsed.numPlayers; i++) {
-						var duration = undefined;
-						for (y = 0; y < parsed.durations.length; y++) {
-							if (parsed.durations[y].username == parsed.players[i].username)
-								duration = parsed.durations[y].value;
-						}
-						var clas = undefined;
-						var durationToShow = undefined;
-						switch (duration) {
-						case 0:
-							clas = "disconnected";
-							durationToShow = " ";
-							break;
-						case undefined:
-							clas = "gaming";
-							durationToShow = " - ";
-							break;
-						default:
-							clas = "ended";
-							durationToShow = timeConversion(duration) + " ";
-							break;
-						}
+					if (result != "AllOut") {
+						var parsed = JSON.parse(result);
 
-						$("#reviewbody")
-								.append(
-										'<tr data-status='
-												+ clas
-												+ '>'
-												+ '<td> <i style="color: blue;" class="fa fa-user-circle-o fa-2x" aria-hidden="true"></i> </td>'
-												+ '<td><h4>'
-												+ parsed.players[i].username
-												+ '</h4></td>'
-												+ '<td><h5 class="title">'
-												+ durationToShow + '</h5>'
-												+ '</td>' + '<td><span class='
-												+ clas + '>('
-												+ clas.toUpperCase()
-												+ ')</span></td>' + '</tr>');
+						for (i = 0; i < parsed.numPlayers; i++) {
+							var duration = undefined;
+							for (y = 0; y < parsed.durations.length; y++) {
+								if (parsed.durations[y].username == parsed.players[i].username)
+									duration = parsed.durations[y].value;
+							}
+							var clas = undefined;
+							var durationToShow = undefined;
+							switch (duration) {
+							case 0:
+								clas = "disconnected";
+								durationToShow = " ";
+								break;
+							case undefined:
+								clas = "gaming";
+								durationToShow = " - ";
+								break;
+							default:
+								clas = "ended";
+								durationToShow = timeConversion(duration) + " ";
+								break;
+							}
+
+							$("#reviewbody")
+									.append(
+											'<tr data-status='
+													+ clas
+													+ '>'
+													+ '<td> <i style="color: blue;" class="fa fa-user-circle-o fa-2x" aria-hidden="true"></i> </td>'
+													+ '<td><h4>'
+													+ parsed.players[i].username
+													+ '</h4></td>'
+													+ '<td><h5 class="title">'
+													+ durationToShow + '</h5>'
+													+ '</td>'
+													+ '<td><span class=' + clas
+													+ '>(' + clas.toUpperCase()
+													+ ')</span></td>' + '</tr>');
+
+						}
 
 					}
 
-				},
+					else {
+						$("#allOut").fadeIn();
+					}
 
+				},
 			});
 }
 
@@ -88,23 +91,21 @@ function getWinner() {
 		type : "POST",
 		url : "getWinner",
 		success : function(result) {
-			if (result == "winner")
-				$("#win").show();
-			else
-				$("#lose").show();
+			if (result != "allOut") {
+				if (result == "winner")
+					$("#win").show();
+				else
+					$("#lose").show();
+			}
 		},
-
 	});
 }
 
 function timeConversion(millisec) {
 
 	var seconds = (millisec / 1000).toFixed(1);
-
 	var minutes = (millisec / (1000 * 60)).toFixed(1);
-
 	var hours = (millisec / (1000 * 60 * 60)).toFixed(1);
-
 	var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);
 
 	if (seconds < 60) {
