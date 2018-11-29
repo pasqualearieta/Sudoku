@@ -87,7 +87,7 @@
 
 					<c:if test="${empty username }">
 						<!--REGISTRATION-->
-						<li class="dropdown"><a href="" class="dropdown-toggle"
+						<li class="dropdown"><a href="registerToogleNavigation" class="dropdown-toggle"
 							data-toggle="dropdown">Register <span class="caret"></span></a>
 							<ul class="dropdown-menu dropdown-lr animated flipInX"
 								role="menu">
@@ -97,9 +97,6 @@
 											<b>Register</b>
 										</h3>
 									</div>
-
-
-
 									<form action="register" method="post" role="form"
 										autocomplete="off" id="registration_form">
 										<div class="form-group">

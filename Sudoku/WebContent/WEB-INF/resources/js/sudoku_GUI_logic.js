@@ -18,7 +18,7 @@ $(document).ready(function() {
 	var d = new Date();
 	$("#startingTime").val(d.getTime());
 	// flow function
-	status();
+	retrieveOpponentStatus();
 	main();
 
 	$("#exit").on('click', function() {
@@ -50,7 +50,7 @@ function main() {
 	checkEndGame();
 }
 
-function status() {
+function retrieveOpponentStatus() {
 	if (quit == false && ended == false) {
 		$.ajax({
 			type: "POST",
@@ -81,7 +81,7 @@ function status() {
 
 				else {
 					setTimeout(function() {
-						status();
+						retrieveOpponentStatus();
 					}, 3000)
 				}
 			},
@@ -124,6 +124,7 @@ function checkEndGame() {
 
 }
 
+// Sudoku Grid function
 function Sudoku() {
 	var $domobj = $("#sudoku");
 	$domobj
@@ -544,7 +545,7 @@ this.getPuzzleArrayStr = function() {
 	}
 	return txt;
 };
-
+// END SUDOKU GRID FUNCTION
 
 function updateBar(){
     $(".ldBar-label").hide();
