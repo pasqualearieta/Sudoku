@@ -129,12 +129,14 @@ public class LobbyService {
 		Map<Integer, Room> windowed_room = new LinkedHashMap<>();
 
 		int window_to_access = indexOfTheLastRoomToShowInTheWindow / MATCHES_TO_SHOW;
+
 		int pos = (window_to_access * MATCHES_TO_SHOW) - MATCHES_TO_SHOW;
 
 		for (int i = 0; i < MATCHES_TO_SHOW; i++) {
 			try {
 				int key = (new ArrayList<>(matches.keySet())).get(pos);
 				Room val = (new ArrayList<>(matches.values())).get(pos);
+
 				if (val.isVisible())
 					windowed_room.put(key, val);
 				pos++;

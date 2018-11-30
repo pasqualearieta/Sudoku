@@ -1,10 +1,21 @@
 .panel-body {
-    height: 400px;
+    height: 600px;
     text-align: center;
 }
 
-h3 {
+h1 {
     font-weight: bold;
+    color: white;
+}
+
+body {
+    background: #0d161f;
+}
+
+.panel-footer, .panel-body, .panel, .panel-default {
+    background: none;
+    border: 0;
+    box-shadow: none;
 }
 
 #preloader {
