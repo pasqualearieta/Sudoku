@@ -17,9 +17,9 @@
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
 				<div class="panel panel-default">
-					<div class="panel-heading"></div>
+					
 					<div class="panel-body">
-						<h3>Waiting for other player</h3>
+						<h1>Waiting for other player</h1>
 						<p id="message"></p>
 						<div id="preloader">
 							<div id="loader"></div>

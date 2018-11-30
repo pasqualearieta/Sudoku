@@ -15,17 +15,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import it.unical.asde18.serializer.LobbySerializer;
+import it.unical.asde2018.sudoku.components.services.ConnectedUsersService;
 import it.unical.asde2018.sudoku.components.services.CredentialService;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
 import it.unical.asde2018.sudoku.logic.Room;
 
 @Controller
 public class CredentialsController {
-	@Autowired
-	private CredentialService credentialService;
 
 	@Autowired
+	private CredentialService credentialService;
+	@Autowired
 	private LobbyService lobbyService;
+	@Autowired
+	private ConnectedUsersService connectedUsers;
 
 	@GetMapping("/")
 	public String home(HttpSession session) {
@@ -71,6 +74,10 @@ public class CredentialsController {
 
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
+
+		String userToDisconnect = (String) session.getAttribute("username");
+		connectedUsers.removeConnectedUser(userToDisconnect);
+
 		session.invalidate();
 		return "redirect:/";
 
@@ -92,6 +99,7 @@ public class CredentialsController {
 
 		if (credentialService.login(username, password)) {
 			session.setAttribute("username", username);
+			connectedUsers.addConnectedUser(username);
 			result = "LOGIN_OK";
 		} else
 			result = "Username or Password not valid!";
@@ -109,6 +117,7 @@ public class CredentialsController {
 
 		if (credentialService.registerUser(username, password)) {
 			session.setAttribute("username", username);
+			connectedUsers.addConnectedUser(username);
 			return "SUCCESS";
 		} else
 			return "USERNAME";

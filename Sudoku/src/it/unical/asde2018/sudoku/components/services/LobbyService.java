@@ -62,7 +62,7 @@ public class LobbyService {
 	public void joinRoom(User player, int idRoomToJoin) {
 		matches.get(idRoomToJoin).getMatch().getPlayers().add(player);
 		// NOW NOBODY CAN SEE THIS AGAIN
-		// matches.get(idRoomToJoin).setVisible(false);
+//		matches.get(idRoomToJoin).setVisible(false);
 
 		// TODO reindirizzare a pagina gioco
 	}

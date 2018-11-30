@@ -118,7 +118,6 @@ public class MatchController {
 			session.removeAttribute("idRoom");
 			output.setResult("chiudi");
 		} else {
-			System.err.println("SETTO LOOP");
 			output.setResult("loop");
 		}
 
