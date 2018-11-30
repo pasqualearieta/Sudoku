@@ -205,6 +205,7 @@ function Sudoku() {
 			_self.setSelectedValue(evt.keyCode - 48);
 			break;
 		}
+		e.preventDefault();
 		console.log(checkAllNumberInserted());
 	});
 
