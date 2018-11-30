@@ -7,7 +7,6 @@
 <head>
 <meta charset="utf-8">
 <jsp:include page="include.jsp"></jsp:include>
-<link href="resources/css/waiting_style.css" rel="stylesheet">
 
 <link href="resources/css/sudoku_style.css" rel="stylesheet">
 <script src="resources/js/sudoku_GUI_logic.js"></script>

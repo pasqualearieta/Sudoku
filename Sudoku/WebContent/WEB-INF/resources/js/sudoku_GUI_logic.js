@@ -206,7 +206,7 @@ function Sudoku() {
 			_self.setSelectedValue(evt.keyCode - 48);
 			break;
 		}
-		console.log(checkAllNumberInserted());
+		e.preventDefault();
 	});
 
 	this.importPuzzle = function(puzzleStr) {

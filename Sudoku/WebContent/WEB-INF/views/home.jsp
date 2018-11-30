@@ -6,13 +6,10 @@
 <head>
 <meta charset="utf-8">
 <jsp:include page="navbar.jsp"></jsp:include>
-
-<script src="resources/js/home.js"></script>
 </head>
 <style>
 <!--
-#hmlg {
-	border: 3px solid #fff;
+body { #hmlg { border:3pxsolid#fff;
 	-moz-box-shadow: 15px 15px 5px #ccc;
 	-webkit-box-shadow: 15px 15px 5px #ccc;
 	box-shadow: 15px 15px 5px #ccc;
@@ -20,18 +17,19 @@
 	-webkit-border-radius: 25px;
 	border-radius: 15px;
 }
+
 -->
 </style>
-<body>
-
-	<div class="row">
-		<div class="col-md-12" style="text-align: center;">
-			<h2>Login or Register to Play</h2>
+<body >
+	<div class="container" id="back">
+		<div class="row">
+			<div class="col-md-12" style="text-align: center;">
+				<h2>Login or Register to Play</h2>
+			</div>
 		</div>
-	</div>
 
 
-	<div class="container">
+
 		<div class="row" style="margin-top: 1%;">
 			<div>
 				<img id="hmlg" src="resources/img/home.gif"
@@ -69,18 +67,18 @@
 				</h4>
 
 				<div>
-					<img id="hmlg" src="resources/img/19.PNG"
+					<img id="hmlg" src="resources/img/block.PNG"
 						style="display: block; margin-left: auto; margin-right: auto"
-						width="25%" height="25%" />
+						width="28%" height="28%" />
 				</div>
 				<hr>
 				<h4 id="f3">Each column must contain all of the numbers 1
 					through 9 and no two numbers in the same column of a Sudoku puzzle
 					can be the same.</h4>
 				<div>
-					<img id="hmlg" src="resources/img/22.PNG"
+					<img id="hmlg" src="resources/img/column.PNG"
 						style="display: block; margin-left: auto; margin-right: auto"
-						width="25%" height="25%" />
+						width="28%" height="28%" />
 				</div>
 
 				<hr>
@@ -89,9 +87,9 @@
 					same.</h4>
 
 				<div>
-					<img id="hmlg" src="resources/img/21.PNG"
+					<img id="hmlg" src="resources/img/row.PNG"
 						style="display: block; margin-left: auto; margin-right: auto"
-						width="25%" height="25%" />
+						width="28%" height="28%" />
 				</div>
 				<hr>
 				<h4>Each block must contain all of the numbers 1 through 9 and
@@ -99,9 +97,9 @@
 					same.</h4>
 
 				<div>
-					<img id="hmlg" src="resources/img/20.PNG"
+					<img id="hmlg" src="resources/img/blockError.PNG"
 						style="display: block; margin-left: auto; margin-right: auto"
-						width="25%" height="25%" />
+						width="28%" height="28%" />
 				</div>
 			</div>
 		</div>
