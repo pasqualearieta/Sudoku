@@ -1,5 +1,6 @@
 package it.unical.asde2018.sudoku.components.persistence;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import javax.annotation.PostConstruct;
@@ -11,10 +12,11 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import it.unical.asde2018.sudoku.model.Match;
 import it.unical.asde2018.sudoku.model.User;
 
 @Repository
-public class UserDAO{
+public class UserDAO {
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -23,37 +25,33 @@ public class UserDAO{
 	private void init() {
 		save(new User("andrea", "andrea"));
 		save(new User("a", "a"));
-		save(new User("b", "b"));
+		save(new User("q", "q"));
 	}
-	
+
 	public void update(User object) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
-		try
-		{
+		try {
 			transaction = session.beginTransaction();
 			session.update(object);
 			transaction.commit();
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			transaction.rollback();
 		}
 
 		session.close();
 	}
-	
+
 	public void save(User object) {
 
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
 
-		try
-		{
+		try {
 			transaction = session.beginTransaction();
 			session.save(object);
 			transaction.commit();
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			transaction.rollback();
 		}
 
@@ -87,12 +85,15 @@ public class UserDAO{
 				username);
 
 		User result = query.uniqueResult();
+
+		result.getMatches().size(); // lazy
 		
-		//lazy initialization
-		result.setMatches(new HashSet<>());
-		result.getMatches().size(); //lazy
+		
+		for(Match m: result.getMatches())
+			System.out.println("MATCH: " + m.toString());
 		
 		session.close();
 		return result;
 	}
+
 }

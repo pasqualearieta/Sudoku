@@ -58,7 +58,6 @@ public class CredentialsController {
 		int requested_pagination = Integer.parseInt(index);
 		int finalIndex = requested_pagination * LobbyService.getMatchesToShow();
 		session.setAttribute("currentPagination", requested_pagination);
-		System.out.println(lobbyService.getTotalRoomPage());
 		session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
 		Map<Integer, Room> roomInTheWindow = lobbyService.getRoomInTheWindow(finalIndex);
 		LobbySerializer ls = new LobbySerializer(roomInTheWindow);
@@ -72,9 +71,9 @@ public class CredentialsController {
 		return "redirect:/";
 	}
 
-	
-	
-	
+
+
+
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 
@@ -86,13 +85,14 @@ public class CredentialsController {
 
 	}
 
+/*
 	@GetMapping("/dashboard")
 	public String viewHistory(HttpSession session) {
 		session.setAttribute("dashboard", "dashboard");
 		return "dashboard";
 
 	}
-
+*/
 	@PostMapping("/login")
 	@ResponseBody
 	@Async

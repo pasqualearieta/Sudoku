@@ -52,7 +52,7 @@ public class MatchController {
 	@GetMapping("wait")
 	@Async
 	public String waitBeforePlay(HttpSession session) {
-		System.out.println("MatchController.waitBeforePlay()");
+		
 
 		return "waiting";
 	}
