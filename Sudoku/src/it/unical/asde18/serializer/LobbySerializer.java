@@ -24,6 +24,7 @@ public class LobbySerializer {
 	public String getJSon() {
 		String json = "";
 		try {
+			System.out.println("PROVA");
 			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(serializedObject);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
