@@ -40,7 +40,7 @@ public class HistoryAnaliticsController {
 		}
 		session.removeAttribute("dashboard");
 		session.setAttribute("viewLobby", "viewLobby");
-		session.setAttribute("previousMatches", previousMatches);
+		session.setAttribute("user", userObj);
 		return "dashboard";
 	}
 }

@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
+<script src="resources/js/review.js"></script>
 <head>
   <title>History</title>
   <jsp:include page="navbar.jsp"></jsp:include>
@@ -17,7 +18,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-lg-12">
-        <h1 class="page-header animated bounce" align="center">Performances</h1>
+        <h1 class="page-header animated bounce" align="center">Performance metrics</h1>
       </div>
     </div>
 
@@ -29,8 +30,7 @@
                 <i class="fa fa-smile-o fa-4x" aria-hidden="true"></i>
               </div>
               <div class="col-xs-9 text-right">
-                <div>Win</div>
-                <div class="huge">Ratio of won matches</div> 
+                <div class="huge"><h1>Victories</h1></div>
               </div>
             </div>
           </div>
@@ -44,7 +44,7 @@
 	          <div class="panel-body easypiechart-panel">
 	            <h4>EASY</h4>
 	            <div class="easypiechart" id="easypiechart-ew" data-percent="${easyWinRatio}">
-	            	<span class="percent">${easyWinRatio}</span>
+	            	<span class="percent">${easyWinRatio}%</span>
 	            </div>
 	          </div>
 	        </div>
@@ -56,7 +56,7 @@
 	          <div class="panel-body easypiechart-panel">
 	            <h4>MEDIUM</h4>
 	            <div class="easypiechart" id="easypiechart-mw" data-percent="${mediumWinRatio}">
-	            	<span class="percent">${mediumWinRatio}</span>
+	            	<span class="percent">${mediumWinRatio}%</span>
 	            </div>
 	          </div>
 	        </div>
@@ -68,7 +68,7 @@
 	          <div class="panel-body easypiechart-panel">
 	            <h4>HARD</h4>
 	            <div class="easypiechart" id="easypiechart-hw" data-percent="${hardWinRatio}">
-	            	<span class="percent">${hardWinRatio}</span>
+	            	<span class="percent">${hardWinRatio}%</span>
 	            </div>
 	          </div>
 	        </div>
@@ -87,8 +87,7 @@
                <i class="fa fa-meh-o fa-4x" aria-hidden="true"></i>
              </div>
              <div class="col-xs-9 text-right">
-               <div>Draw</div>
-               <div class="huge">Ratio of drawn matches</div> 
+               <div class="huge"><h1>Tied</h1></div> 
              </div>
            </div>
          </div>
@@ -102,7 +101,7 @@
 	          <div class="panel-body easypiechart-panel">
 	            <h4>EASY</h4>
 	            <div class="easypiechart" id="easypiechart-ed" data-percent="${easyDrawRatio}">
-	            	<span class="percent">${easyDrawRatio}</span>
+	            	<span class="percent">${easyDrawRatio}%</span>
 	            </div>
 	          </div>
 	        </div>
@@ -114,7 +113,7 @@
 	          <div class="panel-body easypiechart-panel">
 	            <h4>MEDIUM</h4>
 	            <div class="easypiechart" id="easypiechart-md" data-percent="${mediumDrawRatio}">
-	            	<span class="percent">${mediumDrawRatio}</span>
+	            	<span class="percent">${mediumDrawRatio}%</span>
 	            </div>
 	          </div>
 	        </div>
@@ -126,7 +125,7 @@
 	          <div class="panel-body easypiechart-panel">
 	            <h4>HARD</h4>
 	            <div class="easypiechart" id="easypiechart-hd" data-percent="${hardDrawRatio}">
-	            	<span class="percent">${hardDrawRatio}</span>
+	            	<span class="percent">${hardDrawRatio}%</span>
 	            </div>
 	          </div>
 	        </div>
@@ -143,9 +142,8 @@
           <i class="fa fa-frown-o fa-4x" aria-hidden="true"></i>
         </div>
         <div class="col-xs-9 text-right">
-          <div>Lose</div>
-          <div class="huge">Ratio of lost matches</div> 
-        </div>
+          <div class="huge"><h1>Defeats</h1></div>
+        </div> 
       </div>
     </div>
   </div>
@@ -158,7 +156,7 @@
 	          <div class="panel-body easypiechart-panel">
 	            <h4>EASY</h4>
 	            <div class="easypiechart" id="easypiechart-el" data-percent="${easyLoseRatio}">
-	            	<span class="percent">${easyLoseRatio}</span>
+	            	<span class="percent">${easyLoseRatio}%</span>
 	            </div>
 	          </div>
 	        </div>
@@ -170,7 +168,7 @@
 	          <div class="panel-body easypiechart-panel">
 	            <h4>MEDIUM</h4>
 	            <div class="easypiechart" id="easypiechart-ml" data-percent="${mediumLoseRatio}">
-	            	<span class="percent">${mediumLoseRatio}</span>
+	            	<span class="percent">${mediumLoseRatio}%</span>
 	            </div>
 	          </div>
 	        </div>
@@ -182,7 +180,7 @@
 	          <div class="panel-body easypiechart-panel">
 	            <h4>HARD</h4>
 	            <div class="easypiechart" id="easypiechart-hl" data-percent="${hardLoseRatio}">
-	            	<span class="percent">${hardLoseRatio}</span>
+	            	<span class="percent">${hardLoseRatio}%</span>
 	            </div>
 	          </div>
 	        </div>
@@ -193,14 +191,13 @@
     <hr>
 
 
-  <div class="row">
+  <div class="row col-xs-12 col-md-12">
     <div class="col-md-12">
       <h3 class="animated bounce">Avg resolution time <i class="fa fa-clock-o fa-2x" aria-hidden="true"></i></h3>
     </div>
   </div>
 
 <div class="parent">
-  <div class="row">
   	<div class="left">
 	    <div class="col-xs-12  animated pulse" id="left-pie">
 	      <div class="panel panel-success">
@@ -211,7 +208,11 @@
 	            </div>
 	            <div class="col-xs-9 text-right">
 	              <div>Easy</div>
-	              <div class="huge">${easyAverageDuration}</div>
+	              <div class="huge">
+				    <script>
+						var durSecs = '<c:out value="${easyAverageDuration}"/>';
+						document.write(timeConversion(durSecs));
+					</script></div>
 	            </div>
 	          </div>
 	        </div>
@@ -228,7 +229,11 @@
 	            </div>
 	            <div class="col-xs-9 text-right">
 	              <div>Medium</div>
-	              <div class="huge">${mediumAverageDuration}</div>
+	              <div class="huge">
+				    <script>
+						var durSecs = '<c:out value="${mediumAverageDuration}"/>';
+						document.write(timeConversion(durSecs));
+					</script></div>
 	            </div>
 	          </div>
 	        </div>
@@ -246,14 +251,17 @@
 	            </div>
 	            <div class="col-xs-9 text-right">
 	              <div>Hard</div>
-	              <div class="huge">${hardAverageDuration}</div>
+	              <div class="huge">
+				    <script>
+						var durSecs = '<c:out value="${hardAverageDuration}"/>';
+						document.write(timeConversion(durSecs));
+					</script></div>
 	            </div>
 	          </div>
 	        </div>
 	      </div>
 	    </div>
     </div>
-	</div>
 	</div>
 
 
@@ -267,6 +275,18 @@
   </div>
 
 
+
+<c:set var="previousMatches" scope="session" value="${user.matches}"/>
+<c:set var="totalCount" scope="session" value="${easyHistorySize+mediumHistorySize+hardHistorySize}"/>
+<c:set var="perPage" scope="session"  value="${5}"/>
+<c:set var="pageStart" value="${param.start}"/>
+<c:if test="${empty pageStart or pageStart < 0}">
+       <c:set var="pageStart" value="0"/>
+</c:if>
+<c:if test="${totalCount < pageStart}">
+       <c:set var="pageStart" value="${pageStart - perPage}"/>
+</c:if>
+
   <div class="container">
     <div class="row">
       <div class="col-md-12 col-xs-12">
@@ -279,13 +299,21 @@
               <th>Elapsed Time</th>
             </thead>
             <tbody>
-            <c:forEach items="${previousMatches}" var="match"> 
+			<tr>
+			    <td colspan="4"></td>
+		     </tr>
+            <c:forEach items="${user.matches}" var="match"  begin="${pageStart}" end="${pageStart + perPage - 1}"> 
             	<c:forEach items="${match.durations}" var="durationEntry"> 
 				  <tr>
 				    <td>${match.starting_date}</td>
 				    <td>${match.name}</td>
 				    <td><c:out value="${durationEntry.key.username}"/></td>
-				    <td><c:out value="${durationEntry.value}"/></td>
+				    <script>
+						<c:set var="duration" value="${durationEntry.value}"/> 
+						var durSecs = '<c:out value="${duration}"/>';
+						document.write('<td>'+timeConversion(durSecs)+'</td>');
+					</script>
+				    
 				  </tr>
 				</c:forEach>
 				<tr>
@@ -294,7 +322,11 @@
 			</c:forEach>
             </tbody>
           </table>
+		
+    <a href="?start=${pageStart - perPage}"><<</a>${pageStart + 1} - ${pageStart + perPage} 
+    <a href="?start=${pageStart + perPage}">>></a>                                               
 
+		
           <div class="clearfix"></div>
           <!--  <ul class="pagination pull-right">
             <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>

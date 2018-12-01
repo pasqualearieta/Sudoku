@@ -1,5 +1,7 @@
 package it.unical.asde2018.sudoku.components.services;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +55,14 @@ public class HistoryAnalyticsService {
 		return metrics;
 	}
 
+	private static double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    BigDecimal bd = new BigDecimal(value);
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
+	}
+	
 	private Map<String, Double> getMetricsByDiff(String username, List<Match> previousMatches, Difficulty diff) {
 		HashMap<String, Double> metrics = new HashMap<>();
 
@@ -122,20 +132,20 @@ public class HistoryAnalyticsService {
 			total_matches = 1;
 		}
 		metrics.put("HistorySize", total_matches);
-		metrics.put("WinRatio", won / total_matches * 100);
-		metrics.put("DrawRatio", drawn / total_matches * 100);
-		metrics.put("LoseRatio", lost / total_matches * 100);
+		metrics.put("WinRatio",round(won / total_matches * 100,2));
+		metrics.put("DrawRatio", round(drawn / total_matches * 100,2));
+		metrics.put("LoseRatio", round(lost / total_matches * 100,2));
 		metrics.put("AverageDuration", duration / total_matches);
 		// metrics.put("Score", score);
 		return metrics;
 	}
 
 	public List<Match> getPreviousMatches(User user) {
-		List<Match> to_retunr = new ArrayList<Match>();
+		List<Match> to_return = new ArrayList<Match>();
 
 		for (Match m : user.getMatches())
-			to_retunr.add(m);
-		return to_retunr;
+			to_return.add(m);
+		return to_return;
 
 	}
 }
