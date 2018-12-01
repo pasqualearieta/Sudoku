@@ -121,7 +121,7 @@ public class LobbyService {
 	}
 
 	public void removeMatch(int room) {
-		System.err.println("rimuovo il match");
+	//	System.err.println("rimuovo il match");
 		getMatches().remove(room);
 	}
 
@@ -132,16 +132,22 @@ public class LobbyService {
 
 		int pos = (window_to_access * MATCHES_TO_SHOW) - MATCHES_TO_SHOW;
 
-		for (int i = 0; i < MATCHES_TO_SHOW; i++) {
-			try {
-				int key = (new ArrayList<>(matches.keySet())).get(pos);
-				Room val = (new ArrayList<>(matches.values())).get(pos);
-
-				if (val.isVisible())
-					windowed_room.put(key, val);
-				pos++;
-			} catch (Exception e) {
+		int index = 0;
+		int values = 0;
+		for (Map.Entry<Integer, Room> entry : matches.entrySet())
+		{
+			if (values == MATCHES_TO_SHOW)
 				break;
+
+			if (entry.getValue().isVisible())
+			{
+				if (index < pos)
+					index++;
+				else
+				{
+					windowed_room.put(entry.getKey(), entry.getValue());
+					values++;
+				}
 			}
 		}
 		return windowed_room;

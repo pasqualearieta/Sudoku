@@ -17,7 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import it.unical.asde18.serializer.LobbySerializer;
+import it.unical.asde18.serializer.Pagination;
 import it.unical.asde2018.sudoku.components.services.ConnectedUsersService;
 import it.unical.asde2018.sudoku.components.services.CredentialService;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
@@ -46,14 +50,23 @@ public class CredentialsController {
 	@Async
 	public DeferredResult<String> refreshList(@RequestParam String index, HttpSession session) {
 
-		int requested_pagination = Integer.parseInt(index);
+		int requested_pagination = 1;
+		if (index != "")
+			requested_pagination = Integer.parseInt(index);
 		int finalIndex = requested_pagination * LobbyService.getMatchesToShow();
-		session.setAttribute("currentPagination", requested_pagination);
-		session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
-		Map<Integer, Room> roomInTheWindow = lobbyService.getRoomInTheWindow(finalIndex);
-		LobbySerializer ls = new LobbySerializer(roomInTheWindow);
+//		session.setAttribute("currentPagination", requested_pagination);
+//		session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
+		Pagination pg = new Pagination(requested_pagination, lobbyService.getTotalRoomPage(), lobbyService.getRoomInTheWindow(finalIndex));
+		ObjectMapper mapper = new ObjectMapper();
 		DeferredResult<String> json = new DeferredResult<>();
-		json.setResult(ls.getJSon());
+		try
+		{
+			json.setResult(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(pg));
+		} catch (JsonProcessingException e)
+		{
+			e.printStackTrace();
+			json.setResult("null");
+		}
 		return json;
 	}
 

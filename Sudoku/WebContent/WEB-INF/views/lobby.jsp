@@ -101,7 +101,7 @@
 								of ${total_room_page }
 								</c:if>
 								</div>
-								<div class="col col-xs-8" id = "ciclo">
+								<!--div class="col col-xs-8" id = "ciclo">
 									<ul class="pagination hidden-xs pull-right">
 										<li><button class="btn btn-warning" type="submit">«</button></li>
 										
@@ -113,7 +113,10 @@
 										
 										<li><button class="btn btn-warning pg-button-arrow-right" value="${currentPagination}" type="submit">»</button></li>
 									</ul>
-								</div>
+								</div-->
+									<div class="col col-xs-8">
+								<ul class="pagination hidden-xs pull-right" id = "foreach">
+								</ul>
 							</div>
 						</div>
 					</div>
@@ -121,6 +124,7 @@
 
 		</div>
 	</div>
-	<div id = "page_current" hidden = true>1</div>
+		<div id ="page_current" hidden=true>1</div>
+	<div id = "total_room_pages" hidden = true>1</div>
 </body>
 </html>
