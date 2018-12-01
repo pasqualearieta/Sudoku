@@ -96,7 +96,7 @@ public class HistoryAnalyticsService {
 					duration += part_duration;
 				}
 
-				if (winnerUsername == null || part_duration < minDuration) {
+				if (part_duration>0 && (winnerUsername == null || part_duration < minDuration)) {
 					winnerUsername = part_user;
 					minDuration = part_duration;
 					match_drawn = false;
