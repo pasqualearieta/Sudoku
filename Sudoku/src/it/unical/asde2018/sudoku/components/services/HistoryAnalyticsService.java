@@ -64,6 +64,8 @@ public class HistoryAnalyticsService {
 		// double score = 0; TODO: Consider score and standings
 
 		for (Match m : previousMatches) {
+			
+			System.out.println(m.getDurations().toString());
 			Difficulty m_diff = m.getDifficulty();
 			if (m_diff != diff)
 				continue;
@@ -77,6 +79,8 @@ public class HistoryAnalyticsService {
 			// Compute match results
 			// TODO: Consider moving to Match.java as Enum.OUTCOME playerStatus(username)
 
+			System.out.println(m.getDurations().toString() +"    COSE DEL MATCH");
+			
 			Map<User, Long> durations = m.getDurations();
 			for (User participant : durations.keySet()) {
 				long part_duration = durations.get(participant);
@@ -86,7 +90,7 @@ public class HistoryAnalyticsService {
 					duration += part_duration;
 				}
 
-				if (winnerUsername == null || part_duration < minDuration) {
+				if (winnerUsername == null || part_duration < minDuration) {	
 					winnerUsername = part_user;
 					minDuration = part_duration;
 					match_drawn = false;
@@ -133,8 +137,14 @@ public class HistoryAnalyticsService {
 	public List<Match> getPreviousMatches(User user) {
 		List<Match> to_retunr = new ArrayList<Match>();
 
+		System.out.println(user.toString() + "TU SEI");
+		
 		for (Match m : user.getMatches())
-			to_retunr.add(m);
+		{	to_retunr.add(m);
+		System.out.println("ma dio bau");
+		}
+		
+		
 		return to_retunr;
 
 	}

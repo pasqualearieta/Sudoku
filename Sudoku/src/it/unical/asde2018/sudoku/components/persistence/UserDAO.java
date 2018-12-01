@@ -1,8 +1,5 @@
 package it.unical.asde2018.sudoku.components.persistence;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
 import javax.annotation.PostConstruct;
 
 import org.hibernate.Session;
@@ -90,7 +87,7 @@ public class UserDAO {
 		
 		
 		for(Match m: result.getMatches())
-			System.out.println("MATCH: " + m.toString());
+			System.out.println(m.toString());
 		
 		session.close();
 		return result;

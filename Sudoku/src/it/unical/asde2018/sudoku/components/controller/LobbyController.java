@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import it.unical.asde18.serializer.LobbySerializer;
+import it.unical.asde2018.serializer.Pagination;
 import it.unical.asde2018.sudoku.components.persistence.UserDAO;
 import it.unical.asde2018.sudoku.components.services.GameStartService;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
@@ -81,10 +85,20 @@ public class LobbyController {
 		session.setAttribute("currentPagination", requested_pagination);
 		session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
 		Map<Integer, Room> roomInTheWindow = lobbyService.getRoomInTheWindow(finalIndex);
-		LobbySerializer ls = new LobbySerializer(roomInTheWindow);
 		DeferredResult<String> json = new DeferredResult<>();
-		json.setResult(ls.getJSon());
+		Pagination pg = new Pagination(requested_pagination,lobbyService.getTotalRoomPage(), roomInTheWindow);
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try
+		{
+			json.setResult(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(pg));
+		} catch (JsonProcessingException e)
+		{
+			json.setResult("null");
+		}
+		
 		return json;
+	
 	}
 
 	@PostMapping("leaveRoom")

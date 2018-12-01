@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -36,7 +37,7 @@ public class DispatcherConfiguration implements WebMvcConfigurer {
 	public SessionFactory sessionFactory() {
 
 		LocalSessionFactoryBean lsfb = new LocalSessionFactoryBean();
-		lsfb.setDataSource(getDataSource());
+	//	lsfb.setDataSource(getDataSource());
 		lsfb.setHibernateProperties(getHibernateProperties());
 		lsfb.setPackagesToScan("it.unical.asde2018.sudoku.model");
 
@@ -50,13 +51,23 @@ public class DispatcherConfiguration implements WebMvcConfigurer {
 
 	}
 
-	private Properties getHibernateProperties() {
+	private static Properties getHibernateProperties() {
 
 		Properties prop = new Properties();
-		prop.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-		prop.put("hibernate.show_sql", true);
-		prop.put("hibernate.format_sql", true);
-		prop.put("hibernate.hbm2ddl.auto", "create");
+
+		try
+		{
+			prop.load(PropertiesLoaderUtils.class.getResourceAsStream("/hibernate.properties"));
+			System.out.println(prop.toString());
+		} catch (Exception e)
+		{
+			System.out.println("ERRORE");
+			e.printStackTrace();
+		}
+//		prop.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+//		prop.put("hibernate.show_sql", true);
+//		prop.put("hibernate.format_sql", true);
+//		prop.put("hibernate.hbm2ddl.auto", "create");
 		return prop;
 	}
 

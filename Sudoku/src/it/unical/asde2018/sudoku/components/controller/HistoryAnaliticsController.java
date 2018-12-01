@@ -26,11 +26,9 @@ public class HistoryAnaliticsController {
 	@GetMapping("/dashboard")
 	public String viewHistory(HttpSession session) {
 		String username = (String) session.getAttribute("username");
-		if(username==null)
+		if(username.equals(null))
 			return "redirect://home";
 		User userObj = credentialService.getUser(username);
-		
-		System.err.println(userObj.toString());
 		
 		
 		List<Match> previousMatches = historyAnalyticsService.getPreviousMatches(userObj);

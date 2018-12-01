@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,7 +110,7 @@ public class LobbyService {
 
 	public void saveMatch(int room) {
 
-		System.err.println("Sto salvando il match");
+		System.err.println("Sto salvando il match  " + room);
 		matchDAO.save(getMatches().get(room).getMatch());
 
 		for (User user : getMatches().get(room).getMatch().getPlayers()) {
@@ -132,19 +133,26 @@ public class LobbyService {
 
 		int pos = (window_to_access * MATCHES_TO_SHOW) - MATCHES_TO_SHOW;
 
-		for (int i = 0; i < MATCHES_TO_SHOW; i++) {
-			try {
-				int key = (new ArrayList<>(matches.keySet())).get(pos);
-				Room val = (new ArrayList<>(matches.values())).get(pos);
-
-				if (val.isVisible())
-					windowed_room.put(key, val);
-				pos++;
-			} catch (Exception e) {
+		int index = 0;
+		int values = 0;
+		for (Map.Entry<Integer, Room> entry : matches.entrySet())
+		{
+			if (values == MATCHES_TO_SHOW)
 				break;
+
+			if (entry.getValue().isVisible())
+			{
+				if (index < pos)
+					index++;
+				else
+				{
+					windowed_room.put(entry.getKey(), entry.getValue());
+					values++;
+				}
 			}
 		}
 		return windowed_room;
+		
 	}
 
 	public int getTotalRoomPage() {

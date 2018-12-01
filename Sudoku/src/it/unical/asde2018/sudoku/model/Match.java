@@ -19,7 +19,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import it.unical.asde18.serializer.MatchSerializer;
@@ -27,7 +26,7 @@ import it.unical.asde2018.sudoku.logic.util.Difficulty;
 
 @JsonSerialize(using=MatchSerializer.class)
 @Entity
-@Table
+@Table(name = "match_table")
 public class Match {
 
 	@Id
@@ -57,7 +56,7 @@ public class Match {
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 
-		s.append("Match [id=" + id + ", creating_date=" + creating_date + ", starting_date=" + starting_date
+		s.append("Matches [id=" + id + ", creating_date=" + creating_date + ", starting_date=" + starting_date
 				+ ", difficulty=" + difficulty + ", name=" + name);
 
 		for (Long l : durations.values())
@@ -185,4 +184,6 @@ public class Match {
 	public int getPlayersSize() {
 		return players.size();
 	}
+	
+	
 }

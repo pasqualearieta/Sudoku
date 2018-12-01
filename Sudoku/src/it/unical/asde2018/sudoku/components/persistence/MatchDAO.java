@@ -15,7 +15,7 @@ public class MatchDAO{
 	@Autowired
 	private SessionFactory sessionFactory;
 
-
+	
 	public void save(Match object) {
 
 		Session session = sessionFactory.openSession();
@@ -28,6 +28,7 @@ public class MatchDAO{
 			transaction.commit();
 		} catch (Exception e)
 		{
+			e.printStackTrace();
 			transaction.rollback();
 		}
 
