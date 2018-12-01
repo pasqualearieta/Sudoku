@@ -10,7 +10,7 @@ $(document).ready(function() {
 			success : function(data) {
 
 				if (data === "LOGIN_OK") {
-					window.location.href = "./"
+					window.location.href = "./lobby";
 				} else {
 
 					$('.lg-al').fadeIn('slow');
@@ -24,9 +24,9 @@ $(document).ready(function() {
 	});
 
 	$("#registration_form").on("submit", function() {
-		
+
 		$("#register-submit").hide();
-		
+
 		$.ajax({
 			type : "POST",
 			url : "register",
@@ -36,24 +36,21 @@ $(document).ready(function() {
 				confirm_password : $('#confirm-password_register').val()
 			},
 			success : function(data) {
-				if (data === "SUCCESS"){
+				if (data === "SUCCESS") {
 					$(".rg-ok").fadeIn(2500);
-					
+
 					setTimeout(function() {
-				        window.location.href = "./";
-				    }, 3000);
-				}
-				else if (data === "USERNAME")
-				{
+						window.location.href = "./lobby";
+					}, 3000);
+				} else if (data === "USERNAME") {
 					$('.rgu-al').fadeIn('slow');
 					$("#register-submit").show();
-				}
-				else if (data === "PASSWORD") {
+				} else if (data === "PASSWORD") {
 					$('.rgp-al').fadeIn('slow');
 					$("#register-submit").show();
 
 				}
-				
+
 			},
 		});
 
@@ -62,18 +59,27 @@ $(document).ready(function() {
 
 	$('#btn-lgn').on("click", function() {
 		$('.lg-al').fadeOut('slow');
+
 	});
 
 	$('#btn-rgp').on("click", function() {
 		$('.rgp-al').fadeOut('slow');
 	});
-	
+
 	$('#btn-rgu').on("click", function() {
 		$('.rgu-al').fadeOut('slow');
 	});
 
 	$('#logo').on("click", function() {
-		window.location.href = "./";
+		$.ajax({
+			type : "POST",
+			url : "goToHome",
+
+			success : function() {
+				window.location.href = "./";
+			},
+		});
+
 	});
 
 });

@@ -102,8 +102,6 @@ function getEventsFromServer() {
 			});
 
 	$(".join").click(function() {
-		// alert($(this).closest('tr').find('td.difficulty').text());
-
 		$.ajax({
 			type : "POST",
 			url : "joinRoom",
@@ -114,7 +112,6 @@ function getEventsFromServer() {
 			// difficulty : $(this).closest('tr').find('td.difficulty').text()
 			},
 			success : function() {
-				alert("SUCCESS JOIN");
 				window.location.href = "./wait";
 			}
 		});

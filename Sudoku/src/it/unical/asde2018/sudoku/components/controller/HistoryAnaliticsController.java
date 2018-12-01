@@ -27,7 +27,7 @@ public class HistoryAnaliticsController {
 	public String viewHistory(HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		if(username==null)
-			return "redirect://home";
+			return "redirect:/";
 		User userObj = credentialService.getUser(username);
 		
 		System.err.println(userObj.toString());
@@ -38,6 +38,8 @@ public class HistoryAnaliticsController {
 		for(String s : metrics.keySet()) {
 			session.setAttribute(s, metrics.get(s));
 		}
+		session.removeAttribute("dashboard");
+		session.setAttribute("viewLobby", "viewLobby");
 		session.setAttribute("previousMatches", previousMatches);
 		return "dashboard";
 	}

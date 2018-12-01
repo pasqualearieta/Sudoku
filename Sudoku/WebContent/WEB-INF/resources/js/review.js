@@ -8,7 +8,7 @@ $(document).ready(function() {
 			type : "POST",
 			url : "exitGame",
 			success : function(result) {
-				window.location.href = "./";
+				window.location.href = "./lobby";
 			},
 		});
 	});
@@ -79,6 +79,7 @@ function getMatchInfo() {
 					}
 
 					else {
+						$("#paneReviews").hide();
 						$("#allOut").fadeIn();
 					}
 

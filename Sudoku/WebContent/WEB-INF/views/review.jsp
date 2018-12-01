@@ -37,7 +37,8 @@
 						aria-hidden="true"></span> ERROR!
 					</strong>
 					<p>
-						Pay Attention, all the <strong>User</strong> was disconnected!
+						Pay Attention, all the <strong>User</strong> was disconnected!. <br>
+						You can check your result in the History
 					</p>
 				</div>
 			</div>
@@ -81,7 +82,7 @@
 					</div>
 
 					<hr>
-					<div class="panel panel-default">
+					<div id="paneReviews" class="panel panel-default">
 						<div class="panel-body">
 							<div class="pull-right">
 								<div class="btn-group">

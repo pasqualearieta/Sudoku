@@ -2,6 +2,7 @@ package it.unical.asde2018.sudoku.components.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -32,22 +35,10 @@ public class CredentialsController {
 
 	@GetMapping("/")
 	public String home(HttpSession session) {
-		session.removeAttribute("dashboard");
-		if (session.getAttribute("sudoku") != null)
-			return "sudoku_game_board";
-		else {
-			if (session.getAttribute("username") != null) {
-				session.setAttribute("currentPagination", 1);
-				if (lobbyService.getMatchesSize() > 0) {
-					if (session.getAttribute("currentPagination") == null || (int) session.getAttribute("currentPagination") == 1)
-						session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
-				} else
-					session.setAttribute("total_room_page", 1);
-				return "lobby";
-
-			} else
-				return "home";
-		}
+		session.setAttribute("viewLobby", "viewLobby");
+		session.setAttribute("dashboard", "dashboard");
+		session.setAttribute("currentPagination", 1);
+		return "home";
 	}
 
 	@GetMapping("refresh")
@@ -66,13 +57,22 @@ public class CredentialsController {
 		return json;
 	}
 
-	@GetMapping("/GoToLobby")
-	public String goToLobby() {
-		return "redirect:/";
+	@RequestMapping(value = "/lobby", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToLobby(HttpSession session) {
+
+		session.removeAttribute("viewLobby");
+		session.setAttribute("dashboard", "dashboard");
+		if (session.getAttribute("username") != null) {
+			session.setAttribute("currentPagination", 1);
+			if (lobbyService.getMatchesSize() > 0) {
+				if (session.getAttribute("currentPagination") == null
+						|| (int) session.getAttribute("currentPagination") == 1)
+					session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
+			} else
+				session.setAttribute("total_room_page", 1);
+		}
+		return "lobby";
 	}
-
-
-
 
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
@@ -85,18 +85,11 @@ public class CredentialsController {
 
 	}
 
-/*
-	@GetMapping("/dashboard")
-	public String viewHistory(HttpSession session) {
-		session.setAttribute("dashboard", "dashboard");
-		return "dashboard";
-
-	}
-*/
 	@PostMapping("/login")
 	@ResponseBody
 	@Async
-	public String loginAttempt(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
+	public String loginAttempt(@RequestParam String username, @RequestParam String password, HttpSession session,
+			Model model) {
 
 		String result = "";
 
@@ -113,7 +106,8 @@ public class CredentialsController {
 	@PostMapping("/register")
 	@ResponseBody
 	@Async
-	public String registrationAttempt(@RequestParam String username, @RequestParam String password, @RequestParam String confirm_password, HttpSession session, Model model) {
+	public String registrationAttempt(@RequestParam String username, @RequestParam String password,
+			@RequestParam String confirm_password, HttpSession session, Model model) {
 
 		if (!confirm_password.equals(password))
 			return "PASSWORD";
@@ -124,6 +118,13 @@ public class CredentialsController {
 			return "SUCCESS";
 		} else
 			return "USERNAME";
+	}
+
+	@PostMapping("/goToHome")
+	@ResponseBody
+	@Async
+	public void redirectToHome(HttpSession session, HttpServletResponse response) {
+		response.setStatus(HttpServletResponse.SC_ACCEPTED);
 	}
 
 }

@@ -44,6 +44,26 @@
 				</div>
 			</div>
 		</div>
+		
+		
+		<!-- Modal -->
+	<div id="resultModal" class="modal fade" data-backdrop="static" hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalTitle">Disconnected</h4>
+				</div>
+				<div class="modal-body">
+					The creator leave the room
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="disconnected" class="btn btn-primary">Exit</button>
+				</div>
+			</div>
+		</div>
+	</div>
+		
+		
 	</div>
 
 </body>

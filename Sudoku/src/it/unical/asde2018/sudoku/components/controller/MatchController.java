@@ -10,19 +10,19 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import it.unical.asde2018.sudoku.components.persistence.UserDAO;
-import it.unical.asde2018.sudoku.components.services.CredentialService;
 import it.unical.asde2018.sudoku.components.services.GameStartService;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.unical.asde2018.sudoku.components.services.PlayerEventsService;
-
 
 @Controller
 public class MatchController {
@@ -44,7 +44,10 @@ public class MatchController {
 		return "review";
 	}
 
-
+	@RequestMapping(value = "/gameBoard", method = { RequestMethod.GET, RequestMethod.POST })
+	public String goToLobby(HttpSession session) {
+		return "sudoku_game_board";
+	}
 
 	@Autowired
 	private UserDAO userDao;
@@ -52,21 +55,19 @@ public class MatchController {
 	@GetMapping("wait")
 	@Async
 	public String waitBeforePlay(HttpSession session) {
-		
 
 		return "waiting";
 	}
 
 	@PostMapping("startRoom")
 	@Async
-	public String startMatch(HttpSession session) {
+	public void startMatch(HttpSession session, HttpServletResponse response) {
 
 		int room = (int) session.getAttribute("idRoom");
 		gameStartService.putStartEvent(room);
 
-		return "redirect:/";
+		response.setStatus(HttpServletResponse.SC_ACCEPTED);
 	}
-
 
 	/**
 	 * @param session
@@ -202,33 +203,41 @@ public class MatchController {
 	public DeferredResult<String> getEvents(HttpSession session) {
 
 		DeferredResult<String> output = new DeferredResult<>();
+		try {
 
-		int room = (int) session.getAttribute("idRoom");
-		String username = (String) session.getAttribute("username");
+			int room = (int) session.getAttribute("idRoom");
+			String username = (String) session.getAttribute("username");
 
-		System.err.println(lobbyService.getNumOfPlayersInTheRoom(room));
+			System.err.println(lobbyService.getNumOfPlayersInTheRoom(room));
 
-		if (lobbyService.getNumOfPlayersInTheRoom(room) == 2) {
-			lobbyService.getMatches().get(room).setVisible(false);
+			if (lobbyService.getNumOfPlayersInTheRoom(room) == 2) {
+				lobbyService.getMatches().get(room).setVisible(false);
 
-			if (lobbyService.getMatches().get(room).getCreator().getUsername().equals(username)) {
-				output.setResult("start_match");
+				if (lobbyService.getMatches().get(room).getCreator().getUsername().equals(username)) {
+					output.setResult("start_match");
+				} else {
+					if (gameStartService.getStartEvent(room))
+						output.setResult("go_to_board");
+					else
+						output.setResult("loop");
+				}
+			} else if (!lobbyService.getMatches().get(room).getCreator().getUsername().equals(username)
+					&& gameStartService.getDeleteEvent(room)) {
+				lobbyService.getMatches().get(room).getMatch().getPlayers().remove(userDao.getUser(username));
+				if (lobbyService.getMatches().get(room).getMatch().getPlayers().isEmpty())
+					lobbyService.getMatches().remove(room);
+
+				session.removeAttribute("sudoku");
+				session.removeAttribute("idRoom");
+				output.setResult("chiudi");
 			} else {
-				if (gameStartService.getStartEvent(room))
-					output.setResult("go_to_board");
-				else
-					output.setResult("loop");
+				output.setResult("loop");
 			}
-		} else if (!lobbyService.getMatches().get(room).getCreator().getUsername().equals(username) && gameStartService.getDeleteEvent(room)) {
-			lobbyService.getMatches().get(room).getMatch().getPlayers().remove(userDao.getUser(username));
-			if (lobbyService.getMatches().get(room).getMatch().getPlayers().isEmpty())
-				lobbyService.getMatches().remove(room);
 
+		} catch (Exception e) {
 			session.removeAttribute("sudoku");
 			session.removeAttribute("idRoom");
 			output.setResult("chiudi");
-		} else {
-			output.setResult("loop");
 		}
 
 		return output;

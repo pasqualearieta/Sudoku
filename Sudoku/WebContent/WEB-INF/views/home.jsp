@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -17,16 +18,18 @@ body { #hmlg { border:3pxsolid#fff;
 	-webkit-border-radius: 25px;
 	border-radius: 15px;
 }
-
 -->
 </style>
-<body >
+<body>
 	<div class="container" id="back">
-		<div class="row">
-			<div class="col-md-12" style="text-align: center;">
-				<h2>Login or Register to Play</h2>
+
+		<c:if test="${empty username }">
+			<div class="row">
+				<div class="col-md-12" style="text-align: center;">
+					<h2>Login or Register to Play</h2>
+				</div>
 			</div>
-		</div>
+		</c:if>
 
 
 

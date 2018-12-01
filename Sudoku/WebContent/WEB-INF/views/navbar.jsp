@@ -43,7 +43,7 @@
 								aria-hidden="true"></span> Welcome, ${username } <b
 								class="caret"></b></a>
 							<ul class="dropdown-menu dropdown-md animated slideInDown">
-								<c:if test="${empty dashboard }">
+								<c:if test="${not empty dashboard }">
 									<form action="dashboard">
 										<div class="text-center">
 											<li>
@@ -54,9 +54,13 @@
 											</li>
 										</div>
 									</form>
+
 								</c:if>
 								<c:if test="${not empty dashboard }">
-									<form action="GoToLobby">
+									<li class="divider"></li>
+								</c:if>
+								<c:if test="${not empty viewLobby }">
+									<form action="lobby">
 										<div class="text-center">
 											<li>
 												<button class="wrap_button" type="submit" name="lobby_btn"
@@ -68,7 +72,9 @@
 									</form>
 								</c:if>
 
-								<li class="divider"></li>
+								<c:if test="${not empty viewLobby }">
+									<li class="divider"></li>
+								</c:if>
 								<li>
 
 									<form action="logout">

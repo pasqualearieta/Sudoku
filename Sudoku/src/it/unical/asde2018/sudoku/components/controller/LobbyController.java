@@ -57,7 +57,7 @@ public class LobbyController {
 
 	@PostMapping("joinRoom")
 	@Async
-	public String joinRoom(@RequestParam String room, HttpSession session) {
+	public void joinRoom(@RequestParam String room, HttpSession session, HttpServletResponse response) {
 		if (session.getAttribute("sudoku") == null) {
 			String username = (String) session.getAttribute("username");
 			User user = userDao.getUser(username);
@@ -70,12 +70,13 @@ public class LobbyController {
 			session.setAttribute("idRoom", Integer.parseInt(room));
 		}
 
-		return "waiting";
+		response.setStatus(HttpServletResponse.SC_ACCEPTED);
 	}
 
 	@PostMapping("roomPagination")
 	@ResponseBody
-	public DeferredResult<String> switchRoomPagination(@RequestParam String index, HttpSession session, HttpServletResponse response) {
+	public DeferredResult<String> switchRoomPagination(@RequestParam String index, HttpSession session,
+			HttpServletResponse response) {
 		int requested_pagination = Integer.parseInt(index);
 		int finalIndex = requested_pagination * LobbyService.getMatchesToShow();
 		session.setAttribute("currentPagination", requested_pagination);
@@ -88,7 +89,8 @@ public class LobbyController {
 	}
 
 	@PostMapping("leaveRoom")
-	public String leaveRoom(@RequestParam String idRoom, HttpSession session) {
+	@Async
+	public void leaveRoom(@RequestParam String idRoom, HttpSession session, HttpServletResponse response) {
 
 		String username = (String) session.getAttribute("username");
 		int room = (int) session.getAttribute("idRoom");
@@ -97,7 +99,8 @@ public class LobbyController {
 			gameStartService.putDeleteEvent(room);
 		}
 
-		if (lobbyService.getMatches().get(room).getMatch().getPlayers().size() == 1 && lobbyService.getMatches().get(room).getCreator().getUsername().equals(username)) {
+		if (lobbyService.getMatches().get(room).getMatch().getPlayers().size() == 1
+				&& lobbyService.getMatches().get(room).getCreator().getUsername().equals(username)) {
 			lobbyService.getMatches().get(room).getMatch().getPlayers().remove(userDao.getUser(username));
 			lobbyService.getMatches().remove(room);
 		} else {
@@ -105,9 +108,10 @@ public class LobbyController {
 			lobbyService.getMatches().get(room).setVisible(true);
 
 		}
+
 		session.removeAttribute("sudoku");
 		session.removeAttribute("idRoom");
+		response.setStatus(HttpServletResponse.SC_ACCEPTED);
 
-		return "redirect:/";
 	}
 }

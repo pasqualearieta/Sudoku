@@ -1,28 +1,32 @@
 $(document).ready(function() {
 	$("#start-room").hide();
 
+	$('#disconnected').on('click', function() {
+		window.location.href = "./lobby";
+	});
+
 	$("#leave-room").click(function() {
 		var room = document.getElementById('idRoom').value;
 		$.ajax({
-			type : "POST", 
+			type : "POST",
 			url : "leaveRoom",
 			data : {
 				idRoom : room
 			},
 			success : function() {
-				window.location.href = "./";
-			}
+				window.location.href = "./lobby";
+			},
 		});
 	});
-	
+
 	checkBoardFull();
-	
+
 	$("#start-room").click(function() {
 		$.ajax({
 			type : "POST",
 			url : "startRoom",
 			success : function() {
-				window.location.href = "./";
+				window.location.href = "./gameBoard";
 			}
 		});
 	});
@@ -39,11 +43,12 @@ function checkBoardFull() {
 				setTimeout(function() {
 					checkBoardFull();
 				}, 1000)
+			} else if (result === "go_to_board")
+				window.location.href = "./gameBoard";
+			else if (result === "chiudi"){
+				$("#resultModal").modal('show');
+				$("#leave-room").hide();
 			}
-			else if(result === "go_to_board")
-				window.location.href = "./";
-			else if(result === "chiudi")
-				window.location.href = "./";
 			else {
 				$("#start-room").hide();
 				setTimeout(function() {
@@ -53,4 +58,3 @@ function checkBoardFull() {
 		},
 	});
 }
-

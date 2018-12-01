@@ -36,7 +36,7 @@ $(document).ready(function() {
 			type: "POST",
 			url : "leaveMatchBeforeEnd",
 			success : function(result) {
-				window.location.href = "./";
+				window.location.href = "./lobby";
 			},
 
 		});
@@ -104,6 +104,7 @@ function checkEndGame() {
 			success : function(result) {
 				if (result != "WRONG") {
 					ended = true;
+					$("#wrongSudoku").fadeOut();
 					updateModal("Game Result", result, "exit");
 				} else {
 					$("#wrongSudoku").fadeIn();
