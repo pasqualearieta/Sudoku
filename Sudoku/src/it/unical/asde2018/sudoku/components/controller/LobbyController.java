@@ -18,13 +18,13 @@ import org.springframework.web.context.request.async.DeferredResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.unical.asde18.serializer.Pagination;
 import it.unical.asde2018.sudoku.components.persistence.UserDAO;
 import it.unical.asde2018.sudoku.components.services.GameStartService;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
 import it.unical.asde2018.sudoku.components.services.SudokuGeneratorService;
 import it.unical.asde2018.sudoku.logic.Room;
 import it.unical.asde2018.sudoku.logic.util.Difficulty;
+import it.unical.asde2018.sudoku.logic.util.Pagination;
 import it.unical.asde2018.sudoku.logic.util.SudokuPuzzles;
 import it.unical.asde2018.sudoku.model.User;
 
@@ -37,8 +37,6 @@ public class LobbyController {
 	private LobbyService lobbyService;
 	@Autowired
 	private SudokuGeneratorService sudokuGeneratorService;
-	@Autowired
-	private UserDAO userDao;
 
 	/**
 	 * Method that allow the creating of a new room.

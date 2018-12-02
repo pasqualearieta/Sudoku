@@ -1,9 +1,10 @@
-package it.unical.asde18.serializer;
+package it.unical.asde2018.sudoku.logic.util;
 
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import it.unical.asde18.serializer.PaginationSerializer;
 import it.unical.asde2018.sudoku.logic.Room;
 
 @JsonSerialize(using=PaginationSerializer.class)

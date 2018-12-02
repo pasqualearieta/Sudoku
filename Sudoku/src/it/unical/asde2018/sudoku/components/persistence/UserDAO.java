@@ -1,25 +1,17 @@
 package it.unical.asde2018.sudoku.components.persistence;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
 import javax.annotation.PostConstruct;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import it.unical.asde2018.sudoku.model.Match;
 import it.unical.asde2018.sudoku.model.User;
 
 @Repository
-public class UserDAO {
+public class UserDAO extends UtilDAO{
 
-	@Autowired
-	private SessionFactory sessionFactory;
 
 	@PostConstruct
 	private void init() {
@@ -28,36 +20,6 @@ public class UserDAO {
 		save(new User("q", "q"));
 	}
 
-	public void update(User object) {
-		Session session = sessionFactory.openSession();
-		Transaction transaction = null;
-		try {
-			transaction = session.beginTransaction();
-			session.update(object);
-			transaction.commit();
-		} catch (Exception e) {
-			transaction.rollback();
-		}
-
-		session.close();
-	}
-
-	public void save(User object) {
-
-		Session session = sessionFactory.openSession();
-		Transaction transaction = null;
-
-		try {
-			transaction = session.beginTransaction();
-			session.save(object);
-			transaction.commit();
-		} catch (Exception e) {
-			transaction.rollback();
-		}
-
-		session.close();
-
-	}
 
 	public boolean availableUsername(User user) {
 		Session session = sessionFactory.openSession();
@@ -90,7 +52,7 @@ public class UserDAO {
 		
 		
 		for(Match m: result.getMatches())
-			System.out.println("MATCH: " + m.toString());
+			System.out.println("match: " + m.toString());
 		
 		session.close();
 		return result;

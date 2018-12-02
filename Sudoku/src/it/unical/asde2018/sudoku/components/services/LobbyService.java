@@ -24,6 +24,7 @@ public class LobbyService {
 
 	@Autowired
 	private MatchDAO matchDAO;
+	
 	@Autowired
 	private UserDAO userDAO;
 
@@ -43,6 +44,17 @@ public class LobbyService {
 
 	public int getMatchesSize() {
 		return matches.size();
+	}
+	
+	public int getVisibleMatchesSize()
+	{
+		int count = 0;
+		for (Map.Entry<Integer, Room> entry : matches.entrySet())
+		{
+			if (entry.getValue().isVisible())
+				count++;
+		}
+		return count;
 	}
 
 	public Match getMatch(int roomId) {
@@ -96,7 +108,6 @@ public class LobbyService {
 
 	public void saveMatch(int room) {
 
-		System.err.println("Sto salvando il match");
 		matchDAO.save(getMatches().get(room).getMatch());
 
 		for (User user : getMatches().get(room).getMatch().getPlayers()) {
@@ -107,7 +118,6 @@ public class LobbyService {
 	}
 
 	public void removeMatch(int room) {
-		// System.err.println("rimuovo il match");
 		getMatches().remove(room);
 	}
 
@@ -115,9 +125,7 @@ public class LobbyService {
 		Map<Integer, Room> windowed_room = new LinkedHashMap<>();
 
 		int window_to_access = indexOfTheLastRoomToShowInTheWindow / MATCHES_TO_SHOW;
-
 		int pos = (window_to_access * MATCHES_TO_SHOW) - MATCHES_TO_SHOW;
-
 		int index = 0;
 		int values = 0;
 		for (Map.Entry<Integer, Room> entry : matches.entrySet()) {
@@ -161,7 +169,7 @@ public class LobbyService {
 	}
 
 	public int getTotalRoomPage() {
-		return (int) Math.ceil((double) getMatchesSize() / getMatchesToShow());
+		return (int) Math.ceil((double) getVisibleMatchesSize() / getMatchesToShow());
 	}
 
 	public Long getNumberOfDisconnectedPlayer(int room) {

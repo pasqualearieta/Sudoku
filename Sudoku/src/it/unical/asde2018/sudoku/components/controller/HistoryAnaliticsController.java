@@ -30,9 +30,6 @@ public class HistoryAnaliticsController {
 			return "redirect:/";
 		User userObj = credentialService.getUser(username);
 		
-		System.err.println(userObj.toString());
-		
-		
 		List<Match> previousMatches = historyAnalyticsService.getPreviousMatches(userObj);
 		Map<String,Double> metrics = historyAnalyticsService.getMetrics(username,previousMatches);
 		for(String s : metrics.keySet()) {

@@ -16,7 +16,6 @@
 <body>
 
 	<p></p>
-	<h3>This Header Must be Removed!!! SPACE ONLY</h3>
 	<p></p>
 	<div class="container">
 		<div class="row">
@@ -64,67 +63,55 @@
 			</div>
 
 
-				<div class="col-md-6 col-md-offset-1">
-					<div class="panel panel-default panel-table" id="panel">
-						<div class="panel-heading" id="available-lobby-panel">
-							<div class="row">
-								<div class="col col-xs-6">
-									<h3 class="panel-title">
-										Available Lobby <i class="fa fa-handshake-o fa-2x"
-											aria-hidden="true"></i>
-									</h3>
-								</div>
+			<div class="col-md-6 col-md-offset-1">
+				<div class="panel panel-default panel-table" id="panel">
+					<div class="panel-heading" id="available-lobby-panel">
+						<div class="row">
+							<div class="col col-xs-6">
+								<h3 class="panel-title">
+									Available Lobby <i class="fa fa-handshake-o fa-2x"
+										aria-hidden="true"></i>
+								</h3>
 							</div>
 						</div>
-						<div class="panel-body">
-							<table class="table table-responsive  ">
-								<thead>
-									<tr>
-										<th class="header-divider"><i class="fa fa-user-o"
-											aria-hidden="true"></i> <em>Player</em></th>
-										<th class="header-divider">Name</th>
-										<th class="header-divider"><em>Difficulty</em></th>
-										<th class="header-divider"><em>Join</em> <i
-											class="fa fa-check-square-o check" aria-hidden="true"></i></th>
-									</tr>
-								</thead>
-								<tbody id="torep">
-								</tbody>
+					</div>
+					<div class="panel-body">
+						<table class="table table-responsive  ">
+							<thead>
+								<tr>
+									<th class="header-divider"><i class="fa fa-user-o"
+										aria-hidden="true"></i> <em>Player</em></th>
+									<th class="header-divider">Name</th>
+									<th class="header-divider"><em>Difficulty</em></th>
+									<th class="header-divider"><em>Join</em> <i
+										class="fa fa-check-square-o check" aria-hidden="true"></i></th>
+								</tr>
+							</thead>
+							<tbody id="torep">
+							</tbody>
 
-							</table>
-						</div>
-						<div class="panel-footer" id="available-lobby-panel">
-							<div class="row">
-								<div class="col col-xs-4">
-									Page ${currentPagination}
-									<c:if test="${total_room_page gt 1 }"> 
+						</table>
+					</div>
+					<div class="panel-footer" id="available-lobby-panel">
+						<div class="row">
+							<div class="col col-xs-4">
+								Page ${currentPagination}
+								<c:if test="${total_room_page gt 1 }"> 
 								of ${total_room_page }
 								</c:if>
-								</div>
-								<!--div class="col col-xs-8" id = "ciclo">
-									<ul class="pagination hidden-xs pull-right">
-										<li><button class="btn btn-warning" type="submit">«</button></li>
-										
-										<c:forEach begin="1" end="${total_room_page }"
-											varStatus="loop">
-											<li><button class="btn btn-warning pg-button"
-													type="submit" value="${currentPagination}">${loop.index}</button></li>
-										</c:forEach>
-										
-										<li><button class="btn btn-warning pg-button-arrow-right" value="${currentPagination}" type="submit">»</button></li>
-									</ul>
-								</div-->
-									<div class="col col-xs-8">
-								<ul class="pagination hidden-xs pull-right" id = "foreach">
+							</div>
+							<div class="col col-xs-8">
+								<ul class="pagination hidden-xs pull-right" id="foreach">
 								</ul>
 							</div>
 						</div>
 					</div>
 				</div>
 
+			</div>
 		</div>
 	</div>
-		<div id ="page_current" hidden=true>1</div>
-	<div id = "total_room_pages" hidden = true>1</div>
+	<div id="page_current" hidden=true>1</div>
+	<div id="total_room_pages" hidden=true>1</div>
 </body>
 </html>

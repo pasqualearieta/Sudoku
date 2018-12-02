@@ -13,19 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 @Entity
 @Table
 public class User {
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", matches=" + matches + "]";
-	}
 
 	@JsonIgnore
 	@Id
@@ -129,5 +122,10 @@ public class User {
 
 	public Long getId() {
 		return id;
+	}
+	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", matches=" + matches + "]";
 	}
 }

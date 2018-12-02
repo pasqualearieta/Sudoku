@@ -143,7 +143,7 @@ public class HistoryAnalyticsService {
 
 	public List<Match> getPreviousMatches(User user) {
 		List<Match> to_return = new ArrayList<>();
-
+		
 		for (Match m : user.getMatches())
 			to_return.add(m);
 		return to_return;

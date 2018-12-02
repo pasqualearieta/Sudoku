@@ -19,7 +19,6 @@ import org.springframework.web.context.request.async.DeferredResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.unical.asde2018.sudoku.components.persistence.UserDAO;
 import it.unical.asde2018.sudoku.components.services.GameStartService;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
 import it.unical.asde2018.sudoku.components.services.PlayerEventsService;
@@ -33,9 +32,6 @@ public class MatchController {
 	private LobbyService lobbyService;
 	@Autowired
 	private PlayerEventsService eventsService;
-
-	@Autowired
-	private UserDAO userDao;
 
 	/**
 	 * @return review page
@@ -282,7 +278,7 @@ public class MatchController {
 		String output = new String();
 		int roomId = 0;
 		String username = new String();
-		Integer opponentInsertedNumber = new Integer(0);
+		Integer opponentInsertedNumber = Integer.valueOf(0);
 		int difficultyNumber = 0;
 
 		try {

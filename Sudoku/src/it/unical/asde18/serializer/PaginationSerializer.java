@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import it.unical.asde2018.sudoku.logic.Room;
+import it.unical.asde2018.sudoku.logic.util.Pagination;
 
 public class PaginationSerializer extends JsonSerializer<Pagination>
 {

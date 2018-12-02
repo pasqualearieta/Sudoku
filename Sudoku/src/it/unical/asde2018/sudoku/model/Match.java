@@ -53,25 +53,6 @@ public class Match {
 	@Column
 	private Date starting_date;
 
-	@Override
-	public String toString() {
-		StringBuilder s = new StringBuilder();
-
-		s.append("Match [id=" + id + ", creating_date=" + creating_date + ", starting_date=" + starting_date
-				+ ", difficulty=" + difficulty + ", name=" + name);
-
-		for (Long l : durations.values())
-			s.append(" Duration: " + l + " ");
-
-		for (User a : players)
-			s.append(" User: " + a.getUsername() + " ");
-
-		s.append("]");
-
-		return s.toString();
-	}
-
-
 	public Match() {
 		super();
 	}
@@ -184,5 +165,23 @@ public class Match {
 	
 	public int getPlayersSize() {
 		return players.size();
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder s = new StringBuilder();
+
+		s.append("Match [id=" + id + ", creating_date=" + creating_date + ", starting_date=" + starting_date
+				+ ", difficulty=" + difficulty + ", name=" + name);
+
+		for (Long l : durations.values())
+			s.append(" Duration: " + l + " ");
+
+		for (User a : players)
+			s.append(" User: " + a.getUsername() + " ");
+
+		s.append("]");
+
+		return s.toString();
 	}
 }
