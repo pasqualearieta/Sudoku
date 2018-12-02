@@ -22,8 +22,8 @@ public class HistoryAnalyticsService {
 
 	public Map<String, Double> getMetrics(String username, List<Match> previousMatches) {
 		/*
-		 * Produce a bunch of performance metrics, given an username and a collection of
-		 * its previous matches.
+		 * Produce a bunch of performance metrics, given an username and a
+		 * collection of its previous matches.
 		 * 
 		 * @param username Username of the user whose metrics should be computed
 		 * 
@@ -35,9 +35,7 @@ public class HistoryAnalyticsService {
 
 		HashMap<String, Double> metrics = new HashMap<>();
 
-		Difficulty[] difficulties = new Difficulty[] { Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD };
-
-		for (Difficulty dif : difficulties) {
+		for (Difficulty dif : Difficulty.values()) {
 			Map<String, Double> dif_metrics = getMetricsByDiff(username, previousMatches, dif);
 			String prefix = null;
 			if (dif == Difficulty.EASY) {
@@ -56,13 +54,14 @@ public class HistoryAnalyticsService {
 	}
 
 	private static double round(double value, int places) {
-	    if (places < 0) throw new IllegalArgumentException();
+		if (places < 0)
+			throw new IllegalArgumentException();
 
-	    BigDecimal bd = new BigDecimal(value);
-	    bd = bd.setScale(places, RoundingMode.HALF_UP);
-	    return bd.doubleValue();
+		BigDecimal bd = new BigDecimal(value);
+		bd = bd.setScale(places, RoundingMode.HALF_UP);
+		return bd.doubleValue();
 	}
-	
+
 	private Map<String, Double> getMetricsByDiff(String username, List<Match> previousMatches, Difficulty diff) {
 		HashMap<String, Double> metrics = new HashMap<>();
 
@@ -85,29 +84,31 @@ public class HistoryAnalyticsService {
 			boolean match_drawn = false;
 
 			// Compute match results
-			// TODO: Consider moving to Match.java as Enum.OUTCOME playerStatus(username)
+			// TODO: Consider moving to Match.java as Enum.OUTCOME
+			// playerStatus(username)
 
 			Map<User, Long> durations = m.getDurations();
 			for (User participant : durations.keySet()) {
 				long part_duration = durations.get(participant);
-				String part_user = participant.getUsername();
+				if (part_duration != 0) {
+					String part_user = participant.getUsername();
 
-				if (part_user.equals(username)) {
-					duration += part_duration;
-				}
-
-				if (part_duration>0 && (winnerUsername == null || part_duration < minDuration)) {
-					winnerUsername = part_user;
-					minDuration = part_duration;
-					match_drawn = false;
-				} else if (part_duration == minDuration) { // It's a partial draw
-					if (part_user.equals(username) || winnerUsername.equals(username)) {
-						match_drawn = true;
-						winnerUsername = username;
+					if (part_user.equals(username)) {
+						duration += part_duration;
 					}
-				}
-			} // Compute outcomes for given user
 
+					if (part_duration > 0 && (winnerUsername == null || part_duration < minDuration)) {
+						winnerUsername = part_user;
+						minDuration = part_duration;
+						match_drawn = false;
+					} else if (part_duration == minDuration) { // It's a partial draw
+						if (part_user.equals(username) || winnerUsername.equals(username)) {
+							match_drawn = true;
+							winnerUsername = username;
+						}
+					}
+				} // Compute outcomes for given user
+			}
 			double outcome_coef = 0;
 
 			if (winnerUsername.equals(username)) {
@@ -126,22 +127,22 @@ public class HistoryAnalyticsService {
 		}
 		if (total_matches == 0) { // Never played a match
 			/*
-			 * TODO: Using this technique avoid NaN to be displayed, eventually consider a
-			 * different visualization for new user
+			 * TODO: Using this technique avoid NaN to be displayed, eventually
+			 * consider a different visualization for new user
 			 */
 			total_matches = 1;
 		}
 		metrics.put("HistorySize", total_matches);
-		metrics.put("WinRatio",round(won / total_matches * 100,2));
-		metrics.put("DrawRatio", round(drawn / total_matches * 100,2));
-		metrics.put("LoseRatio", round(lost / total_matches * 100,2));
+		metrics.put("WinRatio", round(won / total_matches * 100, 2));
+		metrics.put("DrawRatio", round(drawn / total_matches * 100, 2));
+		metrics.put("LoseRatio", round(lost / total_matches * 100, 2));
 		metrics.put("AverageDuration", duration / total_matches);
 		// metrics.put("Score", score);
 		return metrics;
 	}
 
 	public List<Match> getPreviousMatches(User user) {
-		List<Match> to_return = new ArrayList<Match>();
+		List<Match> to_return = new ArrayList<>();
 
 		for (Match m : user.getMatches())
 			to_return.add(m);

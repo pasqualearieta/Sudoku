@@ -8,7 +8,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameStartService {
 
+	/**
+	 * Indicate which of the available rooms can be started
+	 */
 	private Map<Integer, Boolean> roomToBeStarted = new HashMap<>();
+
+	/**
+	 * Indicates which of the available room must be deleted
+	 */
 	private Map<Integer, Boolean> roomToBeDeleted = new HashMap<>();
 
 	public void putStartEvent(int room) {

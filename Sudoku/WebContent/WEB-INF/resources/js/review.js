@@ -110,12 +110,12 @@ function timeConversion(millisec) {
 	var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);
 
 	if (seconds < 60) {
-		return seconds + " Sec";
+		return Math.round(seconds) + " Sec";
 	} else if (minutes < 60) {
-		return minutes + " Min";
+		return Math.round(minutes) + " Min";
 	} else if (hours < 24) {
-		return hours + " Hrs";
+		return Math.round(hours) + " Hrs";
 	} else {
-		return days + " Days"
+		return Math.round(days) + " Days"
 	}
 }

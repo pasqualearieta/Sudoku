@@ -15,7 +15,9 @@ public class SudokuGeneratorController {
 	@Autowired
 	private ConnectedUsersService connectedUsers;
 
-	// execute this method every second
+	/**
+	 * Scheduled method that allow the generation of the sudoku scheme
+	 */
 	@Scheduled(fixedDelay = 1000)
 	public void generate() {
 
@@ -24,20 +26,24 @@ public class SudokuGeneratorController {
 		int numberOfSudokuMedium = sudokuGeneratorService.getNumberOfSudokuMedium();
 		int numberOfSudokuHard = sudokuGeneratorService.getNumberOfSudokuHard();
 
-		if (numberOfConnectedUsers == 0) {
-			if (numberOfSudokuEasy < sudokuGeneratorService.getINITIAL_NUMBER_OF_SUDOKU_PER_DIFFICULTY())
-				sudokuGeneratorService.generateSudokuEasy();
-			if (numberOfSudokuMedium < sudokuGeneratorService.getINITIAL_NUMBER_OF_SUDOKU_PER_DIFFICULTY())
-				sudokuGeneratorService.generateSudokuMedium();
-			if (numberOfSudokuHard < sudokuGeneratorService.getINITIAL_NUMBER_OF_SUDOKU_PER_DIFFICULTY())
-				sudokuGeneratorService.generateSudokuHard();
+		if (sudokuGeneratorService.getTotalNumberOfSudokuAvailable() < sudokuGeneratorService.getINITIAL_NUMBER_OF_SUDOKU_PER_DIFFICULTY() * 3) {
+			sudokuGeneratorService.generateSudoku();
+
+			// System.out.println("SudokuGeneratorController.generate()---IF");
+			// System.err.println("SIZE -> E=" + numberOfSudokuEasy + " M=" +
+			// numberOfSudokuMedium + " H=" + numberOfSudokuHard);
 		} else {
-			if (numberOfSudokuEasy <= numberOfConnectedUsers / 2)
+			if (numberOfSudokuEasy <= Math.ceil((double) numberOfConnectedUsers / 2))
 				sudokuGeneratorService.generateSudokuEasy();
-			if (numberOfSudokuMedium <= numberOfConnectedUsers / 2)
+			if (numberOfSudokuMedium <= Math.ceil((double) numberOfConnectedUsers / 2))
 				sudokuGeneratorService.generateSudokuMedium();
-			if (numberOfSudokuHard <= numberOfConnectedUsers / 2)
+			if (numberOfSudokuHard <= Math.ceil((double) numberOfConnectedUsers / 2))
 				sudokuGeneratorService.generateSudokuHard();
+
+			// System.out.println("SudokuGeneratorController.generate()---ELSE");
+			// System.err.println("SIZE -> E=" + numberOfSudokuEasy + " M=" +
+			// numberOfSudokuMedium + " H=" + numberOfSudokuHard);
+
 		}
 	}
 }

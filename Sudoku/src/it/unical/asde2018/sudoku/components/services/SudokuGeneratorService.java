@@ -16,9 +16,12 @@ import it.unical.asde2018.sudoku.logic.util.SudokuPuzzles;
 @Service
 public class SudokuGeneratorService {
 
+	/**
+	 * Store for each difficulty a queue that contains sudokus
+	 */
 	private Map<Difficulty, Queue<SudokuPuzzles>> sudokusQueue;
 
-	private static final int INITIAL_NUMBER_OF_SUDOKU_PER_DIFFICULTY = 30;
+	private static final int INITIAL_NUMBER_OF_SUDOKU_PER_DIFFICULTY = 25;
 
 	@PostConstruct
 	private void init() {
@@ -35,22 +38,37 @@ public class SudokuGeneratorService {
 		return sudokusQueue.get(difficulty).poll();
 	}
 
+	/**
+	 * Method that generate three sudokus, one for each difficulty
+	 */
 	public void generateSudoku() {
 		generateSudokuEasy();
 		generateSudokuMedium();
 		generateSudokuHard();
 	}
 
+	/**
+	 * Method that generate an EASY sodoku and put it in the queue of easy
+	 * sudokus
+	 */
 	public void generateSudokuEasy() {
 		SudokuHandler sudokuEASY = new SudokuHandler(Difficulty.EASY);
 		sudokusQueue.get(Difficulty.EASY).add(new SudokuPuzzles(sudokuEASY.getSudokuToSolve(), sudokuEASY.getSudokuSolved()));
 	}
 
+	/**
+	 * Method that generate a MEDIUM sodoku and put it in the queue of medium
+	 * sudokus
+	 */
 	public void generateSudokuMedium() {
 		SudokuHandler sudokuMEDIUM = new SudokuHandler(Difficulty.MEDIUM);
 		sudokusQueue.get(Difficulty.MEDIUM).add(new SudokuPuzzles(sudokuMEDIUM.getSudokuToSolve(), sudokuMEDIUM.getSudokuSolved()));
 	}
 
+	/**
+	 * Method that generate a HARD sodoku and put it in the queue of hard
+	 * sudokus
+	 */
 	public void generateSudokuHard() {
 		SudokuHandler sudokuHARD = new SudokuHandler(Difficulty.HARD);
 		sudokusQueue.get(Difficulty.HARD).add(new SudokuPuzzles(sudokuHARD.getSudokuToSolve(), sudokuHARD.getSudokuSolved()));
@@ -68,16 +86,9 @@ public class SudokuGeneratorService {
 		return sudokusQueue.get(Difficulty.HARD).size();
 	}
 
-	public int getMinNumberOfSudokuAvailable() {
-		int numberEasy = sudokusQueue.get(Difficulty.EASY).size();
-		int numberMedium = sudokusQueue.get(Difficulty.MEDIUM).size();
-		int numberHard = sudokusQueue.get(Difficulty.HARD).size();
-
-		int m = Math.min(numberEasy, numberMedium);
-
-		return Math.min(m, numberHard);
-	}
-
+	/**
+	 * @return the total number of available sudokus
+	 */
 	public int getTotalNumberOfSudokuAvailable() {
 		int numberEasy = sudokusQueue.get(Difficulty.EASY).size();
 		int numberMedium = sudokusQueue.get(Difficulty.MEDIUM).size();

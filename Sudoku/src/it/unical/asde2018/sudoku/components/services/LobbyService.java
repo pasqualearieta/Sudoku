@@ -1,6 +1,5 @@
 package it.unical.asde2018.sudoku.components.services;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -20,20 +19,19 @@ import it.unical.asde2018.sudoku.model.User;
 @Service
 public class LobbyService {
 
+	private Map<Integer, Room> matches = new LinkedHashMap<>();
+	private static final int MATCHES_TO_SHOW = 2;
+
 	@Autowired
 	private MatchDAO matchDAO;
-
 	@Autowired
 	private UserDAO userDAO;
 
-	private Map<Integer, Room> matches = new LinkedHashMap<>();
-	private static final int MATCHES_TO_SHOW = 2;
+	private static int idRoom = 0;
 
 	public static int getMatchesToShow() {
 		return MATCHES_TO_SHOW;
 	}
-
-	private static int idRoom = 0;
 
 	public LobbyService() {
 		super();
@@ -65,15 +63,11 @@ public class LobbyService {
 		matches.put(idCurrentRoom, room);
 
 		return idCurrentRoom;
-		// TODO reindirizzare a pagina wait
 	}
 
 	public void joinRoom(User player, int idRoomToJoin) {
 		matches.get(idRoomToJoin).getMatch().getPlayers().add(player);
-		// NOW NOBODY CAN SEE THIS AGAIN
 		matches.get(idRoomToJoin).setVisible(false);
-
-		// TODO reindirizzare a pagina gioco
 	}
 
 	public static int getIdRoom() {
@@ -82,8 +76,7 @@ public class LobbyService {
 
 	public String matchWinner(int room) {
 
-		return (getMatches().get(room).getMatch().getDurations().entrySet().stream().filter(p -> p.getValue() != 0)
-				.min(Comparator.comparingLong(Map.Entry::getValue)).get().getKey()).getUsername();
+		return (getMatches().get(room).getMatch().getDurations().entrySet().stream().filter(p -> p.getValue() != 0).min(Comparator.comparingLong(Map.Entry::getValue)).get().getKey()).getUsername();
 
 	}
 
@@ -93,14 +86,8 @@ public class LobbyService {
 
 	public void insertDurationOfGame(int room, String username, Date date) {
 
-		Long time_to_inset = (date.getTime() > 0)
-				? date.getTime() - getMatches().get(room).getMatch().getStarting_date().getTime()
-				: 0;
-		getMatches().get(room).getMatch().getDurations().put(userDAO.getUser(username), time_to_inset);
-	}
-
-	public int getNumOfPlayersInTheRoom(int room) {
-		return getMatches().get(room).getMatch().getPlayers().size();
+		Long time_to_inset = (date.getTime() > 0) ? date.getTime() - getMatch(room).getStarting_date().getTime() : 0;
+		getMatches().get(room).getMatch().getDurations().put(getUser(username), time_to_inset);
 	}
 
 	public Difficulty getMatchDifficulty(int room) {
@@ -117,11 +104,10 @@ public class LobbyService {
 			userDAO.update(user);
 
 		}
-
 	}
 
 	public void removeMatch(int room) {
-	//	System.err.println("rimuovo il match");
+		// System.err.println("rimuovo il match");
 		getMatches().remove(room);
 	}
 
@@ -134,17 +120,14 @@ public class LobbyService {
 
 		int index = 0;
 		int values = 0;
-		for (Map.Entry<Integer, Room> entry : matches.entrySet())
-		{
+		for (Map.Entry<Integer, Room> entry : matches.entrySet()) {
 			if (values == MATCHES_TO_SHOW)
 				break;
 
-			if (entry.getValue().isVisible())
-			{
+			if (entry.getValue().isVisible()) {
 				if (index < pos)
 					index++;
-				else
-				{
+				else {
 					windowed_room.put(entry.getKey(), entry.getValue());
 					values++;
 				}
@@ -153,13 +136,46 @@ public class LobbyService {
 		return windowed_room;
 	}
 
+	public void setSudokuToSolveToTheRoom(int idRoom, String sudokuToSolve) {
+		getMatches().get(idRoom).setSudokuToSolve(sudokuToSolve);
+	}
+
+	public void setSudokuSolvedToTheRoom(int idRoom, String sudokuSolved) {
+		getMatches().get(idRoom).setSudokuSolved(sudokuSolved);
+	}
+
+	public int getNumberOfPlayersInTheRoom(int room) {
+		return getMatches().get(room).getMatch().getPlayers().size();
+	}
+
+	public void removeRoom(int room) {
+		getMatches().remove(room);
+	}
+
+	public void removePlayer(int room, String username) {
+		getMatch(room).getPlayers().remove(getUser(username));
+	}
+
+	public String getCreatorOfTheRoom(int room) {
+		return getMatches().get(room).getCreator().getUsername();
+	}
+
 	public int getTotalRoomPage() {
 		return (int) Math.ceil((double) getMatchesSize() / getMatchesToShow());
 	}
 
 	public Long getNumberOfDisconnectedPlayer(int room) {
-		return getMatches().get(room).getMatch().getDurations().entrySet().stream().filter(p -> p.getValue() == 0)
-				.collect(Collectors.counting());
+		return getMatches().get(room).getMatch().getDurations().entrySet().stream().filter(p -> p.getValue() == 0).collect(Collectors.counting());
 	}
 
+	/**
+	 * 
+	 * @param username
+	 *            of user to looking for
+	 * 
+	 * @return the desired User
+	 */
+	public User getUser(String username) {
+		return userDAO.getUser(username);
+	}
 }

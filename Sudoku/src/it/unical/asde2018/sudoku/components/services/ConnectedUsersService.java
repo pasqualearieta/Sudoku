@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConnectedUsersService {
 
+	/**
+	 * Stores the user logged into the system
+	 */
 	private Queue<String> connectedUsers = new LinkedBlockingQueue<>();
 
 	public void addConnectedUser(String usedID) {

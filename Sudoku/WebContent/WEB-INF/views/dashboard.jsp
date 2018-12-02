@@ -311,7 +311,11 @@
 				    <script>
 						<c:set var="duration" value="${durationEntry.value}"/> 
 						var durSecs = '<c:out value="${duration}"/>';
-						document.write('<td>'+timeConversion(durSecs)+'</td>');
+						var durationToShow = timeConversion(durSecs);
+						if(durSecs == 0)
+						 durationToShow = "Disconnected";
+						
+						document.write('<td>'+durationToShow+'</td>');
 					</script>
 				    
 				  </tr>
