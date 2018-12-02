@@ -2,25 +2,27 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html>
 
 <head>
+<title>Game Board</title>
 <meta charset="utf-8">
+
 <jsp:include page="include.jsp"></jsp:include>
 <!-- <link href="resources/css/waiting_style.css" rel="stylesheet"> -->
 
 <link href="resources/css/sudoku_style.css" rel="stylesheet">
 <script src="resources/js/sudoku_GUI_logic.js"></script>
 
-<link rel="stylesheet" type="text/css" href="resources/css/loading-bar.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/loading-bar.css" />
 <script type="text/javascript" src="resources/js/loading-bar.js"></script>
-
-
 </head>
 
 <body>
 	<input type="hidden" id="sudokuPuzzle" value="${sudoku}">
 	<input type="hidden" id="startingTime">
+
 	<div class="container-fluid" id="sudoku_board">
 		<div class="row">
 			<div class="col-md-3">
@@ -33,8 +35,6 @@
 				<h3 id="time" style="margin: 38px;"></h3>
 			</div>
 		</div>
-
-
 
 		<div class="row">
 			<div class="col-md-8"></div>
@@ -68,6 +68,7 @@
 		</div>
 
 		<hr>
+
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
 				<div id="wrongSudoku" class="rgu-al alert alert-danger" role="alert"
@@ -79,25 +80,27 @@
 					<strong> <span class="glyphicon glyphicon-remove"
 						aria-hidden="true"></span> ERROR!
 					</strong>
-					<p>Pay Attention, the <strong>Sudoku</strong> is wrong!</p>
+					<p>
+						Pay Attention, the <strong>Sudoku</strong> is wrong!
+					</p>
 				</div>
 			</div>
 
 		</div>
 
 		<hr>
+
 		<div class="row">
 			<div id="sudoku" class="sudokuContainer"></div>
 		</div>
+
 		<hr>
-
-
+		<!-- Loading Bar opponend -->
 		<div class="row" id="opponentStatus">
 			<div class="row">
 				<div class="col-md-offset-1">
 					<h3>Opponent Status</h3>
 				</div>
-
 			</div>
 
 			<div class="col-md-2 col-md-offset-3">
@@ -110,11 +113,13 @@
 					data-stroke="data:ldbar/res,gradient(0,1,#9df,#9fd,#df9,#fd9)"></div>
 			</div>
 		</div>
-
+		<!-- ./Loading Bar Opponent -->
 	</div>
+	<!-- ./container -->
 
 	<!-- Modal -->
-	<div id="resultModal" class="modal fade" data-backdrop="static" hidden="true">
+	<div id="resultModal" class="modal fade" data-backdrop="static"
+		hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -131,9 +136,6 @@
 		</div>
 	</div>
 	<!-- /.modal -->
-
-
-
 </body>
 
 </html>

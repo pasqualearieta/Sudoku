@@ -4,13 +4,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Game review</title>
+<title>Match review</title>
+<meta charset="utf-8">
 
 <jsp:include page="include.jsp"></jsp:include>
 <link rel="stylesheet" type="text/css" href="resources/css/review.css" />
 <script type="text/javascript" src="resources/js/review.js"></script>
-
 
 </head>
 <body>
@@ -23,8 +22,8 @@
 			</div>
 		</div>
 
-
 		<hr>
+
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
 				<div id="allOut" class="rgu-al alert alert-danger" role="alert"
@@ -43,9 +42,6 @@
 				</div>
 			</div>
 		</div>
-
-
-
 
 		<div class="row">
 			<section class="content">
@@ -82,6 +78,7 @@
 					</div>
 
 					<hr>
+
 					<div id="paneReviews" class="panel panel-default">
 						<div class="panel-body">
 							<div class="pull-right">
@@ -126,7 +123,8 @@
 				<button type="button" id="exit" class="btn btn-primary">Exit</button>
 			</div>
 		</div>
-	</div>
 
+	</div>
+	
 </body>
 </html>

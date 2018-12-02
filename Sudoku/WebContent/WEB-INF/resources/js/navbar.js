@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
 	$("#login_form").on("submit", function() {
 		$.ajax({
 			type : "POST",
@@ -57,6 +58,18 @@ $(document).ready(function() {
 		return false;
 	});
 
+	$('#logo').on("click", function() {
+		$.ajax({
+			type : "POST",
+			url : "goToHome",
+
+			success : function() {
+				window.location.href = "./";
+			},
+		});
+
+	});
+
 	$('#btn-lgn').on("click", function() {
 		$('.lg-al').fadeOut('slow');
 
@@ -68,18 +81,6 @@ $(document).ready(function() {
 
 	$('#btn-rgu').on("click", function() {
 		$('.rgu-al').fadeOut('slow');
-	});
-
-	$('#logo').on("click", function() {
-		$.ajax({
-			type : "POST",
-			url : "goToHome",
-
-			success : function() {
-				window.location.href = "./";
-			},
-		});
-
 	});
 
 });

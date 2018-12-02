@@ -7,12 +7,9 @@
 <meta charset="utf-8">
 <!-- This file has been downloaded from Bootsnipp.com. Enjoy! -->
 <title>Sudo -ku turtles</title>
-
-
 <jsp:include page="include.jsp"></jsp:include>
 <link href="resources/css/navbar_style.css" rel="stylesheet">
 <script src="resources/js/navbar.js"></script>
-
 
 </head>
 
@@ -46,12 +43,10 @@
 								<c:if test="${not empty dashboard }">
 									<form action="dashboard">
 										<div class="text-center">
-											<li>
-												<button class="wrap_button" type="submit"
-													name="dashboard_btn">
-													<i class="fa fa-history" aria-hidden="true"></i> History
-												</button>
-											</li>
+											<button class="wrap_button" type="submit"
+												name="dashboard_btn">
+												<i class="fa fa-history" aria-hidden="true"></i> History
+											</button>
 										</div>
 									</form>
 
@@ -62,12 +57,10 @@
 								<c:if test="${not empty viewLobby }">
 									<form action="lobby">
 										<div class="text-center">
-											<li>
-												<button class="wrap_button" type="submit" name="lobby_btn"
-													id="go_to_lobby">
-													<i class="fa fa-handshake-o" aria-hidden="true"></i>Lobby
-												</button>
-											</li>
+											<button class="wrap_button" type="submit" name="lobby_btn"
+												id="go_to_lobby">
+												<i class="fa fa-handshake-o" aria-hidden="true"></i>Lobby
+											</button>
 										</div>
 									</form>
 								</c:if>
@@ -103,8 +96,6 @@
 											<b>Register</b>
 										</h3>
 									</div>
-
-
 
 									<form action="register" method="post" role="form"
 										autocomplete="off" id="registration_form">
@@ -149,8 +140,6 @@
 											<p>The Password must be equal!</p>
 										</div>
 
-
-
 										<div class="form-group">
 											<div class="row">
 												<div class="col-xs-6 col-xs-offset-3">
@@ -161,7 +150,6 @@
 											</div>
 										</div>
 
-
 										<div class="rg-ok alert alert-success" role="alert"
 											hidden="true">
 											<strong> <span class="glyphicon glyphicon-check"
@@ -170,10 +158,7 @@
 											<p>You successfully registered!</p>
 										</div>
 
-
 									</form>
-
-
 
 								</div>
 							</ul></li>
@@ -209,8 +194,6 @@
 												autocomplete="off">
 										</div>
 
-
-
 										<div class="lg-al alert alert-danger" role="alert"
 											hidden="true">
 											<button type="button" id="btn-lgn" class="btn close"
@@ -220,9 +203,6 @@
 											<strong> Error! </strong>
 											<p id="lgin_message"></p>
 										</div>
-
-
-
 
 										<div class="form-group">
 											<div class="row">
@@ -240,11 +220,9 @@
 								</div>
 							</ul></li>
 					</c:if>
-
 				</ul>
 			</div>
 		</div>
 	</nav>
 </body>
-
 </html>

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+	
 	getWinner();
 	getMatchInfo();
 
@@ -103,7 +103,6 @@ function getWinner() {
 }
 
 function timeConversion(millisec) {
-
 	var seconds = (millisec / 1000).toFixed(1);
 	var minutes = (millisec / (1000 * 60)).toFixed(1);
 	var hours = (millisec / (1000 * 60 * 60)).toFixed(1);

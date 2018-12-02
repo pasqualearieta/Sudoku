@@ -1,5 +1,4 @@
 $(document).ready(function() {
-	$("#start-room").hide();
 
 	$('#disconnected').on('click', function() {
 		window.location.href = "./lobby";
@@ -19,8 +18,6 @@ $(document).ready(function() {
 		});
 	});
 
-	checkBoardFull();
-
 	$("#start-room").click(function() {
 		$.ajax({
 			type : "POST",
@@ -30,10 +27,11 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
+	checkBoardFull();
 });
 
 function checkBoardFull() {
-	console.log("board")
 	$.ajax({
 		type : "POST",
 		url : "checkBoardFull",
