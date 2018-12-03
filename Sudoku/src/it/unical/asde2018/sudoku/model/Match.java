@@ -1,5 +1,6 @@
 package it.unical.asde2018.sudoku.model;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -68,6 +69,10 @@ public class Match {
 		this.players.add(creator);
 	}
 
+	public String getWinner() {
+		return getDurations().entrySet().stream().filter(p -> p.getValue() != 0).min(Comparator.comparingLong(Map.Entry::getValue)).get().getKey().getUsername();
+	}
+	
 	public Set<User> getPlayers() {
 		return players;
 	}

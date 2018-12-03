@@ -303,9 +303,10 @@
 			<tr>
 			    <td colspan="4"></td>
 		     </tr>
+		     
             <c:forEach items="${user.matches}" var="match"  begin="${pageStart}" end="${pageStart + perPage - 1}"> 
             	<c:forEach items="${match.durations}" var="durationEntry"> 
-				  <tr>
+				  <tr style="color:${match.getWinner() eq username ? 'green' : 'red'}">
 				    <td>${match.starting_date}</td>
 				    <td>${match.name}</td>
 				    <td><c:out value="${durationEntry.key.username}"/></td>
