@@ -28,10 +28,6 @@ public class SudokuGeneratorController {
 
 		if (sudokuGeneratorService.getTotalNumberOfSudokuAvailable() < sudokuGeneratorService.getINITIAL_NUMBER_OF_SUDOKU_PER_DIFFICULTY() * 3) {
 			sudokuGeneratorService.generateSudoku();
-
-			// System.out.println("SudokuGeneratorController.generate()---IF");
-			// System.err.println("SIZE -> E=" + numberOfSudokuEasy + " M=" +
-			// numberOfSudokuMedium + " H=" + numberOfSudokuHard);
 		} else {
 			if (numberOfSudokuEasy <= Math.ceil((double) numberOfConnectedUsers / 2))
 				sudokuGeneratorService.generateSudokuEasy();
@@ -39,11 +35,6 @@ public class SudokuGeneratorController {
 				sudokuGeneratorService.generateSudokuMedium();
 			if (numberOfSudokuHard <= Math.ceil((double) numberOfConnectedUsers / 2))
 				sudokuGeneratorService.generateSudokuHard();
-
-			// System.out.println("SudokuGeneratorController.generate()---ELSE");
-			// System.err.println("SIZE -> E=" + numberOfSudokuEasy + " M=" +
-			// numberOfSudokuMedium + " H=" + numberOfSudokuHard);
-
 		}
 	}
 }

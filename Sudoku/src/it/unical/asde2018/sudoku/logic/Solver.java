@@ -7,6 +7,10 @@ import java.util.Set;
 
 public class Solver {
 
+	/**
+	 * Matrix that keeps track of the numbers tried to insert for every single
+	 * cell of the scheme
+	 */
 	private Map<Integer, Map<Integer, Set<Integer>>> testedNumbers = new HashMap<>(SudokuGrid.getSIZE());
 
 	private SudokuGrid sudoku;
@@ -32,7 +36,8 @@ public class Solver {
 		// First we check in the column
 		for (int i = 0; i < SudokuGrid.getSIZE(); i++) {
 			if (i == y)
-				continue; // Jump to next iteration if we are on our cell, ignoring any further instruction
+				continue; // Jump to next iteration if we are on our cell, ignoring any further
+							// instruction
 
 			if (sudoku.getNumberInsideACell(x, i) == num)
 				return false;
@@ -41,7 +46,8 @@ public class Solver {
 		// Then we check the rows
 		for (int i = 0; i < SudokuGrid.getSIZE(); i++) {
 			if (i == x)
-				continue; // Jump to next iteration if we are on our cell, ignoring any further instruction
+				continue; // Jump to next iteration if we are on our cell, ignoring any further
+							// instruction
 
 			if (sudoku.getNumberInsideACell(i, y) == num)
 				return false;
@@ -59,7 +65,7 @@ public class Solver {
 		return true;
 	}
 
-	public boolean evaluateCell() {
+	private boolean evaluateCell() {
 		if (sudoku.isNumberLocked(currentRow, currentColumn)) {
 			if (doBacktrack)
 				return backtrack();
@@ -123,6 +129,9 @@ public class Solver {
 		return false;
 	}
 
+	/**
+	 * Method that create a solved sudoku
+	 */
 	public void solveSudoku() {
 		while (!evaluateCell()) {
 		}

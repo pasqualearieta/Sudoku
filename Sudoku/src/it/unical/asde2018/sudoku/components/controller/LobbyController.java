@@ -18,7 +18,6 @@ import org.springframework.web.context.request.async.DeferredResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.unical.asde2018.sudoku.components.persistence.UserDAO;
 import it.unical.asde2018.sudoku.components.services.GameStartService;
 import it.unical.asde2018.sudoku.components.services.LobbyService;
 import it.unical.asde2018.sudoku.components.services.SudokuGeneratorService;

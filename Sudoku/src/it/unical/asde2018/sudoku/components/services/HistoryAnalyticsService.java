@@ -20,19 +20,22 @@ public class HistoryAnalyticsService {
 	private final double DRAW_COEF = 0.6;
 	private final double LOSE_COEF = 0.2;
 
-	public Map<String, Double> getMetrics(String username, List<Match> previousMatches) {
-		/*
-		 * Produce a bunch of performance metrics, given an username and a
-		 * collection of its previous matches.
-		 * 
-		 * @param username Username of the user whose metrics should be computed
-		 * 
-		 * @param previousMatches List of the matches this user has played
-		 * 
-		 * Returns a Map linking a numerical performance to each nominal metric.
-		 * 
-		 */
+	/**
+	 * Produce a bunch of performance metrics, given an username and a
+	 * collection of its previous matches.
+	 * 
+	 * @param username
+	 *            Username of the user whose metrics should be computed
+	 * 
+	 * @param previousMatches
+	 *            List of the matches this user has played
+	 * 
+	 *            Returns a Map linking a numerical performance to each nominal
+	 *            metric.
+	 * 
+	 */
 
+	public Map<String, Double> getMetrics(String username, List<Match> previousMatches) {
 		HashMap<String, Double> metrics = new HashMap<>();
 
 		for (Difficulty dif : Difficulty.values()) {
@@ -143,7 +146,7 @@ public class HistoryAnalyticsService {
 
 	public List<Match> getPreviousMatches(User user) {
 		List<Match> to_return = new ArrayList<>();
-		
+
 		for (Match m : user.getMatches())
 			to_return.add(m);
 		return to_return;

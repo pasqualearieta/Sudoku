@@ -18,6 +18,13 @@ public class Generator {
 		return sudokuToSolve;
 	}
 
+	/**
+	 * Method that generate a playable sudoku with an unique solution.
+	 * 
+	 * @param difficulty
+	 *            of sudoku to be generated
+	 * 
+	 */
 	public void generateSudokuPuzzle(Difficulty difficulty) {
 
 		sudokuFound = false;
@@ -55,6 +62,12 @@ public class Generator {
 		}
 	}
 
+	/**
+	 * This method resolve a single sudoku scheme few time in order to verify
+	 * the unicity of the schema's solution.
+	 * 
+	 * @return true if the sudoku has an unique solution, false otherwise.
+	 */
 	public boolean verifyUnicity() {
 		SudokuGrid[] possibleSolution = new SudokuGrid[UNICITY_ITERATIONS];
 
@@ -74,6 +87,11 @@ public class Generator {
 		return true;
 	}
 
+	/**
+	 * Method that removes a number from the sudoku in order to have a schema
+	 * with a fixed number of empty cell according to the difficulty of the
+	 * sudoku.
+	 */
 	public void deleteNumber() {
 		boolean deleted = false;
 		while (!deleted) {

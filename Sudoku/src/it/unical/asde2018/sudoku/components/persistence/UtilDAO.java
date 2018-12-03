@@ -6,13 +6,17 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-
 @Repository
-public class UtilDAO
-{
+public class UtilDAO {
 	@Autowired
 	protected SessionFactory sessionFactory;
 
+	/**
+	 * Method that update the stored information related to the object.
+	 * 
+	 * @param object
+	 *            to be updated
+	 */
 	public void update(Object object) {
 		Session session = sessionFactory.openSession();
 		Transaction transaction = null;
@@ -26,7 +30,13 @@ public class UtilDAO
 
 		session.close();
 	}
-	
+
+	/**
+	 * Method that save the information related to the object.
+	 * 
+	 * @param object
+	 *            to be saved
+	 */
 	public void save(Object object) {
 
 		Session session = sessionFactory.openSession();
@@ -43,6 +53,5 @@ public class UtilDAO
 		session.close();
 
 	}
-
 
 }

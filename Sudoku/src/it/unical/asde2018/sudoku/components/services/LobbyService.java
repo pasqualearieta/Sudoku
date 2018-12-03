@@ -24,7 +24,7 @@ public class LobbyService {
 
 	@Autowired
 	private MatchDAO matchDAO;
-	
+
 	@Autowired
 	private UserDAO userDAO;
 
@@ -45,12 +45,10 @@ public class LobbyService {
 	public int getMatchesSize() {
 		return matches.size();
 	}
-	
-	public int getVisibleMatchesSize()
-	{
+
+	public int getVisibleMatchesSize() {
 		int count = 0;
-		for (Map.Entry<Integer, Room> entry : matches.entrySet())
-		{
+		for (Map.Entry<Integer, Room> entry : matches.entrySet()) {
 			if (entry.getValue().isVisible())
 				count++;
 		}
@@ -121,6 +119,12 @@ public class LobbyService {
 		getMatches().remove(room);
 	}
 
+	/**
+	 * 
+	 * @param indexOfTheLastRoomToShowInTheWindow
+	 * 
+	 * @return the rooms to show in a single page of the available room
+	 */
 	public Map<Integer, Room> getRoomInTheWindow(int indexOfTheLastRoomToShowInTheWindow) {
 		Map<Integer, Room> windowed_room = new LinkedHashMap<>();
 

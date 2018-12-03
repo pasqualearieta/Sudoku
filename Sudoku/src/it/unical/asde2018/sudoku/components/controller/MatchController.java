@@ -241,8 +241,8 @@ public class MatchController {
 				}
 			} else if (!lobbyService.getCreatorOfTheRoom(room).equals(username) && gameStartService.getDeleteEvent(room)) {
 				lobbyService.removePlayer(room, username);
-				if (lobbyService.getMatches().get(room).getMatch().getPlayers().isEmpty())
-					lobbyService.getMatches().remove(room);
+				if (lobbyService.getMatch(room).getPlayers().isEmpty())
+					lobbyService.removeMatch(room);
 
 				session.removeAttribute("sudoku");
 				session.removeAttribute("idRoom");

@@ -34,6 +34,14 @@ public class SudokuGeneratorService {
 		}
 	}
 
+	/**
+	 * Method that return a sudoku of the desired difficulty
+	 * 
+	 * @param difficulty
+	 *            Difficulty of the sudoku
+	 * 
+	 * @return a desired sudoku
+	 */
 	public SudokuPuzzles getSudokuByDifficulty(Difficulty difficulty) {
 		return sudokusQueue.get(difficulty).poll();
 	}
@@ -74,20 +82,32 @@ public class SudokuGeneratorService {
 		sudokusQueue.get(Difficulty.HARD).add(new SudokuPuzzles(sudokuHARD.getSudokuToSolve(), sudokuHARD.getSudokuSolved()));
 	}
 
+	/**
+	 * 
+	 * @return the number of the sudoku easy available
+	 */
 	public int getNumberOfSudokuEasy() {
 		return sudokusQueue.get(Difficulty.EASY).size();
 	}
 
+	/**
+	 * 
+	 * @return the number of the sudoku medium available
+	 */
 	public int getNumberOfSudokuMedium() {
 		return sudokusQueue.get(Difficulty.MEDIUM).size();
 	}
 
+	/**
+	 * 
+	 * @return the number of the sudoku hard available
+	 */
 	public int getNumberOfSudokuHard() {
 		return sudokusQueue.get(Difficulty.HARD).size();
 	}
 
 	/**
-	 * @return the total number of available sudokus
+	 * @return the total number of the available sudokus
 	 */
 	public int getTotalNumberOfSudokuAvailable() {
 		int numberEasy = sudokusQueue.get(Difficulty.EASY).size();
@@ -97,6 +117,10 @@ public class SudokuGeneratorService {
 		return numberEasy + numberMedium + numberHard;
 	}
 
+	/**
+	 * 
+	 * @return map of the sudokus
+	 */
 	public Map<Difficulty, Queue<SudokuPuzzles>> getSudokusQueue() {
 		return sudokusQueue;
 	}
