@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import it.unical.asde2018.sudoku.model.User;
 @Service
 public class LobbyService {
 
-	private Map<Integer, Room> matches = new LinkedHashMap<>();
+	private Map<Integer, Room> matches = new ConcurrentHashMap<>();
 	private static final int MATCHES_TO_SHOW = 8;
 
 	@Autowired
@@ -87,7 +88,8 @@ public class LobbyService {
 
 	public String matchWinner(int room) {
 
-		return (getMatches().get(room).getMatch().getDurations().entrySet().stream().filter(p -> p.getValue() != 0).min(Comparator.comparingLong(Map.Entry::getValue)).get().getKey()).getUsername();
+		return (getMatches().get(room).getMatch().getDurations().entrySet().stream().filter(p -> p.getValue() != 0)
+				.min(Comparator.comparingLong(Map.Entry::getValue)).get().getKey()).getUsername();
 
 	}
 
@@ -107,12 +109,18 @@ public class LobbyService {
 
 	public void saveMatch(int room) {
 
-		matchDAO.save(getMatches().get(room).getMatch());
+		try {
 
-		for (User user : getMatches().get(room).getMatch().getPlayers()) {
-			user.getMatches().add(getMatches().get(room).getMatch());
-			userDAO.update(user);
+			matchDAO.save(getMatches().get(room).getMatch());
+			
+			for (User user : getMatches().get(room).getMatch().getPlayers()) {
+				user.getMatches().add(getMatches().get(room).getMatch());
+				userDAO.update(user);
 
+			}
+		} catch (NullPointerException e) {
+			// In this case the exit button is pressed two times so at the second times the
+			// match was already deleted.
 		}
 	}
 
@@ -178,20 +186,20 @@ public class LobbyService {
 	}
 
 	public Long getNumberOfDisconnectedPlayer(int room) {
-		return getMatches().get(room).getMatch().getDurations().entrySet().stream().filter(p -> p.getValue() == 0).collect(Collectors.counting());
+		return getMatches().get(room).getMatch().getDurations().entrySet().stream().filter(p -> p.getValue() == 0)
+				.collect(Collectors.counting());
 	}
 
 	/**
 	 * 
-	 * @param username
-	 *            of user to looking for
+	 * @param username of user to looking for
 	 * 
 	 * @return the desired User
 	 */
 	public User getUser(String username) {
 		return userDAO.getUser(username);
 	}
-	
+
 	public SudokuPuzzles getRoomSudokus(int room) {
 		return new SudokuPuzzles(getMatches().get(room).getSudokuToSolve(), getMatches().get(room).getSudokuSolved());
 	}
