@@ -15,6 +15,7 @@
 </head>
 
 <body>
+	<img id="bg" src="resources/img/back.jpg" />
   <div class="container-fluid">
     <div class="row">
       <div class="col-lg-12">

@@ -16,22 +16,16 @@ import it.unical.asde2018.sudoku.model.User;
 @Service
 public class HistoryAnalyticsService {
 
-	private final double WIN_COEF = 0.75;
-	private final double DRAW_COEF = 0.6;
-	private final double LOSE_COEF = 0.2;
-
 	/**
-	 * Produce a bunch of performance metrics, given an username and a
-	 * collection of its previous matches.
+	 * Produce a bunch of performance metrics, given an username and a collection of
+	 * its previous matches.
 	 * 
-	 * @param username
-	 *            Username of the user whose metrics should be computed
+	 * @param username        Username of the user whose metrics should be computed
 	 * 
-	 * @param previousMatches
-	 *            List of the matches this user has played
+	 * @param previousMatches List of the matches this user has played
 	 * 
-	 *            Returns a Map linking a numerical performance to each nominal
-	 *            metric.
+	 *                        Returns a Map linking a numerical performance to each
+	 *                        nominal metric.
 	 * 
 	 */
 
@@ -79,7 +73,7 @@ public class HistoryAnalyticsService {
 			Difficulty m_diff = m.getDifficulty();
 			if (m_diff != diff)
 				continue;
-			int removedRows = m_diff.getNumberToRemove();
+
 			total_matches++;
 
 			String winnerUsername = null;
@@ -112,26 +106,22 @@ public class HistoryAnalyticsService {
 					}
 				} // Compute outcomes for given user
 			}
-			double outcome_coef = 0;
 
 			if (winnerUsername.equals(username)) {
 				if (match_drawn) {
-					outcome_coef = DRAW_COEF;
 					drawn++;
 				} else {
-					outcome_coef = WIN_COEF;
 					won++;
 				}
 			} else {
-				outcome_coef = LOSE_COEF;
 				lost++;
 			}
 			// score += outcome_coef * removedRows;
 		}
 		if (total_matches == 0) { // Never played a match
 			/*
-			 * TODO: Using this technique avoid NaN to be displayed, eventually
-			 * consider a different visualization for new user
+			 * TODO: Using this technique avoid NaN to be displayed, eventually consider a
+			 * different visualization for new user
 			 */
 			total_matches = 1;
 		}

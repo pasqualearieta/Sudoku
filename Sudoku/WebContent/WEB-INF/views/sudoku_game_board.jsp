@@ -20,6 +20,7 @@
 </head>
 
 <body>
+	<img id="bg" src="resources/img/back.jpg" />
 	<input type="hidden" id="sudokuPuzzle" value="${sudoku}">
 	<input type="hidden" id="startingTime">
 
@@ -39,7 +40,7 @@
 		<div class="row">
 			<div class="col-md-8"></div>
 			<div class="col-md-2">
-				<button type="submit" class="btn btn-primary dropdown-toggle"
+				<button type="submit" class="quit btn btn-primary dropdown-toggle"
 					data-toggle="dropdown">Quit Game</button>
 				<div id="gameLeaving"
 					class="dropdown-menu dropdown-lr animated flipInX" role="menu">

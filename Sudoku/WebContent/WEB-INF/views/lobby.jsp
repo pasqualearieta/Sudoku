@@ -14,7 +14,7 @@
 </head>
 
 <body>
-
+	<img id="bg" src="resources/img/back.jpg" />
 	<p></p>
 	<p></p>
 	<div class="container">
@@ -28,7 +28,7 @@
 							autocomplete="off">
 							<div class="form-group">
 								<input type="text" name="lobbyName" id="lobbyName" tabindex="1"
-									class="form-control" placeholder="Lobby Name">
+									required class="form-control" placeholder="Lobby Name">
 							</div>
 							<div class="form-group">
 								<div class="row">

@@ -12,7 +12,7 @@
 <title>Wait for opponent</title>
 </head>
 <body>
-
+	<img id="bg" src="resources/img/back.jpg" />
 	<div class="container-fluid" id="waiting">
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
@@ -25,23 +25,25 @@
 							<div id="loader"></div>
 						</div>
 					</div>
-					<div class="panel-footer">
-						<input type="hidden" name="idRoom" id="idRoom" value="${idRoom}" />
-						<div class="form-group">
-							<div class="row">
-								<div class="col-xs-4">
-									<button type="submit" name="start-room" hidden="true" id="start-room"
-										class="form-control btn btn-success">Start Match</button>
-								</div>
-								<div class="col-xs-4"></div>
-								<div class="col-xs-4">
-									<button type="button" name="leave-room" id="leave-room"
-										class="form-control btn btn-danger leave-room">Leave
-										Match</button>
-								</div>
+				</div>
+				<div class="row">
+					<input type="hidden" name="idRoom" id="idRoom" value="${idRoom}" />
+					<div class="form-group">
+						<div class="row">
+							<div class="col-xs-4">
+								<button type="submit" name="start-room" hidden="true"
+									id="start-room" class="btn-prop form-control btn btn-success">Start
+									Match</button>
+							</div>
+							<div class="col-xs-4"></div>
+							<div class="col-xs-4">
+								<button type="button" name="leave-room" id="leave-room"
+									class="btn-prop form-control btn btn-danger leave-room">Leave
+									Match</button>
 							</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>

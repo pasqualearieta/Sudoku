@@ -5,6 +5,8 @@
 	/* Preserve aspet ratio */
 	min-width: 100%;
 	min-height: 100%;
+	opacity: 0.7;
+    filter: alpha(opacity=70); /* For IE8 and earlier */
 }
 
 #hmlg {
