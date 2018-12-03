@@ -9,11 +9,12 @@ It is composed of several interfaces:
 
   1. Home Page
   
+  ![alt text](https://imgur.com/a/LQVadsl)
 [IMG] Home Page[IMG]
 
   2. Lobby
   
-[IMG] Home Page[IMG]
+[IMG] [IMG]
 
   3. Dashboard
   
