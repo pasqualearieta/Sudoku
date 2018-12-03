@@ -31,7 +31,7 @@ A match is hosted by one of the players, who has the permission to start it as s
 
 Not all the matches are similar, in fact you may choose the difficulty most fit to your skills and a random map will be generated .This map is unique and solvable.
 
-Select a cell and insert a number. A visual assistan will help you to understand what values you already chose.
+Select a cell and insert a number. A visual assistant will help you to understand what values you already chose.
 [IMG] Match [IMG]
 
 Notice that you can monitor your opponents thanks a progress bar located below the game board.
@@ -46,6 +46,6 @@ The dashboard is a perfect place for this: you can visualize the ratios of each 
 
 [IMG] Dashboard[IMG]
 
-Also, yout times are measured and some metrics are provided.
+Also, your times are measured and some metrics are provided.
 
 Finally, a complete description of the matches in your history is displayed.
