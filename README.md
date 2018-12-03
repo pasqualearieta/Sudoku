@@ -1,6 +1,6 @@
 # Sudoku
 
-Sudoku is a project developed during the Agile Software Develoment for Enterprises course held in 2018 at the University of Calabria.
+Sudoku is a project developed during the Agile Software Development for Enterprises course held in 2018 at the University of Calabria.
 It is a demonstration of a simple application of the tecnhology studied, i.e. Java EE, Spring, Hibernates, and many more.
 
 This repository contains an actual stable version of our implementation of the Sudoku classical game.
@@ -10,12 +10,15 @@ It is composed of several interfaces:
   1. Home Page
   
 [IMG] Home Page[IMG]
+
   2. Lobby
   
 [IMG] Home Page[IMG]
+
   3. Dashboard
   
 [IMG] Home Page[IMG]
+
   4. Game Board
   
 [IMG] Home Page[IMG]
