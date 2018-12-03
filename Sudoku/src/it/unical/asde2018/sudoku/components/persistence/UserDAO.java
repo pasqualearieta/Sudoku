@@ -58,10 +58,8 @@ public class UserDAO extends UtilDAO {
 
 		User result = query.uniqueResult();
 
-		result.getMatches().size(); // lazy
-
 		for (Match m : result.getMatches())
-			System.out.println("match: " + m.toString());
+			m.toString();
 
 		session.close();
 		return result;

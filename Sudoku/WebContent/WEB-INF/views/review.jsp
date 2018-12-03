@@ -63,6 +63,8 @@
 						</h1>
 					</div>
 
+				
+
 					<div id="win" hidden="true">
 						<h1>
 							<c:forEach var="i" begin="1" end="3">
@@ -75,7 +77,7 @@
 								<i style="color: green;" class="fa fa-smile-o fa-${4-i }x"
 									aria-hidden="true"></i>
 							</c:forEach>
-						</h1>
+						</h1>	
 					</div>
 
 					<hr>
@@ -119,6 +121,7 @@
 				</div>
 			</section>
 		</div>
+
 		<div class="row">
 			<div class="col-md-2 col-md-offset-2">
 				<button type="button" id="exit" class="btn btn-primary">Exit</button>
@@ -126,6 +129,7 @@
 		</div>
 
 	</div>
+	
 	
 </body>
 </html>

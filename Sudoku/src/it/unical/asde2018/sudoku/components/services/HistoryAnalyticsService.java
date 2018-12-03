@@ -67,7 +67,6 @@ public class HistoryAnalyticsService {
 		double drawn = 0; // Draw ratio
 		double lost = 0;
 		double duration = 0;
-		// double score = 0; TODO: Consider score and standings
 
 		for (Match m : previousMatches) {
 			Difficulty m_diff = m.getDifficulty();
@@ -79,10 +78,6 @@ public class HistoryAnalyticsService {
 			String winnerUsername = null;
 			long minDuration = 0;
 			boolean match_drawn = false;
-
-			// Compute match results
-			// TODO: Consider moving to Match.java as Enum.OUTCOME
-			// playerStatus(username)
 
 			Map<User, Long> durations = m.getDurations();
 			for (User participant : durations.keySet()) {
@@ -116,13 +111,8 @@ public class HistoryAnalyticsService {
 			} else {
 				lost++;
 			}
-			// score += outcome_coef * removedRows;
 		}
 		if (total_matches == 0) { // Never played a match
-			/*
-			 * TODO: Using this technique avoid NaN to be displayed, eventually consider a
-			 * different visualization for new user
-			 */
 			total_matches = 1;
 		}
 		metrics.put("HistorySize", total_matches);
@@ -130,7 +120,6 @@ public class HistoryAnalyticsService {
 		metrics.put("DrawRatio", round(drawn / total_matches * 100, 2));
 		metrics.put("LoseRatio", round(lost / total_matches * 100, 2));
 		metrics.put("AverageDuration", duration / total_matches);
-		// metrics.put("Score", score);
 		return metrics;
 	}
 

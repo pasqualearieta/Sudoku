@@ -95,7 +95,6 @@ public class LobbyController {
 	 * different pages
 	 * 
 	 * @param index   of the last room to show in a single page
-	 * @param session
 	 * @return
 	 */
 	@GetMapping("refresh")
@@ -124,7 +123,7 @@ public class LobbyController {
 	 * Method that ensure the visualization of the available room
 	 * 
 	 * @param index
-	 * @param session
+	 * @param model
 	 * @param response
 	 * @return
 	 */

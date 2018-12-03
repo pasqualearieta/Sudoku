@@ -93,8 +93,11 @@ function getWinner() {
 		url : "getWinner",
 		success : function(result) {
 			if (result != "allOut") {
-				if (result == "winner")
+				if (result == "winner"){
 					$("#win").show();
+					var audio = new Audio('resources/audio/si.mp3');
+					audio.play();	
+				}
 				else
 					$("#lose").show();
 			}
