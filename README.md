@@ -9,8 +9,8 @@ It is composed of several interfaces:
 
   1. Home Page
   
-  ![alt text](https://imgur.com/a/LQVadsl)
-[IMG] Home Page[IMG]
+  ![alt text](https://i.imgur.com/WKdfvyk.jpg)
+
 
   2. Lobby
   
