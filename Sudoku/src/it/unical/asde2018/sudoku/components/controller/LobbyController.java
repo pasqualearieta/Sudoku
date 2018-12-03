@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
@@ -67,8 +66,7 @@ public class LobbyController {
 	/**
 	 * Method that allow the user to join in an existing room
 	 * 
-	 * @param room
-	 *            to join
+	 * @param room     to join
 	 * @param session
 	 * @param response
 	 */
@@ -95,8 +93,7 @@ public class LobbyController {
 	 * Method that updates the view of the playable rooms by organizing them in
 	 * different pages
 	 * 
-	 * @param index
-	 *            of the last room to show in a single page
+	 * @param index   of the last room to show in a single page
 	 * @param session
 	 * @return
 	 */
@@ -109,7 +106,8 @@ public class LobbyController {
 		if (index != "")
 			requested_pagination = Integer.parseInt(index);
 		int finalIndex = requested_pagination * LobbyService.getMatchesToShow();
-		Pagination pg = new Pagination(requested_pagination, lobbyService.getTotalRoomPage(), lobbyService.getRoomInTheWindow(finalIndex));
+		Pagination pg = new Pagination(requested_pagination, lobbyService.getTotalRoomPage(),
+				lobbyService.getRoomInTheWindow(finalIndex));
 		ObjectMapper mapper = new ObjectMapper();
 		DeferredResult<String> json = new DeferredResult<>();
 		try {
@@ -131,7 +129,8 @@ public class LobbyController {
 	 */
 	@PostMapping("roomPagination")
 	@ResponseBody
-	public DeferredResult<String> switchRoomPagination(@RequestParam String index, HttpSession session, HttpServletResponse response) {
+	public DeferredResult<String> switchRoomPagination(@RequestParam String index, HttpSession session,
+			HttpServletResponse response) {
 
 		int requested_pagination = Integer.parseInt(index);
 		int finalIndex = requested_pagination * LobbyService.getMatchesToShow();
@@ -167,9 +166,17 @@ public class LobbyController {
 
 		if (lobbyService.getCreatorOfTheRoom(room).equals(username)) {
 			gameStartService.putDeleteEvent(room);
+
+			/**
+			 * This call allow to recover the puzzles, in fact if the creator leave the room before the game starts, 
+			 * the generated sudoku to this match become again available in the queue.
+			 */
+			sudokuGeneratorService.addRecoveredSudoku(lobbyService.getMatchDifficulty(room),
+					lobbyService.getRoomSudokus(room));
 		}
 
-		if (lobbyService.getNumberOfPlayersInTheRoom(room) == 1 && lobbyService.getCreatorOfTheRoom(room).equals(username)) {
+		if (lobbyService.getNumberOfPlayersInTheRoom(room) == 1
+				&& lobbyService.getCreatorOfTheRoom(room).equals(username)) {
 			lobbyService.removePlayer(room, username);
 			lobbyService.removeRoom(room);
 		} else {

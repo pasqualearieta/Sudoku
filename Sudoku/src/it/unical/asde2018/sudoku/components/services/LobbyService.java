@@ -13,6 +13,7 @@ import it.unical.asde2018.sudoku.components.persistence.MatchDAO;
 import it.unical.asde2018.sudoku.components.persistence.UserDAO;
 import it.unical.asde2018.sudoku.logic.Room;
 import it.unical.asde2018.sudoku.logic.util.Difficulty;
+import it.unical.asde2018.sudoku.logic.util.SudokuPuzzles;
 import it.unical.asde2018.sudoku.model.Match;
 import it.unical.asde2018.sudoku.model.User;
 
@@ -20,7 +21,7 @@ import it.unical.asde2018.sudoku.model.User;
 public class LobbyService {
 
 	private Map<Integer, Room> matches = new LinkedHashMap<>();
-	private static final int MATCHES_TO_SHOW = 2;
+	private static final int MATCHES_TO_SHOW = 8;
 
 	@Autowired
 	private MatchDAO matchDAO;
@@ -189,5 +190,9 @@ public class LobbyService {
 	 */
 	public User getUser(String username) {
 		return userDAO.getUser(username);
+	}
+	
+	public SudokuPuzzles getRoomSudokus(int room) {
+		return new SudokuPuzzles(getMatches().get(room).getSudokuToSolve(), getMatches().get(room).getSudokuSolved());
 	}
 }

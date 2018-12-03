@@ -37,8 +37,7 @@ public class SudokuGeneratorService {
 	/**
 	 * Method that return a sudoku of the desired difficulty
 	 * 
-	 * @param difficulty
-	 *            Difficulty of the sudoku
+	 * @param difficulty Difficulty of the sudoku
 	 * 
 	 * @return a desired sudoku
 	 */
@@ -56,12 +55,12 @@ public class SudokuGeneratorService {
 	}
 
 	/**
-	 * Method that generate an EASY sodoku and put it in the queue of easy
-	 * sudokus
+	 * Method that generate an EASY sodoku and put it in the queue of easy sudokus
 	 */
 	public void generateSudokuEasy() {
 		SudokuHandler sudokuEASY = new SudokuHandler(Difficulty.EASY);
-		sudokusQueue.get(Difficulty.EASY).add(new SudokuPuzzles(sudokuEASY.getSudokuToSolve(), sudokuEASY.getSudokuSolved()));
+		sudokusQueue.get(Difficulty.EASY)
+				.add(new SudokuPuzzles(sudokuEASY.getSudokuToSolve(), sudokuEASY.getSudokuSolved()));
 	}
 
 	/**
@@ -70,16 +69,17 @@ public class SudokuGeneratorService {
 	 */
 	public void generateSudokuMedium() {
 		SudokuHandler sudokuMEDIUM = new SudokuHandler(Difficulty.MEDIUM);
-		sudokusQueue.get(Difficulty.MEDIUM).add(new SudokuPuzzles(sudokuMEDIUM.getSudokuToSolve(), sudokuMEDIUM.getSudokuSolved()));
+		sudokusQueue.get(Difficulty.MEDIUM)
+				.add(new SudokuPuzzles(sudokuMEDIUM.getSudokuToSolve(), sudokuMEDIUM.getSudokuSolved()));
 	}
 
 	/**
-	 * Method that generate a HARD sodoku and put it in the queue of hard
-	 * sudokus
+	 * Method that generate a HARD sodoku and put it in the queue of hard sudokus
 	 */
 	public void generateSudokuHard() {
 		SudokuHandler sudokuHARD = new SudokuHandler(Difficulty.HARD);
-		sudokusQueue.get(Difficulty.HARD).add(new SudokuPuzzles(sudokuHARD.getSudokuToSolve(), sudokuHARD.getSudokuSolved()));
+		sudokusQueue.get(Difficulty.HARD)
+				.add(new SudokuPuzzles(sudokuHARD.getSudokuToSolve(), sudokuHARD.getSudokuSolved()));
 	}
 
 	/**
@@ -127,6 +127,10 @@ public class SudokuGeneratorService {
 
 	public int getINITIAL_NUMBER_OF_SUDOKU_PER_DIFFICULTY() {
 		return INITIAL_NUMBER_OF_SUDOKU_PER_DIFFICULTY;
+	}
+
+	public void addRecoveredSudoku(Difficulty difficulty, SudokuPuzzles sudoku) {
+		sudokusQueue.get(difficulty).add(sudoku);
 	}
 
 }
