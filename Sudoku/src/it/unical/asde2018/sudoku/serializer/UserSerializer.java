@@ -1,4 +1,4 @@
-package it.unical.asde18.serializer;
+package it.unical.asde2018.sudoku.serializer;
 
 import java.io.IOException;
 import java.io.StringWriter;

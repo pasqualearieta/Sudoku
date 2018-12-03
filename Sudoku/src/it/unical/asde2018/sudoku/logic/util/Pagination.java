@@ -4,8 +4,8 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import it.unical.asde18.serializer.PaginationSerializer;
 import it.unical.asde2018.sudoku.logic.Room;
+import it.unical.asde2018.sudoku.serializer.PaginationSerializer;
 
 @JsonSerialize(using=PaginationSerializer.class)
 public class Pagination

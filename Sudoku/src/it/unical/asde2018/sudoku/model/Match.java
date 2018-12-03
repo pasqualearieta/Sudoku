@@ -21,12 +21,12 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import it.unical.asde18.serializer.MatchSerializer;
 import it.unical.asde2018.sudoku.logic.util.Difficulty;
+import it.unical.asde2018.sudoku.serializer.MatchSerializer;
 
 @JsonSerialize(using=MatchSerializer.class)
 @Entity
-@Table
+@Table(name = "match_table")
 public class Match {
 
 	@Id

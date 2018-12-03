@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -100,7 +101,7 @@ public class LobbyController {
 	@GetMapping("refresh")
 	@ResponseBody
 	@Async
-	public DeferredResult<String> refreshList(@RequestParam String index, HttpSession session) {
+	public DeferredResult<String> refreshList(@RequestParam String index) {
 
 		int requested_pagination = 1;
 		if (index != "")
@@ -129,13 +130,13 @@ public class LobbyController {
 	 */
 	@PostMapping("roomPagination")
 	@ResponseBody
-	public DeferredResult<String> switchRoomPagination(@RequestParam String index, HttpSession session,
-			HttpServletResponse response) {
+	public DeferredResult<String> switchRoomPagination(@RequestParam String index,
+			HttpServletResponse response, Model model) {
 
 		int requested_pagination = Integer.parseInt(index);
 		int finalIndex = requested_pagination * LobbyService.getMatchesToShow();
-		session.setAttribute("currentPagination", requested_pagination);
-		session.setAttribute("total_room_page", lobbyService.getTotalRoomPage());
+		model.addAttribute("currentPagination", requested_pagination);
+		model.addAttribute("total_room_page", lobbyService.getTotalRoomPage());
 		Map<Integer, Room> roomInTheWindow = lobbyService.getRoomInTheWindow(finalIndex);
 		DeferredResult<String> json = new DeferredResult<>();
 		Pagination pg = new Pagination(requested_pagination, lobbyService.getTotalRoomPage(), roomInTheWindow);

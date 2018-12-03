@@ -21,7 +21,7 @@ import it.unical.asde2018.sudoku.model.User;
 public class LobbyService {
 
 	private Map<Integer, Room> matches = new LinkedHashMap<>();
-	private static final int MATCHES_TO_SHOW = 8;
+	private static final int MATCHES_TO_SHOW = 2;
 
 	@Autowired
 	private MatchDAO matchDAO;

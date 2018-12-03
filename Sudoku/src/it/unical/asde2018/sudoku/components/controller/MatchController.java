@@ -28,8 +28,6 @@ public class MatchController {
 	private PlayerEventsService eventsService;
 
 
-	
-
 	/**
 	 * This method handle to the creator of the room to start the game after
 	 * the join of the opponent to his room.
@@ -70,8 +68,9 @@ public class MatchController {
 
 			int playerThatEndedTheGame = (lobbyService.getNumberOfPlayersInTheRoom(roomId));
 
-			if (lobbyService.getDurationsOfPlayers(roomId).size() == playerThatEndedTheGame) {
+			if (lobbyService.getDurationsOfPlayers(roomId).size() == playerThatEndedTheGame && !eventsService.isSaving(roomId)) {
 				eventsService.removeRoomData(roomId);
+				eventsService.insertInSaving(roomId);
 				lobbyService.saveMatch(roomId);
 			}
 
@@ -232,9 +231,10 @@ public class MatchController {
 			 *
 			 */
 			if (lobbyService.getDurationsOfPlayers(room).size() == lobbyService.getNumberOfPlayersInTheRoom(room)
-					&& lobbyService.getNumberOfDisconnectedPlayer(room) < lobbyService.getNumberOfPlayersInTheRoom(room)) {
+					&& lobbyService.getNumberOfDisconnectedPlayer(room) < lobbyService.getNumberOfPlayersInTheRoom(room) &&  !eventsService.isSaving(room)) {
 
 				eventsService.removeRoomData(room);
+				eventsService.insertInSaving(room);
 				lobbyService.saveMatch(room);
 				lobbyService.removeMatch(room);
 			}

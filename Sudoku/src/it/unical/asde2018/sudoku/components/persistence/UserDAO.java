@@ -1,7 +1,5 @@
 package it.unical.asde2018.sudoku.components.persistence;
 
-import javax.annotation.PostConstruct;
-
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
@@ -11,13 +9,6 @@ import it.unical.asde2018.sudoku.model.User;
 
 @Repository
 public class UserDAO extends UtilDAO {
-
-	@PostConstruct
-	private void init() {
-		save(new User("andrea", "andrea"));
-		save(new User("a", "a"));
-		save(new User("q", "q"));
-	}
 
 	/**
 	 * This method check if the username chosen by the new user is available.

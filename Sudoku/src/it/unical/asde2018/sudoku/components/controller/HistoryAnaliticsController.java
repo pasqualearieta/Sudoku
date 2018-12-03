@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import it.unical.asde2018.sudoku.components.services.CredentialService;
@@ -24,7 +25,7 @@ public class HistoryAnaliticsController {
 	private HistoryAnalyticsService historyAnalyticsService;
 
 	@GetMapping("/dashboard")
-	public String viewHistory(HttpSession session) {
+	public String viewHistory(HttpSession session, Model model) {
 		String username = (String) session.getAttribute("username");
 		if(username==null)
 			return "redirect:/";
@@ -33,11 +34,11 @@ public class HistoryAnaliticsController {
 		List<Match> previousMatches = historyAnalyticsService.getPreviousMatches(userObj);
 		Map<String,Double> metrics = historyAnalyticsService.getMetrics(username,previousMatches);
 		for(String s : metrics.keySet()) {
-			session.setAttribute(s, metrics.get(s));
+			model.addAttribute(s, metrics.get(s));
 		}
 		session.removeAttribute("dashboard");
-		session.setAttribute("viewLobby", "viewLobby");
-		session.setAttribute("user", userObj);
+		model.addAttribute("viewLobby", "viewLobby");
+		model.addAttribute("user", userObj);
 		return "dashboard";
 	}
 }
