@@ -22,7 +22,14 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", matches=" + matches + "]";
+		StringBuilder s = new StringBuilder();
+		s.append("User [id=" + id + ", username=" + username + ", password=" + password + ", " );
+		
+//		for (Match m : matches)
+//			s.append("Matches " + m.toString());
+
+		s.append("]");
+		return s.toString();
 	}
 
 	@JsonIgnore

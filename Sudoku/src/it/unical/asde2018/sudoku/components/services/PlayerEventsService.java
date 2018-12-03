@@ -3,6 +3,7 @@ package it.unical.asde2018.sudoku.components.services;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.springframework.stereotype.Service;
@@ -12,6 +13,8 @@ import javafx.util.Pair;
 @Service
 public class PlayerEventsService {
 
+	private Map<Integer,Boolean> saving = new ConcurrentHashMap<>();
+	
 	/**
 	 * Store for each started room, a queue that contains the new status of the
 	 * opponent player
@@ -101,4 +104,14 @@ public class PlayerEventsService {
 		disconnectedEvents.remove(room);
 	}
 
+	public void insertInSaving (int room)
+	{
+		if (!saving.containsKey(room))
+			saving.put(room, true);
+	}
+	
+	public boolean isSaving (int room)
+	{
+		return saving.containsKey(room);
+	}
 }

@@ -181,8 +181,9 @@ public class MatchController {
 
 			int playerThatEndedTheGame = (int) (lobbyService.getNumOfPlayersInTheRoom(roomId));
 
-			if (lobbyService.getDurationsOfPlayers(roomId).size() == playerThatEndedTheGame) {
+			if (lobbyService.getDurationsOfPlayers(roomId).size() == playerThatEndedTheGame && !eventsService.isSaving(roomId)) {
 				eventsService.removeRoomData(roomId);
+				eventsService.insertInSaving(roomId);
 				lobbyService.saveMatch(roomId);
 			}
 
